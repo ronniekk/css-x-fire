@@ -1,0 +1,19 @@
+<project name="CSS-X-Fire" default="dist" basedir=".">
+    <description>
+        Build file for CSS-X-Fire FireFox plugin
+    </description>
+
+    <property name="destfile" value="${basedir}/../resources/com/googlecode/cssxfire/www/cssxfire.xpi" />
+
+    <target name="init">
+        <delete file="${destfile}" />
+    </target>
+
+    <target name="dist" depends="init" description="Generate the xpi file">
+        <zip destfile="${destfile}"
+             basedir="src"
+             excludes="**/*.sh, build.xml">
+        </zip>
+    </target>
+
+</project>

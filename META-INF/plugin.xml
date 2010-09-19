@@ -1,0 +1,111 @@
+<idea-plugin version="2" url="http://code.google.com/p/css-x-fire/">
+    <name>CSS-X-Fire</name>
+    <description><![CDATA[
+        <p>Connects Firebug CSS editor with any IDE with CSS capabilities (IntelliJ IDEA Ultimate, PhpStorm, WebStorm, PyCharm, RubyMine).</p>
+    ]]></description>
+    <version>1.0</version>
+    <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
+    <change-notes><![CDATA[
+        <ul>1.0
+            <li>Initial version</li>
+        </ul>
+    ]]>
+    </change-notes>
+    <idea-version since-build="93.13"/>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.css</depends>
+
+    <application-components>
+        <component>
+            <implementation-class>com.googlecode.cssxfire.CssXFireConnector</implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <component>
+            <implementation-class>com.googlecode.cssxfire.IncomingChangesComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <actions>
+        
+        <action id="IncomingChanges.DeclarationNodePopup.DeleteSingle"
+                class="com.googlecode.cssxfire.action.DeleteNode"
+                text="Remove selected change"
+                description="Removes the selected change from the incoming changelist"
+                icon="/actions/delete.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.ApplySingle"
+                class="com.googlecode.cssxfire.action.ApplyNode"
+                text="Apply selected change"
+                description="Applies the selected change from the incoming changelist"
+                icon="/actions/commit.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.DeleteSelector"
+                class="com.googlecode.cssxfire.action.DeleteNode"
+                text="Remove all changes in selector"
+                description="Removes all changes from selected CSS selector from the incoming changelist"
+                icon="/actions/delete.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.ApplySelector"
+                class="com.googlecode.cssxfire.action.ApplyNode"
+                text="Apply all changes in selector"
+                description="Applies all changes from selected CSS selector from the incoming changelist"
+                icon="/actions/commit.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.DeleteFile"
+                class="com.googlecode.cssxfire.action.DeleteNode"
+                text="Remove all changes in file"
+                description="Removes all changes from selected file from the incoming changelist"
+                icon="/actions/delete.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.ApplyFile"
+                class="com.googlecode.cssxfire.action.ApplyNode"
+                text="Apply all changes in file"
+                description="Applies all changes from selected file from the incoming changelist"
+                icon="/actions/commit.png"/>
+        <action id="DownloadPlugin"
+                class="com.googlecode.cssxfire.action.DownloadPlugin"
+                text="Download Browser Plugin"
+                description="Opens xpi installer in browser"
+                icon="/com/googlecode/cssxfire/images/firebug-16x16.png">
+        </action>
+        <action id="IncomingChanges.ToolBar.Help"
+                class="com.googlecode.cssxfire.action.Help"
+                text="Help"
+                description="Show the CSS-X-Fire help page"
+                icon="/actions/help.png"/>
+        <action id="IncomingChanges.ToolBar.ExpandAll"
+                class="com.googlecode.cssxfire.action.ExpandAll"
+                text="Expand All"
+                description="Expand all elements in the tool window."
+                icon="/actions/expandall.png"/>
+
+        <action id="IncomingChanges.ToolBar.CollapseAll"
+                class="com.googlecode.cssxfire.action.CollapseAll"
+                text="Collapse All"
+                description="Collapse all elements in the tool window"
+                icon="/actions/collapseall.png"/>
+
+        <group id="IncomingChanges.DeclarationNodePopup.Single" text="" popup="true">
+            <reference id="IncomingChanges.DeclarationNodePopup.Apply.Single" ref="IncomingChanges.DeclarationNodePopup.ApplySingle"/>
+            <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
+        </group>
+
+        <group id="IncomingChanges.DeclarationNodePopup.Selector" text="" popup="true">
+            <reference id="IncomingChanges.DeclarationNodePopup.Apply.Selector" ref="IncomingChanges.DeclarationNodePopup.ApplySelector"/>
+            <reference id="IncomingChanges.DeclarationNodePopup.Delete.Selector" ref="IncomingChanges.DeclarationNodePopup.DeleteSelector"/>
+        </group>
+
+        <group id="IncomingChanges.DeclarationNodePopup.File" text="" popup="true">
+            <reference id="IncomingChanges.DeclarationNodePopup.Apply.File" ref="IncomingChanges.DeclarationNodePopup.ApplyFile"/>
+            <reference id="IncomingChanges.DeclarationNodePopup.Delete.File" ref="IncomingChanges.DeclarationNodePopup.DeleteFile"/>
+        </group>
+
+        <group id="IncomingChanges.ToolBar" text="" popup="false">
+            <reference id="IncomingChanges.ToolBar.Button.Help" ref="IncomingChanges.ToolBar.Help"/>
+            <separator/>
+            <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
+            <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
+        </group>
+
+    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+</idea-plugin>

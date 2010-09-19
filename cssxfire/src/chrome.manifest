@@ -1,0 +1,4 @@
+content	cssxfire	content/
+locale	cssxfire	en-US	locale/en-US/
+skin	cssxfire	classic/1.0	skin/
+overlay	chrome://browser/content/browser.xul	chrome://cssxfire/content/firefoxOverlay.xul
