@@ -82,10 +82,12 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
             {
                 if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3)
                 {
-                    TreePath selectionPath = tree.getSelectionPath();
-                    if (selectionPath != null)
+                    TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+
+                    if (selPath != null)
                     {
-                        Object source = selectionPath.getLastPathComponent();
+                        tree.setSelectionPath(selPath);
+                        Object source = selPath.getLastPathComponent();
                         ActionGroup actionGroup = source instanceof CssTreeNode ? ((CssTreeNode) source).getActionGroup() : null;
 
                         if (actionGroup != null)
