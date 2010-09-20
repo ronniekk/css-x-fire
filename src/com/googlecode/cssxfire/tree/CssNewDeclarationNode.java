@@ -18,6 +18,7 @@ package com.googlecode.cssxfire.tree;
 
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
+import com.intellij.psi.css.CssElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
@@ -46,7 +47,7 @@ public class CssNewDeclarationNode extends CssDeclarationNode
     @Override
     public String getText()
     {
-        return wrapWithHtml("<font color=blue>" + cssDeclaration.getText() + "</font>" + (isValid() ? "" : " <INVALID>"));
+        return wrapWithHtml("<font color=blue>" + cssDeclaration.getText() + "</font>" + (isValid() ? "" : " <b>[INVALID]</b>"));
     }
 
     @Override
@@ -67,6 +68,12 @@ public class CssNewDeclarationNode extends CssDeclarationNode
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected CssElement getNavigationElement()
+    {
+        return isValid() ? destinationBlock : null;
     }
 
     @Override

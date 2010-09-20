@@ -16,9 +16,13 @@
 
 package com.googlecode.cssxfire.tree;
 
+import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.css.CssDeclaration;
+import com.intellij.psi.css.CssElement;
 import com.intellij.util.IncorrectOperationException;
 
 import javax.swing.*;
@@ -47,7 +51,7 @@ public class CssDeclarationNode extends CssTreeNode
     @Override
     public String getText()
     {
-        return wrapWithHtml("<font color=green>" + cssDeclaration.getPropertyName() + ": <b>" + value + "</b></font>" + (isValid() ? "" : " <b><INVALID></b>"));
+        return wrapWithHtml("<font color=green>" + cssDeclaration.getPropertyName() + ": <b>" + value + "</b></font>" + (isValid() ? "" : " <b>[INVALID]</b>"));
     }
 
     public boolean isValid()
@@ -74,6 +78,26 @@ public class CssDeclarationNode extends CssTreeNode
     public ActionGroup getActionGroup()
     {
         return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single");
+    }
+
+    protected CssElement getNavigationElement()
+    {
+        return isValid() ? cssDeclaration : null;
+    }
+
+    public void navigate()
+    {
+        CssElement cssElement = getNavigationElement();
+        if (cssElement != null)
+        {
+            SelectInEditorManager selectInEditorManager = SelectInEditorManager.getInstance(cssElement.getProject());
+            VirtualFile virtualFile = cssElement.getContainingFile().getVirtualFile();
+            if (virtualFile != null)
+            {
+                TextRange textRange = cssElement.getTextRange();
+                selectInEditorManager.selectInEditor(virtualFile, textRange.getStartOffset(), textRange.getEndOffset(), false, false);
+            }
+        }
     }
 
     @Override
