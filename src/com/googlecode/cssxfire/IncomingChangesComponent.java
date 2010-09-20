@@ -16,16 +16,23 @@
 
 package com.googlecode.cssxfire;
 
+import com.googlecode.cssxfire.action.Help;
 import com.googlecode.cssxfire.tree.*;
 import com.googlecode.cssxfire.ui.CssToolWindow;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.css.*;
+import com.intellij.psi.css.CssBlock;
+import com.intellij.psi.css.CssDeclaration;
+import com.intellij.psi.css.CssElement;
+import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.search.UsageSearchContext;
@@ -62,7 +69,23 @@ public class IncomingChangesComponent implements ProjectComponent
 
     public void initComponent()
     {
-        // TODO: insert component initialization logic here
+        String currentVersion = PluginManager.getPlugin(PluginId.getId("CSS-X-Fire")).getVersion();
+        AppMeta appMeta = CssXFireConnector.getInstance().getState();
+        if (!currentVersion.equals(appMeta.getVersion()))
+        {
+            appMeta.setVersion(currentVersion);
+            ApplicationManager.getApplication().invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    int res = Messages.showYesNoDialog(project, "This is the first run after installation or upgrade of CSS-X-Fire.\n\nWould you like to view the help page?", "CSS-X-Fire", null);
+                    if (res == 0)
+                    {
+                        new Help().actionPerformed(null);
+                    }
+                }
+            });
+        }
     }
 
     public void disposeComponent()

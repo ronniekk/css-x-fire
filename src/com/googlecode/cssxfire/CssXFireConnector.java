@@ -17,21 +17,29 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.webserver.SimpleWebServer;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.io.IOException;
 import java.net.BindException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssXFireConnector implements ApplicationComponent
+@State(
+    name = "CssXFireConnector",
+    storages = {@Storage(id = "CSS-X-Fire", file = "$OPTIONS$/CSS-X-Fire.xml")}
+)
+public class CssXFireConnector implements ApplicationComponent, PersistentStateComponent<AppMeta>
 {
+    private AppMeta appMeta = new AppMeta();
     private SimpleWebServer webServer;
     private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<IncomingChangesComponent>();
 
@@ -77,6 +85,16 @@ public class CssXFireConnector implements ApplicationComponent
             }
         }
         webServer = null;
+    }
+
+    public AppMeta getState()
+    {
+        return appMeta;
+    }
+
+    public void loadState(AppMeta appMeta)
+    {
+        this.appMeta = appMeta;
     }
 
     @NotNull
