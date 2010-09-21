@@ -17,7 +17,13 @@
 package com.googlecode.cssxfire.ui;
 
 import com.googlecode.cssxfire.IncomingChangesComponent;
-import com.googlecode.cssxfire.tree.*;
+import com.googlecode.cssxfire.tree.CssChangesTreeModel;
+import com.googlecode.cssxfire.tree.CssDeclarationNode;
+import com.googlecode.cssxfire.tree.CssFileNode;
+import com.googlecode.cssxfire.tree.CssSelectorNode;
+import com.googlecode.cssxfire.tree.CssTreeNode;
+import com.googlecode.cssxfire.tree.TreeModificator;
+import com.googlecode.cssxfire.tree.TreeUtils;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -28,6 +34,8 @@ import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +46,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -83,39 +93,25 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1)
                 {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-
-                    if (selPath != null)
-                    {
-                        Object source = selPath.getLastPathComponent();
-                        if (source instanceof CssDeclarationNode)
-                        {
-                            ((CssDeclarationNode) source).navigate();
-                        }
-                    }
+                    navigateTo(selPath);
                 }
                 else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3)
                 {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-
-                    if (selPath != null)
-                    {
-                        tree.setSelectionPath(selPath);
-                        Object source = selPath.getLastPathComponent();
-                        ActionGroup actionGroup = source instanceof CssTreeNode ? ((CssTreeNode) source).getActionGroup() : null;
-
-                        if (actionGroup != null)
-                        {
-                            DataContext dataContext = DataManager.getInstance().getDataContext(tree);
-                            ListPopup listPopup = JBPopupFactory.getInstance().createActionGroupPopup(null,
-                                    actionGroup,
-                                    dataContext,
-                                    JBPopupFactory.ActionSelectionAid.MNEMONICS,
-                                    true);
-
-                            Point point = new Point(e.getXOnScreen(), e.getYOnScreen());
-                            listPopup.showInScreenCoordinates(tree, point);
-                        }
-                    }
+                    Point point = new Point(e.getXOnScreen(), e.getYOnScreen());
+                    showMenu(selPath, point);
+                }
+            }
+        });
+        tree.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    TreePath path = tree.getSelectionPath();
+                    navigateTo(path);
                 }
             }
         });
@@ -156,6 +152,40 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
     public CssChangesTreeModel getTreeModel()
     {
         return treeModel;
+    }
+
+    private void navigateTo(@Nullable TreePath path)
+    {
+        if (path != null)
+        {
+            Object source = path.getLastPathComponent();
+            if (source instanceof CssDeclarationNode)
+            {
+                ((CssDeclarationNode) source).navigate();
+            }
+        }
+    }
+
+    private void showMenu(@Nullable TreePath path, @NotNull Point point)
+    {
+        if (path != null)
+        {
+            tree.setSelectionPath(path);
+            Object source = path.getLastPathComponent();
+            ActionGroup actionGroup = source instanceof CssTreeNode ? ((CssTreeNode) source).getActionGroup() : null;
+
+            if (actionGroup != null)
+            {
+                DataContext dataContext = DataManager.getInstance().getDataContext(tree);
+                ListPopup listPopup = JBPopupFactory.getInstance().createActionGroupPopup(null,
+                        actionGroup,
+                        dataContext,
+                        JBPopupFactory.ActionSelectionAid.MNEMONICS,
+                        true);
+
+                listPopup.showInScreenCoordinates(tree, point);
+            }
+        }
     }
 
     private void updateButtons()
