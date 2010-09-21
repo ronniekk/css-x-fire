@@ -120,7 +120,6 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
 
         incomingChangesPanel.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         clearButton = new JButton("Clear list", Icons.TRASHCAN);
         clearButton.setEnabled(false);
         clearButton.addActionListener(new ActionListener()
@@ -139,8 +138,16 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
                 applyPending();
             }
         });
-        southPanel.add(clearButton);
-        southPanel.add(applyButton);
+
+
+        JPanel southPanel = new JPanel(new BorderLayout());
+
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        buttonsPanel.add(clearButton);
+        buttonsPanel.add(applyButton);
+
+        southPanel.add(buttonsPanel, BorderLayout.WEST);
+        southPanel.add(new LegendDescriptorPanel(), BorderLayout.CENTER);
 
         add(toolBar, BorderLayout.WEST);
         add(incomingChangesPanel, BorderLayout.CENTER);

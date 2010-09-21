@@ -28,14 +28,19 @@ import java.util.*;
  */
 public class LegendDescriptorPanel extends DiffStatusBar
 {
+    private static final Color COLOR_MODIFIED = new Color(188, 207, 249);
+    private static final Color COLOR_INVALID = new Color(203, 203, 203);
+    private static final Color COLOR_ADDED = new Color(186, 238, 186);
+
     private static final java.util.List<? extends LegendTypeDescriptor> MY_TYPES =
-            Arrays.asList(new MyLegendTypeDescriptor("Modified", Color.GREEN),
-                    new MyLegendTypeDescriptor("Added", Color.BLUE),
-                    new MyLegendTypeDescriptor("Invalid", Color.RED));
+            Arrays.asList(new MyLegendTypeDescriptor("Modified", COLOR_MODIFIED),
+                    new MyLegendTypeDescriptor("Added", COLOR_ADDED),
+                    new MyLegendTypeDescriptor("Invalid", COLOR_INVALID));
 
     public LegendDescriptorPanel()
     {
         super(MY_TYPES);
+        setBorder(null);
     }
 
     private static class MyLegendTypeDescriptor implements DiffStatusBar.LegendTypeDescriptor
