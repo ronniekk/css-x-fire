@@ -202,7 +202,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
         applyButton.setEnabled(hasChildren);
     }
 
-    private void clearTree()
+    public void clearTree()
     {
         CssTreeNode root = (CssTreeNode) treeModel.getRoot();
         root.removeAllChildren();
@@ -355,6 +355,14 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
         for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
         {
             tree.expandPath(new TreePath(node.getPath()));
+        }
+    }
+
+    public void refreshLeafs()
+    {
+        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
+        {
+            treeModel.nodeChanged(node);
         }
     }
 

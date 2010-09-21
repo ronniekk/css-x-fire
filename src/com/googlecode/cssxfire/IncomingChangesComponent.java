@@ -17,7 +17,11 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.action.Help;
-import com.googlecode.cssxfire.tree.*;
+import com.googlecode.cssxfire.tree.CssDeclarationNode;
+import com.googlecode.cssxfire.tree.CssFileNode;
+import com.googlecode.cssxfire.tree.CssNewDeclarationNode;
+import com.googlecode.cssxfire.tree.CssSelectorNode;
+import com.googlecode.cssxfire.tree.TreeModificator;
 import com.googlecode.cssxfire.ui.CssToolWindow;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
@@ -30,6 +34,9 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiTreeChangeAdapter;
+import com.intellij.psi.PsiTreeChangeEvent;
+import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssElement;
@@ -52,6 +59,28 @@ public class IncomingChangesComponent implements ProjectComponent
 
     private final Project project;
     private CssToolWindow cssToolWindow;
+    private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
+    {
+        @Override
+        public void childReplaced(PsiTreeChangeEvent event)
+        {
+            IncomingChangesComponent.this.onPsiChange(event);
+        }
+
+        @Override
+        public void childRemoved(PsiTreeChangeEvent event)
+        {
+            IncomingChangesComponent.this.onPsiChange(event);
+        }
+    };
+
+    private void onPsiChange(PsiTreeChangeEvent event)
+    {
+        if (event.getOldChild() instanceof CssDeclaration || event.getParent() instanceof CssDeclaration)
+        {
+            cssToolWindow.refreshLeafs();
+        }
+    }
 
     public IncomingChangesComponent(Project project)
     {
@@ -122,10 +151,16 @@ public class IncomingChangesComponent implements ProjectComponent
         toolWindow.setAvailable(true, null);
 
         CssXFireConnector.getInstance().addProjectComponent(this);
+
+        PsiManager.getInstance(project).addPsiTreeChangeListener(myListener);
     }
 
     public void projectClosed()
     {
+        PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
+
+        getTreeModificator().clearTree();
+
         CssXFireConnector.getInstance().removeProjectComponent(this);
 
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);

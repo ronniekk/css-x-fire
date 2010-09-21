@@ -31,4 +31,6 @@ public interface TreeModificator
     public void collapseAll();
 
     public void expandAll();
+
+    public void clearTree();
 }
