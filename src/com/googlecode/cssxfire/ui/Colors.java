@@ -25,10 +25,10 @@ import java.awt.*;
 public interface Colors
 {
     public static final Color MODIFIED = new Color(0, 0, 255);
-    public static final Color INVALID = new Color(192, 192, 192);
+    public static final Color INVALID = new Color(128, 128, 128);
     public static final Color ADDED = new Color(0, 128, 0);
 
-    public static final Color MODIFIED_LEGEND = new Color(188, 207, 249);
-    public static final Color INVALID_LEGEND = new Color(203, 203, 203);
-    public static final Color ADDED_LEGEND = new Color(186, 238, 186);
+    public static final Color MODIFIED_LEGEND = new Color(MODIFIED.getRed(), MODIFIED.getGreen(), MODIFIED.getBlue(), 64);
+    public static final Color INVALID_LEGEND = new Color(INVALID.getRed(), INVALID.getGreen(), INVALID.getBlue(), 64);
+    public static final Color ADDED_LEGEND = new Color(ADDED.getRed(), ADDED.getGreen(), ADDED.getBlue(), 64);
 }
