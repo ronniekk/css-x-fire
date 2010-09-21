@@ -19,6 +19,7 @@ package com.googlecode.cssxfire;
 import com.googlecode.cssxfire.action.Help;
 import com.googlecode.cssxfire.tree.*;
 import com.googlecode.cssxfire.ui.CssToolWindow;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
@@ -69,16 +70,25 @@ public class IncomingChangesComponent implements ProjectComponent
 
     public void initComponent()
     {
-        String currentVersion = PluginManager.getPlugin(PluginId.getId("CSS-X-Fire")).getVersion();
+        IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(PluginId.getId("CSS-X-Fire"));
+        if (pluginDescriptor == null)
+        {
+            return;
+        }
+        String currentVersion = pluginDescriptor.getVersion();
         AppMeta appMeta = CssXFireConnector.getInstance().getState();
-        if (!currentVersion.equals(appMeta.getVersion()))
+        String previousVersion = appMeta.getVersion();
+        if (!currentVersion.equals(previousVersion))
         {
             appMeta.setVersion(currentVersion);
+            final String message = previousVersion == null
+                    ? "CSS-X-Fire has been installed.\n\nPress OK to install the browser plugin."
+                    : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress OK to update the browser plugin.";
             ApplicationManager.getApplication().invokeLater(new Runnable()
             {
                 public void run()
                 {
-                    int res = Messages.showYesNoDialog(project, "This is the first run after installation or upgrade of CSS-X-Fire.\n\nWould you like to view the help page?", "CSS-X-Fire", null);
+                    int res = Messages.showYesNoDialog(project, message, "CSS-X-Fire", null);
                     if (res == 0)
                     {
                         new Help().actionPerformed(null);
