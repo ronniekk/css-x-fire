@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.tree;
 
+import com.googlecode.cssxfire.ui.Colors;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssElement;
@@ -47,7 +48,7 @@ public class CssNewDeclarationNode extends CssDeclarationNode
     @Override
     public String getText()
     {
-        return wrapWithHtml("<font color=blue>" + cssDeclaration.getText() + "</font>" + (isValid() ? "" : " <b>[INVALID]</b>"));
+        return wrapWithHtmlColor(cssDeclaration.getText(), isValid() ? Colors.ADDED : Colors.INVALID);
     }
 
     @Override

@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.tree;
 
+import com.googlecode.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -51,7 +52,7 @@ public class CssDeclarationNode extends CssTreeNode
     @Override
     public String getText()
     {
-        return wrapWithHtml("<font color=green>" + cssDeclaration.getPropertyName() + ": <b>" + value + "</b></font>" + (isValid() ? "" : " <b>[INVALID]</b>"));
+        return wrapWithHtmlColor(cssDeclaration.getPropertyName() + ": " + value, isValid() ? Colors.MODIFIED : Colors.INVALID);
     }
 
     public boolean isValid()

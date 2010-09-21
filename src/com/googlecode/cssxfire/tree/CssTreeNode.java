@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,8 +39,32 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode
     public abstract ActionGroup getActionGroup();
 
     @NotNull
-    protected String wrapWithHtml(String text)
+    private String wrapWithHtml(String text)
     {
         return "<html>" + text + "</html>";
+    }
+
+    @NotNull
+    protected String wrapWithHtmlColor(String text, Color color)
+    {
+        return wrapWithHtml("<font color=\"#" + toHtml(color) + "\">" + text + "</font>");
+    }
+
+    private static String toHtml(Color color)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(padWithZeros(Integer.toHexString(color.getRed())));
+        sb.append(padWithZeros(Integer.toHexString(color.getGreen())));
+        sb.append(padWithZeros(Integer.toHexString(color.getBlue())));
+        return sb.toString();
+    }
+
+    private static String padWithZeros(String s)
+    {
+        while (s.length() < 2)
+        {
+            s = "0" + s;
+        }
+        return s;
     }
 }

@@ -21,6 +21,7 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,7 +53,7 @@ public class CssSelectorNode extends CssTreeNode
     @Override
     public String getText()
     {
-        return wrapWithHtml("<b>" + selector + "</b>");
+        return wrapWithHtmlColor("<b>" + selector + "</b>", Color.BLACK);
     }
 
     @Override
