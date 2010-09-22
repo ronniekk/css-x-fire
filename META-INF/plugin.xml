@@ -3,9 +3,12 @@
     <description><![CDATA[
         <p>Connects Firebug CSS editor with any IDE with CSS capabilities (IntelliJ IDEA Ultimate, PhpStorm, WebStorm, PyCharm, RubyMine).</p>
     ]]></description>
-    <version>1.1</version>
+    <version>1.2</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.2
+            <li></li>
+        </ul>
         <ul>1.1
             <li>Track modifications in source code and invalidate elements in tree view.</li>
             <li>Offer help page dialog on first run or after upgrade.</li>
