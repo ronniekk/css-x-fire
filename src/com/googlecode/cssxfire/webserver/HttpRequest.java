@@ -85,7 +85,7 @@ public class HttpRequest implements Runnable
             requestLine = requestLine.substring(six, eix).trim();
         }
 
-        if (!isFireFox)
+        if (!isFireFox && "/files/cssxfire.xpi".equals(requestLine))
         {
             response = HttpResponse.createFileResponse("about.html");
         }
