@@ -166,7 +166,7 @@ public class IncomingChangesComponent implements ProjectComponent
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
 
-    public void processRule(final String selector, final String property, final String value)
+    public void processRule(final String selector, final String property, final String value, final boolean deleted)
     {
         ApplicationManager.getApplication().invokeLater(new Runnable()
         {
@@ -200,6 +200,10 @@ public class IncomingChangesComponent implements ProjectComponent
                                         hasDeclaration = true;
 
                                         CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, value);
+                                        if (deleted)
+                                        {
+                                            declarationNode.markDeleted();
+                                        }
                                         CssSelectorNode selectorNode = new CssSelectorNode(selector);
                                         CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
 
@@ -211,8 +215,11 @@ public class IncomingChangesComponent implements ProjectComponent
                             {
                                 // non-existing - create new
                                 CssDeclaration declaration = CssUtils.createDeclaration(project, selector, property, value);
-
                                 CssDeclarationNode declarationNode = new CssNewDeclarationNode(declaration, block);
+                                if (deleted)
+                                {
+                                    declarationNode.markDeleted();
+                                }
                                 CssSelectorNode selectorNode = new CssSelectorNode(selector);
                                 CssFileNode fileNode = new CssFileNode(block.getContainingFile().getOriginalFile());
 

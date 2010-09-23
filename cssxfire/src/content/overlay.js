@@ -17,7 +17,7 @@
 var cssPropertyListener = {
 
     /**
-     * The registered listener function. Receives callbacks from Firebug CSS editor
+     * The registered listener function for property change. Receives callbacks from Firebug CSS editor
      * @param style
      * @param propName
      * @param propValue
@@ -30,8 +30,21 @@ var cssPropertyListener = {
     onCSSSetProperty: function(style, propName, propValue, propPriority, prevValue, prevPriority, rule, baseText) {
         if (propValue != prevValue) {
             // if value has changed, send change to the IDE
-            cssxfire.send(rule.selectorText, propName, propValue);
+            cssxfire.send(rule.selectorText, propName, propValue, false);
         }
+    },
+
+    /**
+     * The registered listener function for deletion of properties. Receives callbacks from Firebug CSS editor
+     * @param style
+     * @param propName
+     * @param prevValue
+     * @param prevPriority
+     * @param rule
+     * @param baseText
+     */
+    onCSSRemoveProperty: function(style, propName, prevValue, prevPriority, rule, baseText) {
+        cssxfire.send(rule.selectorText, propName, prevValue, true);
     }
 };
 
@@ -62,9 +75,10 @@ var cssxfire = {
      * @param selector the selector name
      * @param property the property name
      * @param value the value
+     * @param deleted if the property was deleted or not
      */
-    send: function(selector, property, value) {
-        var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property=" + this.encode(property) + "&value=" + this.encode(value);
+    send: function(selector, property, value, deleted) {
+        var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property=" + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted;
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
         httpRequest.send(null);

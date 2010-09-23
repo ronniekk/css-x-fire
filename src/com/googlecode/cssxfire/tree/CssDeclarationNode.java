@@ -36,6 +36,7 @@ public class CssDeclarationNode extends CssTreeNode
 {
     protected final CssDeclaration cssDeclaration;
     protected final String value;
+    protected boolean deleted;
 
     public CssDeclarationNode(CssDeclaration cssDeclaration, String value)
     {
@@ -52,7 +53,10 @@ public class CssDeclarationNode extends CssTreeNode
     @Override
     public String getText()
     {
-        return wrapWithHtmlColor(cssDeclaration.getPropertyName() + ": " + value, isValid() ? Colors.MODIFIED : Colors.INVALID);
+        String text = cssDeclaration.getPropertyName() + ": " + value;
+        return deleted
+                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.MODIFIED : Colors.INVALID)
+                : wrapWithHtmlColor(text, isValid() ? Colors.MODIFIED : Colors.INVALID);
     }
 
     public boolean isValid()
@@ -66,7 +70,14 @@ public class CssDeclarationNode extends CssTreeNode
         {
             if (isValid())
             {
-                cssDeclaration.setValue(value);
+                if (deleted)
+                {
+                    cssDeclaration.delete();
+                }
+                else
+                {
+                    cssDeclaration.setValue(value);
+                }
             }
         }
         catch (IncorrectOperationException e)
@@ -129,5 +140,10 @@ public class CssDeclarationNode extends CssTreeNode
         int result = cssDeclaration != null ? cssDeclaration.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
+    }
+
+    public void markDeleted()
+    {
+        deleted = true;
     }
 }

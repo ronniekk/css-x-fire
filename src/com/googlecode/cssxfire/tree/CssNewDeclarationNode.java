@@ -48,7 +48,10 @@ public class CssNewDeclarationNode extends CssDeclarationNode
     @Override
     public String getText()
     {
-        return wrapWithHtmlColor(cssDeclaration.getText(), isValid() ? Colors.ADDED : Colors.INVALID);
+        String text = cssDeclaration.getText();
+        return deleted
+                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.ADDED : Colors.INVALID)
+                : wrapWithHtmlColor(text, isValid() ? Colors.ADDED : Colors.INVALID);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class CssNewDeclarationNode extends CssDeclarationNode
     {
         try
         {
-            if (isValid())
+            if (isValid() && !deleted)
             {
                 CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(destinationBlock, CssDeclaration.class);
                 CssDeclaration anchor = declarations != null && declarations.length > 0
