@@ -142,6 +142,11 @@ public class CssDeclarationNode extends CssTreeNode
         return result;
     }
 
+    public boolean isDeleted()
+    {
+        return deleted;
+    }
+    
     public void markDeleted()
     {
         deleted = true;

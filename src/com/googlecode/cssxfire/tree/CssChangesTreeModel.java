@@ -67,9 +67,23 @@ public class CssChangesTreeModel extends DefaultTreeModel
             {
                 if (currentNode instanceof CssDeclarationNode)
                 {
-                    // swap nodes
-                    parent.remove(child);
-                    parent.add(currentNode);
+                    if (currentNode instanceof CssNewDeclarationNode && ((CssNewDeclarationNode) currentNode).isDeleted())
+                    {
+                        // remove node and all empty parents
+                        do
+                        {
+                            child.removeFromParent();
+                            child = parent;
+                            parent = (DefaultMutableTreeNode) child.getParent();
+                        }
+                        while (parent != null && child.getChildCount() == 0);
+                    }
+                    else
+                    {
+                        // swap nodes
+                        parent.remove(child);
+                        parent.add(currentNode);
+                    }
                     return;
                 }
                 addAbsent(child, consumeFirst(nodes));
