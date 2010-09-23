@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.tree;
 
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -67,16 +68,10 @@ public class CssChangesTreeModel extends DefaultTreeModel
             {
                 if (currentNode instanceof CssDeclarationNode)
                 {
-                    if (currentNode instanceof CssNewDeclarationNode && ((CssNewDeclarationNode) currentNode).isDeleted())
+                    if (isNewAndDeletedDeclaration(currentNode))
                     {
                         // remove node and all empty parents
-                        do
-                        {
-                            child.removeFromParent();
-                            child = parent;
-                            parent = (DefaultMutableTreeNode) child.getParent();
-                        }
-                        while (parent != null && child.getChildCount() == 0);
+                        removeWithEmptyParents(child);
                     }
                     else
                     {
@@ -91,8 +86,35 @@ public class CssChangesTreeModel extends DefaultTreeModel
             }
         }
 
-        parent.add(currentNode);
-        addAbsent(currentNode, consumeFirst(nodes));
+        if (isNewAndDeletedDeclaration(currentNode))
+        {
+            if (parent.getChildCount() == 0)
+            {
+                removeWithEmptyParents(parent);
+            }
+        }
+        else
+        {
+            parent.add(currentNode);
+            addAbsent(currentNode, consumeFirst(nodes));
+        }
+    }
+
+    private void removeWithEmptyParents(@NotNull DefaultMutableTreeNode child)
+    {
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) child.getParent();
+        do
+        {
+            child.removeFromParent();
+            child = parent;
+            parent = (DefaultMutableTreeNode) child.getParent();
+        }
+        while (parent != null && child.getChildCount() == 0);
+    }
+
+    private boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node)
+    {
+        return node instanceof CssNewDeclarationNode && ((CssNewDeclarationNode) node).isDeleted();
     }
 
     private DefaultMutableTreeNode[] consumeFirst(DefaultMutableTreeNode[] nodes)
