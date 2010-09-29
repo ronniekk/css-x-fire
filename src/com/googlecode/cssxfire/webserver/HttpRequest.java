@@ -62,7 +62,6 @@ public class HttpRequest implements Runnable
         //Get the request line of HTTP message
         String requestLine = br.readLine().trim();
 
-        boolean isFireFox = false;
         String req;
         while ((req = br.readLine()) != null)
         {
@@ -70,10 +69,6 @@ public class HttpRequest implements Runnable
             if (req.length() == 0)
             {
                 break;
-            }
-            if (req.startsWith("user-agent") && req.contains("firefox/"))
-            {
-                isFireFox = true;
             }
         }
 
@@ -85,11 +80,7 @@ public class HttpRequest implements Runnable
             requestLine = requestLine.substring(six, eix).trim();
         }
 
-        if (!isFireFox && "/files/cssxfire.xpi".equals(requestLine))
-        {
-            response = HttpResponse.createFileResponse("about.html");
-        }
-        else if (requestLine.startsWith("/files/"))
+        if (requestLine.startsWith("/files/"))
         {
             response = HttpResponse.createFileResponse(requestLine.substring("/files/".length()));
         }
