@@ -111,8 +111,8 @@ public class IncomingChangesComponent implements ProjectComponent
         {
             appMeta.setVersion(currentVersion);
             final String message = previousVersion == null
-                    ? "CSS-X-Fire has been installed.\n\nPress OK to install the browser plugin."
-                    : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress OK to update the browser plugin.";
+                    ? "CSS-X-Fire has been installed.\n\nPress Yes to install the browser plugin."
+                    : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress Yes to update the browser plugin.";
             ApplicationManager.getApplication().invokeLater(new Runnable()
             {
                 public void run()
