@@ -3,12 +3,14 @@
     <description><![CDATA[
         <p>Connects Firebug CSS editor with any IDE with CSS capabilities (IntelliJ IDEA Ultimate, PhpStorm, WebStorm, PyCharm, RubyMine).</p>
         <p>Please read the installation guidelines here: <a href="http://code.google.com/p/css-x-fire/wiki/Installation">http://code.google.com/p/css-x-fire/wiki/Installation</a></p>
+        <p>Style with pleasure!</p>
     ]]></description>
     <version>1.3</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.3
             <li>Installation help.</li>
+            <li>Removed Firefox constraint in internal web server.</li>
         </ul>
         <ul>1.2
             <li>Support for removing properties in Firebug.</li>
