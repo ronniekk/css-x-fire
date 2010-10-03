@@ -28,6 +28,7 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
@@ -236,23 +237,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
             }
         }, "Apply CSS", "CSS");
 
-        saveAllDocuments();
-    }
-
-    /**
-     * Invokes the "Save All" action, equivalent of pressing CTRL+S (Command+S on mac).
-     */
-    private void saveAllDocuments()
-    {
-        // The easy way would be FileDocumentManager.saveAllDocuments() but that works
-        // on Application level (all open projects) which we do not want here.
-        AnAction saveAllAction = ActionManager.getInstance().getAction("SaveAll");
-        if (saveAllAction != null) // this should never be the case
-        {
-            DataContext dataContext = DataManager.getInstance().getDataContext(this);
-            AnActionEvent anActionEvent = new AnActionEvent(null, dataContext, ActionPlaces.UNKNOWN, saveAllAction.getTemplatePresentation(), ActionManager.getInstance(), 0);
-            saveAllAction.actionPerformed(anActionEvent);
-        }
+        FileDocumentManager.getInstance().saveAllDocuments();
     }
 
     //
