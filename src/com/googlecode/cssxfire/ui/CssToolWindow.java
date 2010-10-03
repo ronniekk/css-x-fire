@@ -25,10 +25,7 @@ import com.googlecode.cssxfire.tree.CssTreeNode;
 import com.googlecode.cssxfire.tree.TreeModificator;
 import com.googlecode.cssxfire.tree.TreeUtils;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.project.Project;
@@ -224,7 +221,9 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
     }
 
     /**
-     * Executes a runnable in a write action. The command may be undo'ed.
+     * Executes a runnable in a write action. The command may be undo'ed. After
+     * the command has been executed all documents in project will be saved, which will
+     * trigger other actions which listen for file changes such as "Transfer files"
      * @param command the command
      */
     private void executeCommand(final Runnable command)
@@ -236,6 +235,24 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
                 ApplicationManager.getApplication().runWriteAction(command);
             }
         }, "Apply CSS", "CSS");
+
+        saveAllDocuments();
+    }
+
+    /**
+     * Invokes the "Save All" action, equivalent of pressing CTRL+S (Command+S on mac).
+     */
+    private void saveAllDocuments()
+    {
+        // The easy way would be FileDocumentManager.saveAllDocuments() but that works
+        // on Application level (all open projects) which we do not want here.
+        AnAction saveAllAction = ActionManager.getInstance().getAction("SaveAll");
+        if (saveAllAction != null) // this should never be the case
+        {
+            DataContext dataContext = DataManager.getInstance().getDataContext(this);
+            AnActionEvent anActionEvent = new AnActionEvent(null, dataContext, ActionPlaces.UNKNOWN, saveAllAction.getTemplatePresentation(), ActionManager.getInstance(), 0);
+            saveAllAction.actionPerformed(anActionEvent);
+        }
     }
 
     //

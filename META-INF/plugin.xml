@@ -9,9 +9,10 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.4
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=3">Issue 3</a> Trigger automatic upload etc. when applying changes.</li>
         </ul>
         <ul>1.3
-            <li>Installation help.</li>
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=1">Issue 1</a> Installation help.</li>
             <li>Removed Firefox constraint in internal web server.</li>
         </ul>
         <ul>1.2
