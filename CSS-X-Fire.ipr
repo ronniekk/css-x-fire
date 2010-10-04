@@ -36,6 +36,7 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
       <entry name="?*.xpi" />
+      <entry name="?*.js" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>
@@ -232,6 +233,49 @@
     </option>
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://css-x-fire.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://css-x-fire.googlecode.com/svn/images">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://css-x-fire.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://css-x-fire.googlecode.com/svn/wiki">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://css-x-fire.googlecode.com/svn/branches" />
+                  <option value="https://css-x-fire.googlecode.com/svn/images" />
+                  <option value="https://css-x-fire.googlecode.com/svn/tags" />
+                  <option value="https://css-x-fire.googlecode.com/svn/wiki" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://css-x-fire.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">

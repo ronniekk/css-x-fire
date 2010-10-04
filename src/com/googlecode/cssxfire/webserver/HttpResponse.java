@@ -127,6 +127,10 @@ public class HttpResponse
             {
                 return "Content-Type: text/html; charset=utf-8";
             }
+            if (filename.endsWith(".js"))
+            {
+                return "Content-Type: application/x-javascript";
+            }
 
             return "Content-Type: application/octet-stream";
         }
