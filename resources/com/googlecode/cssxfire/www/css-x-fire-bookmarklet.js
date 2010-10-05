@@ -76,9 +76,17 @@ var cssxfire = {
     }
 };
 
-
 // Initialization
-Firebug.CSSModule.addListener(cssPropertyListener);
+try {
+    Firebug.CSSModule.addListener(cssPropertyListener);
+    // Place a marker in the DOM so that we don't inject more than one Firebug listener
+    var e = document.createElement("script");
+    e.setAttribute("type","text/javascript");
+    e.setAttribute("id","css-x-fire");
+    document.body.appendChild(e);
+    alert("CSS-X-Fire initialized!");
+} catch (err) {
+    alert("Firebug Lite not active");
+}
 
-alert("loaded CSS-X-Fire");
 })();
