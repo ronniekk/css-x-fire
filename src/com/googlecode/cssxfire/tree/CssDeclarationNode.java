@@ -89,7 +89,9 @@ public class CssDeclarationNode extends CssTreeNode
     @Override
     public ActionGroup getActionGroup()
     {
-        return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single");
+        return isValid()
+                ? (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single")
+                : (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single.Invalid");
     }
 
     protected CssElement getNavigationElement()

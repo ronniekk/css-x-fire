@@ -104,6 +104,10 @@
                 description="Collapse all elements in the tool window"
                 icon="/actions/collapseall.png"/>
 
+        <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
+            <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
+        </group>
+
         <group id="IncomingChanges.DeclarationNodePopup.Single" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Apply.Single" ref="IncomingChanges.DeclarationNodePopup.ApplySingle"/>
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
