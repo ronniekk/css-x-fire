@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.5
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=2">Issue 2</a> Support for Firebug Lite (Google Chrome and Firefox).</li>
+            <li>Changes which are invalid may only be removed.</li>
         </ul>
         <ul>1.4
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=3">Issue 3</a> Trigger automatic upload etc. when applying changes.</li>
