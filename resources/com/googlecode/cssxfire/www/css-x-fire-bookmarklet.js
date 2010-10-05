@@ -61,9 +61,13 @@ var cssxfire = {
      */
     send: function(selector, property, value, deleted) {
         var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property=" + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted;
-        var httpRequest = new XMLHttpRequest();
-        httpRequest.open("GET", querystring, true);
-        httpRequest.send(null);
+        try {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", querystring, true);
+            httpRequest.send(null);
+        } catch(e) {
+            alert("CSS-X-Fire communication error: " + e.toString());
+        }
     },
 
     /**
@@ -84,7 +88,7 @@ try {
     e.setAttribute("type","text/javascript");
     e.setAttribute("id","css-x-fire");
     document.body.appendChild(e);
-    alert("CSS-X-Fire initialized!");
+    alert("CSS-X-Fire activated");
 } catch (err) {
     alert("Firebug Lite not active");
 }
