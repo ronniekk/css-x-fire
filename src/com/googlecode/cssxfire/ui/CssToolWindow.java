@@ -213,8 +213,13 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
         if (parent != null)
         {
             int index = parent.getIndex(node);
-            node.removeFromParent();
+            parent.remove(node);
             treeModel.nodesWereRemoved(parent, new int[] {index}, new CssTreeNode[] {node});
+            if (node instanceof CssDeclarationNode)
+            {
+                // notify that file node is changed (update the number of changes in file)
+                treeModel.nodeChanged(parent.getParent());
+            }
             if (parent.getChildCount() == 0)
             {
                 deleteNode(parent);

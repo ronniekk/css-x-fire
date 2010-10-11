@@ -121,6 +121,11 @@ public class CssChangesTreeModel extends DefaultTreeModel
         int index = parent.getIndex(child);
         parent.remove(child);
         nodesWereRemoved(parent, new int[] {index}, new CssTreeNode[] {child});
+        if (child instanceof CssDeclarationNode)
+        {
+            // notify that file node is changed (update the number of changes in file)
+            nodeChanged(parent.getParent());
+        }
     }
 
     /**
@@ -132,6 +137,11 @@ public class CssChangesTreeModel extends DefaultTreeModel
     {
         parent.add(child);
         nodesWereInserted(parent, new int[] {parent.getIndex(child)});
+        if (child instanceof CssDeclarationNode)
+        {
+            // notify that file node is changed (update the number of changes in file)
+            nodeChanged(parent.getParent());
+        }
     }
 
     private boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node)
