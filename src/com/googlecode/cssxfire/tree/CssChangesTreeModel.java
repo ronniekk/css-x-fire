@@ -46,24 +46,23 @@ public class CssChangesTreeModel extends DefaultTreeModel
 
     public void intersect(CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode)
     {
-        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) getRoot();
-        addAbsent(rootNode, new DefaultMutableTreeNode[] {fileNode, selectorNode, declarationNode});
-        nodeStructureChanged(rootNode);
+        CssTreeNode rootNode = (CssTreeNode) getRoot();
+        addAbsent(rootNode, new CssTreeNode[] {fileNode, selectorNode, declarationNode});
     }
 
-    private void addAbsent(DefaultMutableTreeNode parent, DefaultMutableTreeNode[] nodes)
+    private void addAbsent(CssTreeNode parent, CssTreeNode[] nodes)
     {
         if (nodes.length == 0)
         {
             return;
         }
 
-        DefaultMutableTreeNode currentNode = nodes[0];
+        CssTreeNode currentNode = nodes[0];
 
         int numChildren = parent.getChildCount();
         for (int i = 0; i < numChildren; i++)
         {
-            DefaultMutableTreeNode child = (DefaultMutableTreeNode) parent.getChildAt(i);
+            CssTreeNode child = (CssTreeNode) parent.getChildAt(i);
             if (child.equals(currentNode))
             {
                 if (currentNode instanceof CssDeclarationNode)
@@ -76,8 +75,8 @@ public class CssChangesTreeModel extends DefaultTreeModel
                     else
                     {
                         // swap nodes
-                        parent.remove(child);
-                        parent.add(currentNode);
+                        removeChildAndFireEvent(parent, child);
+                        addChildAndFireEvent(parent, currentNode);
                     }
                     return;
                 }
@@ -95,21 +94,44 @@ public class CssChangesTreeModel extends DefaultTreeModel
         }
         else
         {
-            parent.add(currentNode);
+            addChildAndFireEvent(parent, currentNode);
             addAbsent(currentNode, consumeFirst(nodes));
         }
     }
 
-    private void removeWithEmptyParents(@NotNull DefaultMutableTreeNode child)
+    private void removeWithEmptyParents(@NotNull CssTreeNode child)
     {
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) child.getParent();
+        CssTreeNode parent = (CssTreeNode) child.getParent();
         do
         {
-            child.removeFromParent();
+            removeChildAndFireEvent(parent, child);
             child = parent;
-            parent = (DefaultMutableTreeNode) child.getParent();
+            parent = (CssTreeNode) child.getParent();
         }
         while (parent != null && child.getChildCount() == 0);
+    }
+
+    /**
+     * Removes <tt>child</tt> from <tt>parent</tt> and notifies listeners.
+     * @param parent the parent
+     * @param child the existing child to remove
+     */
+    private void removeChildAndFireEvent(CssTreeNode parent, CssTreeNode child)
+    {
+        int index = parent.getIndex(child);
+        parent.remove(child);
+        nodesWereRemoved(parent, new int[] {index}, new CssTreeNode[] {child});
+    }
+
+    /**
+     * Adds <tt>child</tt> to <tt>parent</tt> and notifies listeners.
+     * @param parent the parent
+     * @param child the new child
+     */
+    private void addChildAndFireEvent(CssTreeNode parent, CssTreeNode child)
+    {
+        parent.add(child);
+        nodesWereInserted(parent, new int[] {parent.getIndex(child)});
     }
 
     private boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node)
@@ -117,9 +139,9 @@ public class CssChangesTreeModel extends DefaultTreeModel
         return node instanceof CssNewDeclarationNode && ((CssNewDeclarationNode) node).isDeleted();
     }
 
-    private DefaultMutableTreeNode[] consumeFirst(DefaultMutableTreeNode[] nodes)
+    private CssTreeNode[] consumeFirst(CssTreeNode[] nodes)
     {
-        DefaultMutableTreeNode[] rest = new DefaultMutableTreeNode[nodes.length - 1];
+        CssTreeNode[] rest = new CssTreeNode[nodes.length - 1];
         System.arraycopy(nodes, 1, rest, 0, rest.length);
         return rest;
     }
