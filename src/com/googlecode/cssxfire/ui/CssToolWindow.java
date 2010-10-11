@@ -357,7 +357,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
     {
         for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
         {
-            tree.expandPath(new TreePath(node.getPath()));
+            tree.expandPath(new TreePath(((CssTreeNode) node.getParent()).getPath()));
         }
     }
 

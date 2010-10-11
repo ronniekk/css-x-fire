@@ -35,6 +35,12 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode
 
     public abstract String getText();
 
+    @Override
+    public boolean getAllowsChildren()
+    {
+        return true;
+    }
+
     @Nullable
     public abstract ActionGroup getActionGroup();
 

@@ -45,6 +45,12 @@ public class CssDeclarationNode extends CssTreeNode
     }
 
     @Override
+    public boolean getAllowsChildren()
+    {
+        return false;
+    }
+
+    @Override
     public Icon getIcon()
     {
         return isValid() ? cssDeclaration.getIcon(1) : null;
