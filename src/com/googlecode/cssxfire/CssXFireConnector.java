@@ -71,11 +71,11 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
          }
          catch (BindException e)
          {
-             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getProductName(), "CSS-X-Fire error");
+             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
          }
          catch (IOException e)
          {
-             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getProductName(), "CSS-X-Fire error");
+             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
          }
     }
 
