@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.6
             <li>Fixed updating of UI - keeping tree state and put expand icon on correct nodes.</li>
+            <li>Error message and disable tool if local web server cannot be started.</li>
         </ul>
         <ul>1.5
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=2">Issue 2</a> Support for Firebug Lite (Google Chrome and Firefox).</li>
