@@ -99,6 +99,10 @@ public class IncomingChangesComponent implements ProjectComponent
 
     public void initComponent()
     {
+        if (!CssXFireConnector.getInstance().isInitialized())
+        {
+            return;
+        }
         IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(PluginId.getId("CSS-X-Fire"));
         if (pluginDescriptor == null)
         {
@@ -140,6 +144,10 @@ public class IncomingChangesComponent implements ProjectComponent
 
     public void projectOpened()
     {
+        if (!CssXFireConnector.getInstance().isInitialized())
+        {
+            return;
+        }
         final ToolWindow toolWindow = ToolWindowManager.getInstance(project).registerToolWindow(TOOLWINDOW_ID, true, ToolWindowAnchor.BOTTOM);
         cssToolWindow = new CssToolWindow(project);
 
@@ -157,6 +165,10 @@ public class IncomingChangesComponent implements ProjectComponent
 
     public void projectClosed()
     {
+        if (!CssXFireConnector.getInstance().isInitialized())
+        {
+            return;
+        }
         PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
 
         getTreeModificator().clearTree();

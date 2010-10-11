@@ -18,10 +18,12 @@ package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.webserver.SimpleWebServer;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -42,10 +44,16 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
     private AppMeta appMeta = new AppMeta();
     private SimpleWebServer webServer;
     private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<IncomingChangesComponent>();
+    private boolean initialized = false;
 
     public static CssXFireConnector getInstance()
     {
         return ApplicationManager.getApplication().getComponent(CssXFireConnector.class);
+    }
+
+    public boolean isInitialized()
+    {
+        return initialized;
     }
 
     public CssXFireConnector()
@@ -59,14 +67,15 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
          {
              webServer = new SimpleWebServer();
              new Thread(webServer).start();
+             initialized = true;
          }
          catch (BindException e)
          {
-             System.out.println("CssXFireConnector: unable to start SimpleWebServer - address in use");
+             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getProductName(), "CSS-X-Fire error");
          }
          catch (IOException e)
          {
-             e.printStackTrace();
+             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getProductName(), "CSS-X-Fire error");
          }
     }
 
