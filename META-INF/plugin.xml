@@ -9,6 +9,7 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.7
+            <li>a href="http://code.google.com/p/css-x-fire/issues/detail?id=7">Issue 7</a> Reduce filter for incoming changes (match specific file only when possible).</li>
         </ul>
         <ul>1.6
             <li>Fixed updating of UI - keeping tree state and put expand icon on correct nodes.</li>
