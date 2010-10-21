@@ -26,6 +26,22 @@ import java.io.CharArrayWriter;
  */
 public class StringUtils
 {
+    @NotNull
+    public static String extractFilename(@NotNull String path)
+    {
+        if (path.length() == 0)
+        {
+            return path;
+        }
+        int endIndex = path.indexOf('?');
+        if (endIndex != -1)
+        {
+            path = path.substring(0, endIndex);
+        }
+        int startIndex = path.lastIndexOf('/');
+        return path.substring(startIndex + 1);
+    }
+
     public static boolean equalsNormalizeWhitespace(@NotNull String s1, @NotNull String s2)
     {
         return normalizeWhitespace(s1).equals(normalizeWhitespace(s2));
@@ -67,5 +83,9 @@ public class StringUtils
         System.out.println(normalizeWhitespace(" a,  a:link  "));
         System.out.println(normalizeWhitespace(" a,\na:link  "));
         System.out.println(normalizeWhitespace(" a,\n  a:link  "));
+
+        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css?1287337838"));
+        System.out.println(extractFilename("message_feed_packaged.css?1287337838"));
+        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css"));
     }
 }

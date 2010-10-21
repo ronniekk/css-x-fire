@@ -17,11 +17,8 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.action.Help;
-import com.googlecode.cssxfire.tree.CssDeclarationNode;
-import com.googlecode.cssxfire.tree.CssFileNode;
-import com.googlecode.cssxfire.tree.CssNewDeclarationNode;
-import com.googlecode.cssxfire.tree.CssSelectorNode;
-import com.googlecode.cssxfire.tree.TreeModificator;
+import com.googlecode.cssxfire.strategy.ReduceStrategyManager;
+import com.googlecode.cssxfire.tree.*;
 import com.googlecode.cssxfire.ui.CssToolWindow;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
@@ -48,6 +45,9 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -178,8 +178,10 @@ public class IncomingChangesComponent implements ProjectComponent
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
 
-    public void processRule(final String selector, final String property, final String value, final boolean deleted)
+    public void processRule(final String href, final String selector, final String property, final String value, final boolean deleted)
     {
+        final String filename = StringUtils.extractFilename(href);
+        
         ApplicationManager.getApplication().invokeLater(new Runnable()
         {
             public void run()
@@ -192,6 +194,8 @@ public class IncomingChangesComponent implements ProjectComponent
                         selector,
                         UsageSearchContext.ANY,
                         true);
+
+                final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
 
                 for (CssElement result : processor.getResults())
                 {
@@ -219,7 +223,7 @@ public class IncomingChangesComponent implements ProjectComponent
                                         CssSelectorNode selectorNode = new CssSelectorNode(selector);
                                         CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
 
-                                        cssToolWindow.getTreeModel().intersect(fileNode, selectorNode, declarationNode);
+                                        candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
                                     }
                                 }
                             }
@@ -235,11 +239,17 @@ public class IncomingChangesComponent implements ProjectComponent
                                 CssSelectorNode selectorNode = new CssSelectorNode(selector);
                                 CssFileNode fileNode = new CssFileNode(block.getContainingFile().getOriginalFile());
 
-                                cssToolWindow.getTreeModel().intersect(fileNode, selectorNode, declarationNode);
+                                candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
                             }
                         }
                     }
+                }
 
+                ReduceStrategyManager.getStrategy(cssToolWindow, filename).reduce(candidates);
+
+                for (CssDeclarationPath candidate : candidates)
+                {
+                    cssToolWindow.getTreeModel().intersect(candidate);
                 }
             }
         });

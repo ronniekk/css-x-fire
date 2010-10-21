@@ -122,7 +122,7 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
         incomingChangesComponents.remove(incomingChangesComponent);
     }
 
-    public void processCss(final String selector, final String property, final String value, final boolean deleted)
+    public void processCss(final String href, final String selector, final String property, final String value, final boolean deleted)
     {
         for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents)
         {
@@ -130,7 +130,7 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
             {
                 public void run()
                 {
-                    incomingChangesComponent.processRule(selector, property, value, deleted);
+                    incomingChangesComponent.processRule(href, selector, property, value, deleted);
                 }
             });
         }

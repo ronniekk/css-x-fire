@@ -37,6 +37,11 @@ public class CssFileNode extends CssTreeNode
         this.psiFile = psiFile;
     }
 
+    public String getFilename()
+    {
+        return psiFile.getName();
+    }
+
     @Override
     public Icon getIcon()
     {

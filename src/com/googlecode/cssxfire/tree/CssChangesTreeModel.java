@@ -44,10 +44,10 @@ public class CssChangesTreeModel extends DefaultTreeModel
         return myTreeCellRenderer;
     }
 
-    public void intersect(CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode)
+    public void intersect(CssDeclarationPath declarationPath)
     {
         CssTreeNode rootNode = (CssTreeNode) getRoot();
-        addAbsent(rootNode, new CssTreeNode[] {fileNode, selectorNode, declarationNode});
+        addAbsent(rootNode, declarationPath.getPathFromRoot());
     }
 
     private void addAbsent(CssTreeNode parent, CssTreeNode[] nodes)

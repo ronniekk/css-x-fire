@@ -14,34 +14,22 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire;
+package com.googlecode.cssxfire.strategy;
+
+import com.googlecode.cssxfire.tree.CssDeclarationPath;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
+ * <p>This reducer does nothing, ie all candidates are untouched.
+ * <p><p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class AppMeta
+public class KeepAllStrategy implements ReduceStrategy<CssDeclarationPath>
 {
-    private String version = null;
-    private boolean smartReduce = false;
-
-    public boolean isSmartReduce()
+    public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
     {
-        return smartReduce;
-    }
-
-    public void setSmartReduce(boolean smartReduce)
-    {
-        this.smartReduce = smartReduce;
-    }
-
-    public String getVersion()
-    {
-        return version;
-    }
-
-    public void setVersion(String version)
-    {
-        this.version = version;
     }
 }

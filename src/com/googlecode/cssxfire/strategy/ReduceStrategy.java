@@ -14,34 +14,17 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire;
+package com.googlecode.cssxfire.strategy;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class AppMeta
+public interface ReduceStrategy<T>
 {
-    private String version = null;
-    private boolean smartReduce = false;
-
-    public boolean isSmartReduce()
-    {
-        return smartReduce;
-    }
-
-    public void setSmartReduce(boolean smartReduce)
-    {
-        this.smartReduce = smartReduce;
-    }
-
-    public String getVersion()
-    {
-        return version;
-    }
-
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
+    public abstract void reduce(@NotNull Collection<T> candidates);
 }

@@ -30,7 +30,7 @@ var cssPropertyListener = {
     onCSSSetProperty: function(style, propName, propValue, propPriority, prevValue, prevPriority, rule, baseText) {
         if (propValue != prevValue) {
             // if value has changed, send change to the IDE
-            cssxfire.send(rule.selectorText, propName, propValue, false);
+            cssxfire.send(rule.parentStyleSheet.href, rule.selectorText, propName, propValue, false);
         }
     },
 
@@ -44,7 +44,7 @@ var cssPropertyListener = {
      * @param baseText
      */
     onCSSRemoveProperty: function(style, propName, prevValue, prevPriority, rule, baseText) {
-        cssxfire.send(rule.selectorText, propName, prevValue, true);
+        cssxfire.send(rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, true);
     }
 };
 
@@ -72,13 +72,16 @@ var cssxfire = {
 
     /**
      * Sends a change to the local web server
+     * @param href css file href (null means inline)
      * @param selector the selector name
      * @param property the property name
      * @param value the value
      * @param deleted if the property was deleted or not
      */
-    send: function(selector, property, value, deleted) {
-        var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property=" + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted;
+    send: function(href, selector, property, value, deleted) {
+        var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property="
+                + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted + "&href="
+                + this.encode(href || window.content.location.href);
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
         httpRequest.send(null);

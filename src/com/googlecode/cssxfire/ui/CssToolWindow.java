@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.ui;
 
+import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.IncomingChangesComponent;
 import com.googlecode.cssxfire.tree.CssChangesTreeModel;
 import com.googlecode.cssxfire.tree.CssDeclarationNode;
@@ -60,6 +61,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
     private final CssChangesTreeModel treeModel;
     private final JTree tree;
     private JButton clearButton, applyButton;
+    private JCheckBox reduceCheckBox;
     private final Project project;
 
     public CssToolWindow(final Project project)
@@ -136,13 +138,22 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
                 applyPending();
             }
         });
-
+        reduceCheckBox = new JCheckBox("Smart Reduce");
+        reduceCheckBox.setSelected(CssXFireConnector.getInstance().getState().isSmartReduce());
+        reduceCheckBox.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CssXFireConnector.getInstance().getState().setSmartReduce(smartReduce());
+            }
+        });
 
         JPanel southPanel = new JPanel(new BorderLayout());
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         buttonsPanel.add(clearButton);
         buttonsPanel.add(applyButton);
+        buttonsPanel.add(reduceCheckBox);
 
         southPanel.add(buttonsPanel, BorderLayout.WEST);
         southPanel.add(new LegendDescriptorPanel(), BorderLayout.CENTER);
@@ -152,6 +163,11 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
         add(southPanel, BorderLayout.SOUTH);
 
         treeModel.addTreeModelListener(this);
+    }
+
+    public boolean smartReduce()
+    {
+        return reduceCheckBox.isSelected();
     }
 
     public CssChangesTreeModel getTreeModel()

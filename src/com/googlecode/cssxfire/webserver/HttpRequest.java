@@ -30,6 +30,7 @@ import java.util.HashMap;
  */
 public class HttpRequest implements Runnable
 {
+    private static final String EMPTY_STRING = "";
     private Socket socket;
 
     public HttpRequest(Socket socket) throws Exception
@@ -95,12 +96,13 @@ public class HttpRequest implements Runnable
                 String property = params.get("property");
                 String value = params.get("value");
                 String selector = params.get("selector");
+                String href = params.get("href");
                 boolean deleted = Boolean.parseBoolean(params.get("deleted"));
 
                 // Notify application component
                 if (property != null && value != null && selector != null)
                 {
-                    CssXFireConnector.getInstance().processCss(selector, property, value, deleted);
+                    CssXFireConnector.getInstance().processCss(href != null ? href : EMPTY_STRING, selector, property, value, deleted);
                 }
 
                 response = HttpResponse.createEmptyOkResponse();
