@@ -40,7 +40,7 @@ public abstract class Navigate extends AbstractIncomingChangesAction
         {
             return;
         }
-        event.getPresentation().setEnabled(changesComponent.getTreeViewModel().canSelect());
+        event.getPresentation().setEnabled(changesComponent.getTreeViewModel().canSelect(getDirection()));
     }
 
     @Override

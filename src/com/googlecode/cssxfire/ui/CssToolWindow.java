@@ -390,7 +390,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         }
     }
 
-    public boolean canSelect()
+    public boolean canSelect(int direction)
     {
         int leafCount = TreeUtils.countLeafs((CssTreeNode) treeModel.getRoot());
         switch (leafCount)
@@ -399,6 +399,11 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
                 return false;
             case 1:
                 TreePath selectionPath = tree.getSelectionPath();
+                if (direction < 0)
+                {
+                    // When there's only one declaration node, only forward navigation is possible 
+                    return false;
+                }
                 return selectionPath == null || !(selectionPath.getLastPathComponent() instanceof CssDeclarationNode);
             default:
                 return true;

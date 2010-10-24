@@ -22,7 +22,7 @@ package com.googlecode.cssxfire.tree;
  */
 public interface TreeViewModel
 {
-    public boolean canSelect();
+    public boolean canSelect(int direction);
 
     public void select(int direction);
 
