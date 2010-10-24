@@ -33,6 +33,6 @@ public class DeleteNode extends AbstractIncomingChangesAction
         {
             return;
         }
-        changesComponent.getTreeModificator().deleteSelectedNode();
+        changesComponent.getTreeViewModel().deleteSelectedNode();
     }
 }

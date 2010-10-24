@@ -16,9 +16,10 @@
 
 package com.googlecode.cssxfire.tree;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,6 +27,65 @@ import java.util.NoSuchElementException;
  */
 public class TreeUtils
 {
+    /**
+     * Find the declaration node which either preceeds or follows the given anchor.
+     * @param root the tree root
+     * @param anchor the anchor (optional)
+     * @param direction - a positive value means forward direction, a negative value means backwards
+     * @return the next (or previous) declaration node relative to the anchor, or <tt>null</tt> if no declaration node found.
+     */
+    @Nullable
+    public static CssDeclarationNode seek(@NotNull CssTreeNode root, @Nullable CssTreeNode anchor, int direction)
+    {
+        if (anchor == null)
+        {
+            // seek to first leaf
+            return (CssDeclarationNode) iterateLeafs(root).iterator().next();
+        }
+
+        List<CssTreeNode> flattened = flatten(root);
+        if (direction < 0)
+        {
+            Collections.reverse(flattened);
+        }
+
+        boolean anchorFound = false;
+        for (CssTreeNode node : flattened)
+        {
+            if (node == anchor)
+            {
+                anchorFound = true;
+                continue;
+            }
+            if (anchorFound && node instanceof CssDeclarationNode)
+            {
+                return (CssDeclarationNode) node;
+            }
+        }
+
+        // Not found after the anchor, now try from start
+        for (CssTreeNode node : flattened)
+        {
+            if (node instanceof CssDeclarationNode)
+            {
+                return (CssDeclarationNode) node;
+            }
+        }
+
+        return null;
+    }
+
+    private static List<CssTreeNode> flatten(@NotNull CssTreeNode root)
+    {
+        List<CssTreeNode> flattened = new ArrayList<CssTreeNode>();
+        Enumeration enumeration = root.breadthFirstEnumeration();
+        while (enumeration.hasMoreElements())
+        {
+            flattened.add((CssTreeNode) enumeration.nextElement());
+        }
+        return flattened;
+    }
+
     public static int countLeafs(CssTreeNode root)
     {
         int numLeafs = 0;

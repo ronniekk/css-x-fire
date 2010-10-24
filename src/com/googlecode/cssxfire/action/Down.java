@@ -16,22 +16,15 @@
 
 package com.googlecode.cssxfire.action;
 
-import com.googlecode.cssxfire.IncomingChangesComponent;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CollapseAll extends AbstractIncomingChangesAction
+public class Down extends Navigate
 {
     @Override
-    public void actionPerformed(AnActionEvent anActionEvent)
+    protected int getDirection()
     {
-        IncomingChangesComponent changesComponent = getIncomingChangesComponent(anActionEvent);
-        if (changesComponent != null)
-        {
-            changesComponent.getTreeViewModel().collapseAll();
-        }
+        return 1;
     }
 }

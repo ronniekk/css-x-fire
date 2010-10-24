@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire.action;
-
-import com.googlecode.cssxfire.IncomingChangesComponent;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+package com.googlecode.cssxfire.tree;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CollapseAll extends AbstractIncomingChangesAction
+public interface TreeViewModel
 {
-    @Override
-    public void actionPerformed(AnActionEvent anActionEvent)
-    {
-        IncomingChangesComponent changesComponent = getIncomingChangesComponent(anActionEvent);
-        if (changesComponent != null)
-        {
-            changesComponent.getTreeViewModel().collapseAll();
-        }
-    }
+    public boolean canSelect();
+
+    public void select(int direction);
+
+    public void applyPending();
+
+    public void applySelectedNode();
+
+    public void deleteSelectedNode();
+
+    public void collapseAll();
+
+    public void expandAll();
+
+    public void clearTree();
 }

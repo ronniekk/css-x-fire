@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire.tree;
+package com.googlecode.cssxfire.action;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface TreeModificator
+public class Up extends Navigate
 {
-    public void applyPending();
-
-    public void applySelectedNode();
-
-    public void deleteSelectedNode();
-
-    public void collapseAll();
-
-    public void expandAll();
-
-    public void clearTree();
+    @Override
+    protected int getDirection()
+    {
+        return -1;
+    }
 }

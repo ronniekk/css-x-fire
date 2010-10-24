@@ -31,7 +31,7 @@ public class ExpandAll extends AbstractIncomingChangesAction
         IncomingChangesComponent changesComponent = getIncomingChangesComponent(anActionEvent);
         if (changesComponent != null)
         {
-            changesComponent.getTreeModificator().expandAll();
+            changesComponent.getTreeViewModel().expandAll();
         }
     }
 }

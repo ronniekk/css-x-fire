@@ -171,7 +171,7 @@ public class IncomingChangesComponent implements ProjectComponent
         }
         PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
 
-        getTreeModificator().clearTree();
+        getTreeViewModel().clearTree();
 
         CssXFireConnector.getInstance().removeProjectComponent(this);
 
@@ -256,7 +256,7 @@ public class IncomingChangesComponent implements ProjectComponent
     }
 
     @NotNull
-    public TreeModificator getTreeModificator()
+    public TreeViewModel getTreeViewModel()
     {
         return cssToolWindow;
     }

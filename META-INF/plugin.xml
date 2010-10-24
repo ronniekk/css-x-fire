@@ -97,6 +97,16 @@
                 description="Opens xpi installer in browser"
                 icon="/com/googlecode/cssxfire/images/firebug-16x16.png">
         </action>
+        <action id="IncomingChanges.ToolBar.Up"
+                class="com.googlecode.cssxfire.action.Up"
+                text="Previous change"
+                description="Navigate to the previous occurence"
+                icon="/com/googlecode/cssxfire/images/up.png"/>
+        <action id="IncomingChanges.ToolBar.Down"
+                class="com.googlecode.cssxfire.action.Down"
+                text="Next change"
+                description="Navigate to the next occurence"
+                icon="/com/googlecode/cssxfire/images/down.png"/>
         <action id="IncomingChanges.ToolBar.Help"
                 class="com.googlecode.cssxfire.action.Help"
                 text="Help"
@@ -107,12 +117,16 @@
                 text="Expand All"
                 description="Expand all elements in the tool window."
                 icon="/actions/expandall.png"/>
-
         <action id="IncomingChanges.ToolBar.CollapseAll"
                 class="com.googlecode.cssxfire.action.CollapseAll"
                 text="Collapse All"
                 description="Collapse all elements in the tool window"
                 icon="/actions/collapseall.png"/>
+        <action id="IncomingChanges.ToolBar.Filter"
+                class="com.googlecode.cssxfire.action.Filter"
+                text="Filter options"
+                description="Filter incoming changes"
+                icon="/com/googlecode/cssxfire/images/filter.png"/>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
@@ -134,10 +148,13 @@
         </group>
 
         <group id="IncomingChanges.ToolBar" text="" popup="false">
+            <reference id="IncomingChanges.ToolBar.Button.Up" ref="IncomingChanges.ToolBar.Up"/>
+            <reference id="IncomingChanges.ToolBar.Button.Down" ref="IncomingChanges.ToolBar.Down"/>
             <reference id="IncomingChanges.ToolBar.Button.Help" ref="IncomingChanges.ToolBar.Help"/>
             <separator/>
             <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
             <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
+            <reference id="IncomingChanges.ToolBar.Button.Filter" ref="IncomingChanges.ToolBar.Filter"/>
         </group>
 
     </actions>

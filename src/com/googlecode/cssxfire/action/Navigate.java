@@ -23,8 +23,26 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ApplyNode extends AbstractIncomingChangesAction
+public abstract class Navigate extends AbstractIncomingChangesAction
 {
+    /**
+     * For subclasses to implement. A positive value means forward (next) and a negative
+     * value means back (previous).
+     * @return an integer describing the direction
+     */
+    protected abstract int getDirection();
+
+    @Override
+    public void update(AnActionEvent event)
+    {
+        IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
+        if (changesComponent == null)
+        {
+            return;
+        }
+        event.getPresentation().setEnabled(changesComponent.getTreeViewModel().canSelect());
+    }
+
     @Override
     public void actionPerformed(AnActionEvent event)
     {
@@ -33,6 +51,6 @@ public class ApplyNode extends AbstractIncomingChangesAction
         {
             return;
         }
-        changesComponent.getTreeViewModel().applySelectedNode();
+        changesComponent.getTreeViewModel().select(getDirection());
     }
 }

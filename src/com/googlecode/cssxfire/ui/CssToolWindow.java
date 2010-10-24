@@ -23,7 +23,7 @@ import com.googlecode.cssxfire.tree.CssDeclarationNode;
 import com.googlecode.cssxfire.tree.CssFileNode;
 import com.googlecode.cssxfire.tree.CssSelectorNode;
 import com.googlecode.cssxfire.tree.CssTreeNode;
-import com.googlecode.cssxfire.tree.TreeModificator;
+import com.googlecode.cssxfire.tree.TreeViewModel;
 import com.googlecode.cssxfire.tree.TreeUtils;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
@@ -56,7 +56,7 @@ import java.util.Collection;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssToolWindow extends JPanel implements TreeModelListener, TreeModificator
+public class CssToolWindow extends JPanel implements TreeModelListener, TreeViewModel
 {
     private final CssChangesTreeModel treeModel;
     private final JTree tree;
@@ -263,7 +263,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
     }
 
     //
-    // TreeModificator
+    // TreeViewModel
     //
 
     public void applyPending()
@@ -387,6 +387,36 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
         for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
         {
             treeModel.nodeChanged(node);
+        }
+    }
+
+    public boolean canSelect()
+    {
+        int leafCount = TreeUtils.countLeafs((CssTreeNode) treeModel.getRoot());
+        switch (leafCount)
+        {
+            case 0:
+                return false;
+            case 1:
+                TreePath selectionPath = tree.getSelectionPath();
+                return selectionPath == null || !(selectionPath.getLastPathComponent() instanceof CssDeclarationNode);
+            default:
+                return true;
+        }
+    }
+
+    public void select(int direction)
+    {
+        CssTreeNode root = (CssTreeNode) treeModel.getRoot();
+        TreePath selectionPath = tree.getSelectionPath();
+        CssTreeNode anchor = selectionPath == null ? null : (CssTreeNode) selectionPath.getLastPathComponent();
+        CssDeclarationNode declarationNode = TreeUtils.seek(root, anchor, direction);
+
+        if (declarationNode != null)
+        {
+            TreePath path = new TreePath(declarationNode.getPath());
+            tree.getSelectionModel().setSelectionPath(path);
+            navigateTo(path);
         }
     }
 
