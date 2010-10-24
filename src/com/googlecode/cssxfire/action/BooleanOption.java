@@ -18,6 +18,8 @@ package com.googlecode.cssxfire.action;
 
 import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,8 +29,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class BooleanOption extends AbstractIncomingChangesAction
 {
+    @Nullable
     protected abstract AtomicBoolean getOptionValue(AnActionEvent event);
 
+    @NotNull
     protected abstract String getOptionName();
 
     @Override

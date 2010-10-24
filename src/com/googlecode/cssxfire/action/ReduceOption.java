@@ -19,6 +19,8 @@ package com.googlecode.cssxfire.action;
 import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,12 +30,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ReduceOption extends BooleanOption
 {
+    @NotNull
     @Override
     protected String getOptionName()
     {
         return "Reduce to single file filter";
     }
 
+    @Nullable
     @Override
     protected AtomicBoolean getOptionValue(AnActionEvent event)
     {

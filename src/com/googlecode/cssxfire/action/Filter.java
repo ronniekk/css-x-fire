@@ -28,30 +28,36 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Filter extends AbstractIncomingChangesOptionGroup
 {
+    private static final String EMPTY_STRING = "";
+    private static final String OPTIONS_SEPARATOR = ", ";
+
     @Override
     public void update(AnActionEvent event)
     {
-        Presentation presentation = event.getPresentation();
-        BitSet optionBits = getCurrentOptions(event);
-        int numOptions = optionBits.cardinality();
-        String originalText = getTemplatePresentation().getText();
-        String originalDescription = getTemplatePresentation().getDescription();
+        final Presentation presentation = event.getPresentation();
+        final BitSet optionBits = getCurrentOptions(event);
+        int numOptionsSelected = optionBits.cardinality();
+
+        final String originalText = getTemplatePresentation().getText();
+        final String originalDescription = getTemplatePresentation().getDescription();
 
         StringBuilder sb = new StringBuilder();
-        String prepend = "";
-        BooleanOption[] optionClasses = getOptionClasses(event);
-        for (BooleanOption optionClass : optionClasses)
+        String prepend = EMPTY_STRING;
+
+        // Pretty description
+        for (BooleanOption optionClass : getOptionClasses(event))
         {
             AtomicBoolean optionValue = optionClass.getOptionValue(event);
             if (optionValue != null && optionValue.get())
             {
                 sb.append(prepend);
                 sb.append(optionClass.getOptionName());
-                prepend = ", ";
+                prepend = OPTIONS_SEPARATOR;
             }
         }
 
-        switch (numOptions)
+        // Set text and description depending on current selection
+        switch (numOptionsSelected)
         {
             case 0:
                 presentation.setText(originalText + " (none active)");
@@ -62,7 +68,7 @@ public class Filter extends AbstractIncomingChangesOptionGroup
                 presentation.setDescription(originalDescription + ": " + sb.toString());
                 break;
             default:
-                presentation.setText(originalText + " (" + numOptions + " filters active)");
+                presentation.setText(originalText + " (" + numOptionsSelected + " filters active)");
                 presentation.setDescription(originalDescription + ": " + sb.toString());
                 break;
         }

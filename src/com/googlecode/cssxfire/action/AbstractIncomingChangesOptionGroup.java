@@ -35,29 +35,37 @@ public abstract class AbstractIncomingChangesOptionGroup extends DefaultActionGr
     @NotNull
     protected BitSet getCurrentOptions(AnActionEvent event)
     {
-        AnAction[] children = getOptionClasses(event);
-        BitSet options = new BitSet(children.length);
+        final BooleanOption[] children = getOptionClasses(event);
+        final BitSet options = new BitSet(children.length);
+
         for (int i = 0; i < children.length; i++)
         {
-            AtomicBoolean option = ((BooleanOption) children[i]).getOptionValue(event);
+            AtomicBoolean option = children[i].getOptionValue(event);
             boolean value = option != null && option.get();
             options.set(i, value);
         }
+
         return options;
     }
 
     @NotNull
     protected BooleanOption[] getOptionClasses(AnActionEvent event)
     {
-        AnAction[] children = getChildren(event);
-        List<BooleanOption> optionClasses = new ArrayList<BooleanOption>();
+        final AnAction[] children = getChildren(event);
+        final List<BooleanOption> optionClasses = new ArrayList<BooleanOption>();
+
         for (AnAction child : children)
         {
             if (child instanceof BooleanOption)
             {
                 optionClasses.add((BooleanOption) child);
             }
+            else
+            {
+                throw new IllegalArgumentException(getClass().getName() + " children must be of class " + BooleanOption.class.getName());
+            }
         }
+        
         return optionClasses.toArray(new BooleanOption[optionClasses.size()]);
     }
 }
