@@ -36,4 +36,5 @@ public interface Icons
     public static final Icon FILTER = IconLoader.findIcon("/com/googlecode/cssxfire/images/filter.png");
     public static final Icon UP = IconLoader.findIcon("/com/googlecode/cssxfire/images/up.png");
     public static final Icon DOWN = IconLoader.findIcon("/com/googlecode/cssxfire/images/down.png");
+    public static final Icon CHECK = IconLoader.findIcon("/com/googlecode/cssxfire/images/check.png");
 }

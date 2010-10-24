@@ -16,17 +16,13 @@
 
 package com.googlecode.cssxfire.ui;
 
-import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.IncomingChangesComponent;
-import com.googlecode.cssxfire.tree.CssChangesTreeModel;
-import com.googlecode.cssxfire.tree.CssDeclarationNode;
-import com.googlecode.cssxfire.tree.CssFileNode;
-import com.googlecode.cssxfire.tree.CssSelectorNode;
-import com.googlecode.cssxfire.tree.CssTreeNode;
-import com.googlecode.cssxfire.tree.TreeViewModel;
-import com.googlecode.cssxfire.tree.TreeUtils;
+import com.googlecode.cssxfire.tree.*;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -43,12 +39,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,7 +52,6 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
     private final CssChangesTreeModel treeModel;
     private final JTree tree;
     private JButton clearButton, applyButton;
-    private JCheckBox reduceCheckBox;
     private final Project project;
 
     public CssToolWindow(final Project project)
@@ -138,22 +128,12 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
                 applyPending();
             }
         });
-        reduceCheckBox = new JCheckBox("Reduce filter");
-        reduceCheckBox.setSelected(CssXFireConnector.getInstance().getState().isSmartReduce());
-        reduceCheckBox.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                CssXFireConnector.getInstance().getState().setSmartReduce(smartReduce());
-            }
-        });
 
         JPanel southPanel = new JPanel(new BorderLayout());
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         buttonsPanel.add(clearButton);
         buttonsPanel.add(applyButton);
-        buttonsPanel.add(reduceCheckBox);
 
         southPanel.add(buttonsPanel, BorderLayout.WEST);
         southPanel.add(new LegendDescriptorPanel(), BorderLayout.CENTER);
@@ -163,11 +143,6 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         add(southPanel, BorderLayout.SOUTH);
 
         treeModel.addTreeModelListener(this);
-    }
-
-    public boolean smartReduce()
-    {
-        return reduceCheckBox.isSelected();
     }
 
     public CssChangesTreeModel getTreeModel()

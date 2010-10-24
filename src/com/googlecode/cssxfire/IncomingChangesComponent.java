@@ -48,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -59,6 +60,7 @@ public class IncomingChangesComponent implements ProjectComponent
 
     private final Project project;
     private CssToolWindow cssToolWindow;
+    private AtomicBoolean smartReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
     private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
     {
         @Override
@@ -95,6 +97,11 @@ public class IncomingChangesComponent implements ProjectComponent
     public static IncomingChangesComponent getInstance(Project project)
     {
         return project.getComponent(IncomingChangesComponent.class);
+    }
+
+    public AtomicBoolean getSmartReduce()
+    {
+        return smartReduce;
     }
 
     public void initComponent()
@@ -245,7 +252,7 @@ public class IncomingChangesComponent implements ProjectComponent
                     }
                 }
 
-                ReduceStrategyManager.getStrategy(cssToolWindow, filename).reduce(candidates);
+                ReduceStrategyManager.getStrategy(project, filename).reduce(candidates);
 
                 for (CssDeclarationPath candidate : candidates)
                 {

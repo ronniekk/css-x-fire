@@ -16,8 +16,9 @@
 
 package com.googlecode.cssxfire.strategy;
 
+import com.googlecode.cssxfire.IncomingChangesComponent;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
-import com.googlecode.cssxfire.ui.CssToolWindow;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,13 +31,13 @@ public class ReduceStrategyManager
     /**
      * Get a strategy for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
      * candidates. The strategy is based on settings from the toolwindow and/or a given filename.
-     * @param cssToolWindow the toolwindow
+     * @param project the current project
      * @param filename the filename specified
      * @return a suitable {@link com.googlecode.cssxfire.strategy.ReduceStrategy}
      */
-    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull CssToolWindow cssToolWindow, @Nullable String filename)
+    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @Nullable String filename)
     {
-        if (filename != null && cssToolWindow.smartReduce())
+        if (filename != null && IncomingChangesComponent.getInstance(project).getSmartReduce().get())
         {
             return new SpecificOrAllStrategy(filename);
         }

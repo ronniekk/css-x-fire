@@ -17,16 +17,54 @@
 package com.googlecode.cssxfire.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Presentation;
+
+import java.util.BitSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class Filter extends AbstractIncomingChangesAction
+public class Filter extends AbstractIncomingChangesOptionGroup
 {
     @Override
-    public void actionPerformed(AnActionEvent event)
+    public void update(AnActionEvent event)
     {
-        System.out.println("Filter.actionPerformed");
+        Presentation presentation = event.getPresentation();
+        BitSet optionBits = getCurrentOptions(event);
+        int numOptions = optionBits.cardinality();
+        String originalText = getTemplatePresentation().getText();
+        String originalDescription = getTemplatePresentation().getDescription();
+
+        StringBuilder sb = new StringBuilder();
+        String prepend = "";
+        BooleanOption[] optionClasses = getOptionClasses(event);
+        for (BooleanOption optionClass : optionClasses)
+        {
+            AtomicBoolean optionValue = optionClass.getOptionValue(event);
+            if (optionValue != null && optionValue.get())
+            {
+                sb.append(prepend);
+                sb.append(optionClass.getOptionName());
+                prepend = ", ";
+            }
+        }
+
+        switch (numOptions)
+        {
+            case 0:
+                presentation.setText(originalText + " (none active)");
+                presentation.setDescription(originalDescription + ": none");
+                break;
+            case 1:
+                presentation.setText(originalText + " (1 filter active)");
+                presentation.setDescription(originalDescription + ": " + sb.toString());
+                break;
+            default:
+                presentation.setText(originalText + " (" + numOptions + " filters active)");
+                presentation.setDescription(originalDescription + ": " + sb.toString());
+                break;
+        }
     }
 }

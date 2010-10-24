@@ -123,11 +123,18 @@
                 text="Collapse All"
                 description="Collapse all elements in the tool window"
                 icon="/actions/collapseall.png"/>
-        <action id="IncomingChanges.ToolBar.Filter"
+        <group id="IncomingChanges.ToolBar.Filter"
                 class="com.googlecode.cssxfire.action.Filter"
                 text="Filter options"
-                description="Filter incoming changes"
-                icon="/com/googlecode/cssxfire/images/filter.png"/>
+                description="Active filters"
+                icon="/com/googlecode/cssxfire/images/filter.png"
+                popup="true">
+            <action id="IncomingChanges.ToolBar.Filter.Reduce"
+                    class="com.googlecode.cssxfire.action.ReduceOption"
+                    text="Reduce filter"
+                    description="Reduce incoming changes to the best matching file">
+            </action>
+        </group>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
