@@ -148,12 +148,14 @@
         </group>
 
         <group id="IncomingChanges.ToolBar" text="" popup="false">
+            <reference id="IncomingChanges.ToolBar.Button.Help" ref="IncomingChanges.ToolBar.Help"/>
+            <separator/>
             <reference id="IncomingChanges.ToolBar.Button.Up" ref="IncomingChanges.ToolBar.Up"/>
             <reference id="IncomingChanges.ToolBar.Button.Down" ref="IncomingChanges.ToolBar.Down"/>
-            <reference id="IncomingChanges.ToolBar.Button.Help" ref="IncomingChanges.ToolBar.Help"/>
             <separator/>
             <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
             <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
+            <separator/>
             <reference id="IncomingChanges.ToolBar.Button.Filter" ref="IncomingChanges.ToolBar.Filter"/>
         </group>
 
