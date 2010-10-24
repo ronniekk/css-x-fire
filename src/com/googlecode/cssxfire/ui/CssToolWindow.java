@@ -138,7 +138,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeModi
                 applyPending();
             }
         });
-        reduceCheckBox = new JCheckBox("Smart Reduce");
+        reduceCheckBox = new JCheckBox("Reduce filter");
         reduceCheckBox.setSelected(CssXFireConnector.getInstance().getState().isSmartReduce());
         reduceCheckBox.addActionListener(new ActionListener()
         {
