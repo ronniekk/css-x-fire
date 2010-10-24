@@ -9,7 +9,8 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.8
-            <li>Added navigation buttons in toolbar.</li>
+            <li>Added navigation buttons (prev, next) in toolbar with automatic jump-to-code.</li>
+            <li>Toolbar filter(s) group with popup and proper descriptions.</li>
         </ul>
         <ul>1.7
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=7">Issue 7</a> Reduce filter for incoming changes (match specific file only when possible).</li>
