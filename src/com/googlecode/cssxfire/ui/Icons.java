@@ -33,4 +33,7 @@ public interface Icons
     public static final Icon CSS_CLASS = IconLoader.findIcon("/com/googlecode/cssxfire/images/css_class.png");
     public static final Icon CSS_ID = IconLoader.findIcon("/com/googlecode/cssxfire/images/html_id.png");
     public static final Icon CSS_HTML_TAG = IconLoader.findIcon("/com/googlecode/cssxfire/images/tag.png");
+    public static final Icon FILTER = IconLoader.findIcon("/com/googlecode/cssxfire/images/filter.png");
+    public static final Icon UP = IconLoader.findIcon("/com/googlecode/cssxfire/images/up.png");
+    public static final Icon DOWN = IconLoader.findIcon("/com/googlecode/cssxfire/images/down.png");
 }
