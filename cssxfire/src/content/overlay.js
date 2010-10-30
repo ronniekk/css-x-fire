@@ -30,16 +30,7 @@ var cssPropertyListener = {
     onCSSSetProperty: function(style, propName, propValue, propPriority, prevValue, prevPriority, rule, baseText) {
         if (propValue != prevValue) {
             // if value has changed, send change to the IDE
-            cssxfire.send(rule.parentStyleSheet.href, rule.selectorText, propName, propValue, false);
-            if (rule.parentRule) {
-                cssxfire.debug(rule.parentRule);
-                if (rule.parentRule.media) {
-                    cssxfire.debug(rule.parentRule.media.mediaText); // "screen"
-                    // http://css-tricks.com/css-media-queries/
-                }
-            } else {
-                cssxfire.debug(rule);
-            }
+            cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, propValue, false);
         }
     },
 
@@ -53,7 +44,19 @@ var cssPropertyListener = {
      * @param baseText
      */
     onCSSRemoveProperty: function(style, propName, prevValue, prevPriority, rule, baseText) {
-        cssxfire.send(rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, true);
+        cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, true);
+    },
+
+    /**
+     * Extract the media query text
+     * @param rule the css rule
+     * @return the media query text, or null if no media query specified
+     */
+    getMediaText: function(rule) {
+        if (rule && rule.parentRule && rule.parentRule.media) {
+            return rule.parentRule.media.mediaText;
+        }
+        return null;
     }
 };
 
@@ -81,16 +84,17 @@ var cssxfire = {
 
     /**
      * Sends a change to the local web server
+     * @param media media query text (null means not specified)
      * @param href css file href (null means inline)
      * @param selector the selector name
      * @param property the property name
      * @param value the value
      * @param deleted if the property was deleted or not
      */
-    send: function(href, selector, property, value, deleted) {
+    send: function(media, href, selector, property, value, deleted) {
         var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property="
                 + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted + "&href="
-                + this.encode(href || window.content.location.href);
+                + this.encode(href || window.content.location.href) + "&media=" + this.encode(media || "");
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
         httpRequest.send(null);

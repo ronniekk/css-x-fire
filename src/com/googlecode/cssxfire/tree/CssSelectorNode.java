@@ -19,6 +19,9 @@ package com.googlecode.cssxfire.tree;
 import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.css.CssBlock;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -30,11 +33,13 @@ import java.awt.*;
  */
 public class CssSelectorNode extends CssTreeNode
 {
-    private final String selector;
+    private final @NotNull String selector;
+    private final @NotNull CssBlock cssBlock;
 
-    public CssSelectorNode(String selector)
+    public CssSelectorNode(String selector, @NotNull CssBlock cssBlock)
     {
         this.selector = selector;
+        this.cssBlock = cssBlock;
     }
 
     @Override
@@ -94,6 +99,8 @@ public class CssSelectorNode extends CssTreeNode
     @Nullable
     public String getMedia()
     {
+        PsiElement parent = cssBlock.getParent();
+        
         return null; // TODO: implement so that if this selector belongs to a certain media, that media query is returned here.
     }
 }

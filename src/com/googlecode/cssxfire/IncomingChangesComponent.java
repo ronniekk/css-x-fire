@@ -234,7 +234,7 @@ public class IncomingChangesComponent implements ProjectComponent
                                         {
                                             declarationNode.markDeleted();
                                         }
-                                        CssSelectorNode selectorNode = new CssSelectorNode(selector);
+                                        CssSelectorNode selectorNode = new CssSelectorNode(selector, block);
                                         CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
 
                                         candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
@@ -250,7 +250,7 @@ public class IncomingChangesComponent implements ProjectComponent
                                 {
                                     declarationNode.markDeleted();
                                 }
-                                CssSelectorNode selectorNode = new CssSelectorNode(selector);
+                                CssSelectorNode selectorNode = new CssSelectorNode(selector, block);
                                 CssFileNode fileNode = new CssFileNode(block.getContainingFile().getOriginalFile());
 
                                 candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
