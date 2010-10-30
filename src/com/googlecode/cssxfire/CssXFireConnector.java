@@ -122,15 +122,16 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
         incomingChangesComponents.remove(incomingChangesComponent);
     }
 
-    public void processCss(final String href, final String selector, final String property, final String value, final boolean deleted)
+    public void processCss(final String media, final String href, final String selector, final String property, final String value, final boolean deleted)
     {
+        // Dispatch the incoming change to every open project
         for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents)
         {
             ApplicationManager.getApplication().invokeLater(new Runnable()
             {
                 public void run()
                 {
-                    incomingChangesComponent.processRule(href, selector, property, value, deleted);
+                    incomingChangesComponent.processRule(media, href, selector, property, value, deleted);
                 }
             });
         }

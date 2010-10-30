@@ -17,13 +17,30 @@
 package com.googlecode.cssxfire;
 
 /**
- * Created by IntelliJ IDEA.
+ * <p>Store for various plugin settings that will be persisted for the application. Used for default values and version checking.
+ * <p><p>Created by IntelliJ IDEA.
  * User: Ronnie
+ * @see CssXFireConnector#getState()
+ * @see CssXFireConnector#loadState(AppMeta)
  */
 public class AppMeta
 {
+    /** Last known version of plugin */
     private String version = null;
+    /** This actually 'fileReduce' but changing the name now affects previous versions since this is persisted. */
     private boolean smartReduce = false;
+    /** Reduce for @media flag */
+    private boolean mediaReduce = false;
+
+    public boolean isMediaReduce()
+    {
+        return mediaReduce;
+    }
+
+    public void setMediaReduce(boolean mediaReduce)
+    {
+        this.mediaReduce = mediaReduce;
+    }
 
     public boolean isSmartReduce()
     {

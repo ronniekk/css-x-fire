@@ -28,13 +28,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ReduceOption extends BooleanOption
+public class MediaReduceOption extends BooleanOption
 {
     @NotNull
     @Override
     protected String getOptionName()
     {
-        return "Reduce to single file filter";
+        return "Reduce for @media filter";
     }
 
     @Nullable
@@ -44,24 +44,25 @@ public class ReduceOption extends BooleanOption
         IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
         if (changesComponent != null)
         {
-            return changesComponent.getSmartReduce();
+            return changesComponent.getMediaReduce();
         }
         return null;
+
     }
 
     @Override
     public void actionPerformed(AnActionEvent event)
     {
-        AtomicBoolean smartReduce = getOptionValue(event);
-        if (smartReduce == null)
+        AtomicBoolean mediaReduce = getOptionValue(event);
+        if (mediaReduce == null)
         {
             return;
         }
 
         // Flip value
-        smartReduce.set(!smartReduce.get());
+        mediaReduce.set(!mediaReduce.get());
 
         // Store new value as default for new projects
-        CssXFireConnector.getInstance().getState().setSmartReduce(smartReduce.get());
+        CssXFireConnector.getInstance().getState().setMediaReduce(mediaReduce.get());
     }
 }

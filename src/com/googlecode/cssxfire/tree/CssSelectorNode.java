@@ -19,6 +19,7 @@ package com.googlecode.cssxfire.tree;
 import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,5 +89,11 @@ public class CssSelectorNode extends CssTreeNode
     public int hashCode()
     {
         return selector != null ? selector.hashCode() : 0;
+    }
+
+    @Nullable
+    public String getMedia()
+    {
+        return null; // TODO: implement so that if this selector belongs to a certain media, that media query is returned here.
     }
 }

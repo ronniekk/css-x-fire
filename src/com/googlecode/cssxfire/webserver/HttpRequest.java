@@ -97,12 +97,18 @@ public class HttpRequest implements Runnable
                 String value = params.get("value");
                 String selector = params.get("selector");
                 String href = params.get("href");
+                String media = params.get("media");
                 boolean deleted = Boolean.parseBoolean(params.get("deleted"));
 
                 // Notify application component
                 if (property != null && value != null && selector != null)
                 {
-                    CssXFireConnector.getInstance().processCss(href != null ? href : EMPTY_STRING, selector, property, value, deleted);
+                    CssXFireConnector.getInstance().processCss(media != null ? media : EMPTY_STRING,
+                            href != null ? href : EMPTY_STRING,
+                            selector,
+                            property,
+                            value,
+                            deleted);
                 }
 
                 response = HttpResponse.createEmptyOkResponse();

@@ -24,20 +24,20 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <p>Reduces the candidates down to one element, if and only if there is one single candidate which
- * matches the given filename. If the collection contains only one element, or if it is empty, this reducer does nothing.
+ * <p>Reduces the candidates down to the elements (selectors) which matches the media query.
+ * If the collection contains only one element, or if it is empty, this reducer does nothing.
  * <p><p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class SpecificOrAllStrategy implements ReduceStrategy<CssDeclarationPath>
+public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 {
     @NotNull
-    private String filename;
+    private String media;
 
-    public SpecificOrAllStrategy(@NotNull String filename)
+    public MediaReduceStrategy(@NotNull String media)
     {
-        this.filename = filename;
+        this.media = media;
     }
 
     public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
@@ -51,14 +51,14 @@ public class SpecificOrAllStrategy implements ReduceStrategy<CssDeclarationPath>
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
         for (CssDeclarationPath candidate : candidates)
         {
-            if (filename.equals(candidate.getFileNode().getFilename()))
+            if (media.equals(candidate.getSelectorNode().getMedia()))
             {
-                // filename matches candidate file
+                // media query matches candidate selector
                 matches.add(candidate);
             }
         }
 
-        if (matches.size() == 1)
+        if (!matches.isEmpty())
         {
             candidates.retainAll(matches);
         }

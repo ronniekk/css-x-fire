@@ -60,7 +60,9 @@ public class IncomingChangesComponent implements ProjectComponent
 
     private final Project project;
     private CssToolWindow cssToolWindow;
-    private AtomicBoolean smartReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
+    private AtomicBoolean fileReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
+    private AtomicBoolean mediaReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isMediaReduce());
+
     private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
     {
         @Override
@@ -99,9 +101,14 @@ public class IncomingChangesComponent implements ProjectComponent
         return project.getComponent(IncomingChangesComponent.class);
     }
 
-    public AtomicBoolean getSmartReduce()
+    public AtomicBoolean getFileReduce()
     {
-        return smartReduce;
+        return fileReduce;
+    }
+
+    public AtomicBoolean getMediaReduce()
+    {
+        return mediaReduce;
     }
 
     public void initComponent()
@@ -185,7 +192,7 @@ public class IncomingChangesComponent implements ProjectComponent
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
 
-    public void processRule(final String href, final String selector, final String property, final String value, final boolean deleted)
+    public void processRule(final String media, final String href, final String selector, final String property, final String value, final boolean deleted)
     {
         final String filename = StringUtils.extractFilename(href);
         
@@ -252,7 +259,8 @@ public class IncomingChangesComponent implements ProjectComponent
                     }
                 }
 
-                ReduceStrategyManager.getStrategy(project, filename).reduce(candidates);
+                // Reduce results if any of the filter options are checked
+                ReduceStrategyManager.getStrategy(project, filename, media).reduce(candidates);
 
                 for (CssDeclarationPath candidate : candidates)
                 {

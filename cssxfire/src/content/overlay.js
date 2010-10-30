@@ -31,6 +31,15 @@ var cssPropertyListener = {
         if (propValue != prevValue) {
             // if value has changed, send change to the IDE
             cssxfire.send(rule.parentStyleSheet.href, rule.selectorText, propName, propValue, false);
+            if (rule.parentRule) {
+                cssxfire.debug(rule.parentRule);
+                if (rule.parentRule.media) {
+                    cssxfire.debug(rule.parentRule.media.mediaText); // "screen"
+                    // http://css-tricks.com/css-media-queries/
+                }
+            } else {
+                cssxfire.debug(rule);
+            }
         }
     },
 
@@ -94,6 +103,14 @@ var cssxfire = {
      */
     encode: function(str) {
         return encodeURIComponent(str); // .replace(/#/g, '%23');
+    },
+
+    debug: function(obj) {
+        var s = "";
+        for (x in obj) {
+            s += x + ": " + obj[x] + "\n";
+        }
+        this.alert(obj + "\n\n" + s);
     }
 };
 

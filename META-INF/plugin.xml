@@ -130,9 +130,14 @@
                 description="Active filters"
                 icon="/com/googlecode/cssxfire/images/filter.png"
                 popup="true">
-            <action id="IncomingChanges.ToolBar.Filter.Reduce"
-                    class="com.googlecode.cssxfire.action.ReduceOption"
-                    text="Reduce filter"
+            <action id="IncomingChanges.ToolBar.Filter.MediaReduce"
+                    class="com.googlecode.cssxfire.action.MediaReduceOption"
+                    text="@media reduce filter"
+                    description="Reduce incoming changes for matching @media query">
+            </action>
+            <action id="IncomingChanges.ToolBar.Filter.FileReduce"
+                    class="com.googlecode.cssxfire.action.FileReduceOption"
+                    text="File reduce filter"
                     description="Reduce incoming changes to the best matching file">
             </action>
         </group>
