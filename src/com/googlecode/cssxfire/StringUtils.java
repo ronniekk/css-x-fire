@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.CharArrayWriter;
 
@@ -42,8 +43,16 @@ public class StringUtils
         return path.substring(startIndex + 1);
     }
 
-    public static boolean equalsNormalizeWhitespace(@NotNull String s1, @NotNull String s2)
+    public static boolean equalsNormalizeWhitespace(@Nullable String s1, @Nullable String s2)
     {
+        if (s1 == null && s2 == null)
+        {
+            return true;
+        }
+        if (s1 == null || s2 == null)
+        {
+            return false;
+        }
         return normalizeWhitespace(s1).equals(normalizeWhitespace(s2));
     }
 
@@ -56,7 +65,7 @@ public class StringUtils
         {
             if (Character.isWhitespace(c))
             {
-                if (Character.isWhitespace(lastWritten))
+                if (Character.isWhitespace(lastWritten) || lastWritten == ',')
                 {
                     continue;
                 }
@@ -83,9 +92,18 @@ public class StringUtils
         System.out.println(normalizeWhitespace(" a,  a:link  "));
         System.out.println(normalizeWhitespace(" a,\na:link  "));
         System.out.println(normalizeWhitespace(" a,\n  a:link  "));
+        System.out.println(normalizeWhitespace(".cool a,a:link"));
+        System.out.println(normalizeWhitespace(".cool   a,a:link"));
+        System.out.println(normalizeWhitespace(".cool   a,a:link  "));
+        System.out.println(normalizeWhitespace(".cool a, a:link"));
+        System.out.println(normalizeWhitespace(".cool a,  a:link"));
+        System.out.println(normalizeWhitespace(" .cool a,  a:link  "));
+        System.out.println(normalizeWhitespace(" .cool a,\na:link  "));
+        System.out.println(normalizeWhitespace(" .cool a,\n  a:link  "));
 
         System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css?1287337838"));
         System.out.println(extractFilename("message_feed_packaged.css?1287337838"));
         System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css"));
+        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css/"));
     }
 }

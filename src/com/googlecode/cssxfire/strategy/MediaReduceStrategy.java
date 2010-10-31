@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.strategy;
 
+import com.googlecode.cssxfire.StringUtils;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +53,7 @@ public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
         for (CssDeclarationPath candidate : candidates)
         {
             String candidateMedia = candidate.getSelectorNode().getMedia();
-            if (media.equals(candidateMedia))
+            if (StringUtils.equalsNormalizeWhitespace(media, candidateMedia))
             {
                 // media query matches candidate selector
                 matches.add(candidate);
