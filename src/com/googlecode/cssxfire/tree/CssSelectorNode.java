@@ -100,6 +100,10 @@ public class CssSelectorNode extends CssTreeNode
     @NotNull
     public String getMedia()
     {
+        /*
+            This heavily depends on the CSS plugin doing its job (media query support may differ depending on the
+            IDE and version used).
+         */
         PsiElement mediumList = CssUtil.getMediumList(cssBlock);
 
         return mediumList == null ? EMPTY_STRING : mediumList.getText();

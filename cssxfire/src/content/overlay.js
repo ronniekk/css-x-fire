@@ -48,7 +48,8 @@ var cssPropertyListener = {
     },
 
     /**
-     * Extract the media query text
+     * Extract the media query text.
+     * <b>Note:</b> the text returned from Firebug might differ in whitespace from the original document.
      * @param rule the css rule
      * @return the media query text, or null if no media query specified
      */
