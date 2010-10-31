@@ -137,8 +137,8 @@
             </action>
             <action id="IncomingChanges.ToolBar.Filter.FileReduce"
                     class="com.googlecode.cssxfire.action.FileReduceOption"
-                    text="File reduce filter"
-                    description="Reduce incoming changes to the best matching file">
+                    text="filename reduce filter"
+                    description="Reduce incoming changes for matching filename">
             </action>
         </group>
 

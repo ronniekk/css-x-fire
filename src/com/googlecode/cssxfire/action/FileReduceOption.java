@@ -34,7 +34,7 @@ public class FileReduceOption extends BooleanOption
     @Override
     protected String getOptionName()
     {
-        return "Reduce to single file filter";
+        return "Reduce for filename";
     }
 
     @Nullable

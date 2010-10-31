@@ -34,7 +34,7 @@ public class MediaReduceOption extends BooleanOption
     @Override
     protected String getOptionName()
     {
-        return "Reduce for @media filter";
+        return "Reduce for @media query";
     }
 
     @Nullable
