@@ -57,6 +57,21 @@ public class StringUtils
     }
 
     @NotNull
+    public static String extractSearchWord(@NotNull String s)
+    {
+        CharArrayWriter writer = new CharArrayWriter(s.length());
+        for (char c : s.trim().toCharArray())
+        {
+            if (Character.isWhitespace(c) || c == ',')
+            {
+                break;
+            }
+            writer.append(c);
+        }
+        return writer.toString();
+    }
+
+    @NotNull
     public static String normalizeWhitespace(@NotNull String s)
     {
         CharArrayWriter writer = new CharArrayWriter(s.length());

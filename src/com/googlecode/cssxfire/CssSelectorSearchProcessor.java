@@ -33,11 +33,18 @@ import java.util.List;
 public class CssSelectorSearchProcessor implements TextOccurenceProcessor
 {
     private final List<CssElement> selectors = new ArrayList<CssElement>();
-    @NotNull private String selector;
+    private @NotNull String selector;
+    private @NotNull String word;
 
     public CssSelectorSearchProcessor(@NotNull String selector)
     {
         this.selector = StringUtils.normalizeWhitespace(selector);
+        this.word = StringUtils.extractSearchWord(this.selector);
+    }
+
+    public String getSearchWord()
+    {
+        return word;
     }
 
     public boolean execute(PsiElement psiElement, int i)

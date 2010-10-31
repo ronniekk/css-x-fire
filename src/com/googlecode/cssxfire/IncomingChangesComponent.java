@@ -205,7 +205,7 @@ public class IncomingChangesComponent implements ProjectComponent
 
                 helper.processElementsWithWord(processor,
                         GlobalSearchScope.projectScope(project),
-                        selector,
+                        processor.getSearchWord(),
                         UsageSearchContext.ANY,
                         true);
 
