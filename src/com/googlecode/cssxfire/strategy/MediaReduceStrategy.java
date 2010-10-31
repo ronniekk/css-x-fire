@@ -51,7 +51,8 @@ public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
         for (CssDeclarationPath candidate : candidates)
         {
-            if (media.equals(candidate.getSelectorNode().getMedia()))
+            String candidateMedia = candidate.getSelectorNode().getMedia();
+            if (media.equals(candidateMedia))
             {
                 // media query matches candidate selector
                 matches.add(candidate);

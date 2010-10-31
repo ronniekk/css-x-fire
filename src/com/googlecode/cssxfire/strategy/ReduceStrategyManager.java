@@ -44,12 +44,12 @@ public class ReduceStrategyManager
     {
         final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
 
-        if (media != null && IncomingChangesComponent.getInstance(project).getMediaReduce().get())
+        if (IncomingChangesComponent.getInstance(project).getMediaReduce().get())
         {
             // Reduce for @media is checked
             reduceChain.add(new MediaReduceStrategy(media));
         }
-        if (filename != null && IncomingChangesComponent.getInstance(project).getFileReduce().get())
+        if (IncomingChangesComponent.getInstance(project).getFileReduce().get())
         {
             // Reduce for file is checked
             reduceChain.add(new FileReduceStrategy(filename));

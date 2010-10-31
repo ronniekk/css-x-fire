@@ -21,8 +21,8 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssBlock;
+import com.intellij.psi.css.impl.util.CssUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +35,7 @@ public class CssSelectorNode extends CssTreeNode
 {
     private final @NotNull String selector;
     private final @NotNull CssBlock cssBlock;
+    private static final String EMPTY_STRING = "";
 
     public CssSelectorNode(String selector, @NotNull CssBlock cssBlock)
     {
@@ -96,11 +97,11 @@ public class CssSelectorNode extends CssTreeNode
         return selector != null ? selector.hashCode() : 0;
     }
 
-    @Nullable
+    @NotNull
     public String getMedia()
     {
-        PsiElement parent = cssBlock.getParent();
-        
-        return null; // TODO: implement so that if this selector belongs to a certain media, that media query is returned here.
+        PsiElement mediumList = CssUtil.getMediumList(cssBlock);
+
+        return mediumList == null ? EMPTY_STRING : mediumList.getText();
     }
 }

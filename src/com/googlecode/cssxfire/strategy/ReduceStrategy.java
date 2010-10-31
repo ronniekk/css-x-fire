@@ -26,5 +26,5 @@ import java.util.Collection;
  */
 public interface ReduceStrategy<T>
 {
-    public abstract void reduce(@NotNull Collection<T> candidates);
+    public void reduce(@NotNull Collection<T> candidates);
 }
