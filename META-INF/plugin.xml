@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.9
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=6">Issue 6</a> Support for CSS media queries.</li>
+            <li>Improved selector search/match accuracy.</li>
         </ul>
         <ul>1.8
             <li>Added navigation buttons (prev, next) in toolbar with automatic jump-to-code.</li>
