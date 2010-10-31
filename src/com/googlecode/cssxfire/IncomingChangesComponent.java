@@ -17,7 +17,7 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.action.Help;
-import com.googlecode.cssxfire.strategy.ReduceStrategyManager;
+import com.googlecode.cssxfire.filter.ReduceStrategyManager;
 import com.googlecode.cssxfire.tree.*;
 import com.googlecode.cssxfire.ui.CssToolWindow;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;

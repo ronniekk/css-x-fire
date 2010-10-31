@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire.strategy;
+package com.googlecode.cssxfire.filter;
 
 import com.googlecode.cssxfire.IncomingChangesComponent;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,14 +32,14 @@ import java.util.List;
 public class ReduceStrategyManager
 {
     /**
-     * Get a strategy for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
-     * candidates. The strategy is based on settings from the toolwindow and/or a given filename.
+     * Get a filter for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
+     * candidates. The filter is based on settings from the toolwindow and/or a given filename.
      * @param project the current project
      * @param filename the filename specified (optional)
      * @param media the media query (optional)
-     * @return a suitable {@link com.googlecode.cssxfire.strategy.ReduceStrategy}
+     * @return a suitable {@link com.googlecode.cssxfire.filter.ReduceStrategy}
      */
-    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @Nullable String filename, @Nullable String media)
+    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @NotNull String filename, @NotNull String media)
     {
         final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
 

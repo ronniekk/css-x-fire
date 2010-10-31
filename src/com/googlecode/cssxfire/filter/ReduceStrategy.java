@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.googlecode.cssxfire.strategy;
+package com.googlecode.cssxfire.filter;
 
 import org.jetbrains.annotations.NotNull;
 
