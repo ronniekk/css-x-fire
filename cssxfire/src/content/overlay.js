@@ -108,14 +108,6 @@ var cssxfire = {
      */
     encode: function(str) {
         return encodeURIComponent(str); // .replace(/#/g, '%23');
-    },
-
-    debug: function(obj) {
-        var s = "";
-        for (x in obj) {
-            s += x + ": " + obj[x] + "\n";
-        }
-        this.alert(obj + "\n\n" + s);
     }
 };
 
