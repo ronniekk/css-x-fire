@@ -59,9 +59,9 @@ public class IncomingChangesComponent implements ProjectComponent
     public static final String TOOLWINDOW_ID = "CSS-X-Fire";
 
     private final Project project;
-    private CssToolWindow cssToolWindow;
-    private AtomicBoolean fileReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
-    private AtomicBoolean mediaReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isMediaReduce());
+    private final CssToolWindow cssToolWindow;
+    private final AtomicBoolean fileReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
+    private final AtomicBoolean mediaReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isMediaReduce());
 
     private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
     {
@@ -102,11 +102,13 @@ public class IncomingChangesComponent implements ProjectComponent
         return project.getComponent(IncomingChangesComponent.class);
     }
 
+    @NotNull
     public AtomicBoolean getFileReduce()
     {
         return fileReduce;
     }
 
+    @NotNull
     public AtomicBoolean getMediaReduce()
     {
         return mediaReduce;
