@@ -89,6 +89,7 @@ public class IncomingChangesComponent implements ProjectComponent
     public IncomingChangesComponent(Project project)
     {
         this.project = project;
+        this.cssToolWindow = new CssToolWindow(project);
     }
 
     /**
@@ -163,7 +164,6 @@ public class IncomingChangesComponent implements ProjectComponent
             return;
         }
         final ToolWindow toolWindow = ToolWindowManager.getInstance(project).registerToolWindow(TOOLWINDOW_ID, true, ToolWindowAnchor.BOTTOM);
-        cssToolWindow = new CssToolWindow(project);
 
         final ContentFactory contentFactory = toolWindow.getContentManager().getFactory();
         final Content content = contentFactory.createContent(cssToolWindow, "Incoming changes", true);
