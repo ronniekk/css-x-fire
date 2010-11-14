@@ -5,9 +5,12 @@
         <p>Please read the installation guidelines here: <a href="http://code.google.com/p/css-x-fire/wiki/Installation">http://code.google.com/p/css-x-fire/wiki/Installation</a></p>
         <p>Style with pleasure!</p>
     ]]></description>
-    <version>1.9</version>
+    <version>1.10</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.10
+            <li>Enqueue incoming changes when in 'dumb' mode (when indices are updated in background).</li>
+        </ul>
         <ul>1.9
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=6">Issue 6</a> Support for CSS media queries.</li>
             <li>Improved selector search/match accuracy.</li>
