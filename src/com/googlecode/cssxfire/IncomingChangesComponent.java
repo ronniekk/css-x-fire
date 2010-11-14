@@ -25,6 +25,7 @@ import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.extensions.PluginId;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
@@ -198,10 +199,14 @@ public class IncomingChangesComponent implements ProjectComponent
     {
         final String filename = StringUtils.extractFilename(href);
         
-        ApplicationManager.getApplication().invokeLater(new Runnable()
+        DumbService.getInstance(project).smartInvokeLater(new Runnable()
         {
             public void run()
             {
+                if (!project.isInitialized())
+                {
+                    return;
+                }
                 PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
                 CssSelectorSearchProcessor processor = new CssSelectorSearchProcessor(selector);
 
