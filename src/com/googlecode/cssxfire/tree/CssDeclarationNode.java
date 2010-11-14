@@ -38,10 +38,11 @@ public class CssDeclarationNode extends CssTreeNode
     protected final String value;
     protected boolean deleted;
 
-    public CssDeclarationNode(CssDeclaration cssDeclaration, String value)
+    public CssDeclarationNode(CssDeclaration cssDeclaration, String value, boolean deleted)
     {
         this.cssDeclaration = cssDeclaration;
         this.value = value;
+        this.deleted = deleted;
     }
 
     @Override

@@ -37,8 +37,6 @@ import com.intellij.psi.PsiTreeChangeEvent;
 import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
-import com.intellij.psi.css.CssElement;
-import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.search.UsageSearchContext;
@@ -210,59 +208,38 @@ public class IncomingChangesComponent implements ProjectComponent
                 PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
                 CssSelectorSearchProcessor processor = new CssSelectorSearchProcessor(selector);
 
-                helper.processElementsWithWord(processor,
-                        GlobalSearchScope.projectScope(project),
-                        processor.getSearchWord(),
-                        UsageSearchContext.ANY,
-                        true);
+                helper.processElementsWithWord(processor, GlobalSearchScope.projectScope(project), processor.getSearchWord(), UsageSearchContext.ANY, true);
 
                 final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
-
-                for (CssElement result : processor.getResults())
+                for (CssBlock block : processor.getBlocks())
                 {
-                    CssRuleset ruleSet = PsiTreeUtil.getParentOfType(result, CssRuleset.class);
-                    if (ruleSet != null)
+                    boolean hasDeclaration = false;
+                    CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(block, CssDeclaration.class);
+                    if (declarations != null)
                     {
-                        CssBlock block = ruleSet.getBlock();
-                        if (block != null)
+                        for (CssDeclaration declaration : declarations)
                         {
-                            boolean hasDeclaration = false;
-                            CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(block, CssDeclaration.class);
-                            if (declarations != null)
+                            if (property.equals(declaration.getPropertyName()))
                             {
-                                for (CssDeclaration declaration : declarations)
-                                {
-                                    if (property.equals(declaration.getPropertyName()))
-                                    {
-                                        hasDeclaration = true;
+                                hasDeclaration = true;
 
-                                        CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, value);
-                                        if (deleted)
-                                        {
-                                            declarationNode.markDeleted();
-                                        }
-                                        CssSelectorNode selectorNode = new CssSelectorNode(selector, block);
-                                        CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
-
-                                        candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
-                                    }
-                                }
-                            }
-                            if (!hasDeclaration)
-                            {
-                                // non-existing - create new
-                                CssDeclaration declaration = CssUtils.createDeclaration(project, selector, property, value);
-                                CssDeclarationNode declarationNode = new CssNewDeclarationNode(declaration, block);
-                                if (deleted)
-                                {
-                                    declarationNode.markDeleted();
-                                }
+                                CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, value, deleted);
                                 CssSelectorNode selectorNode = new CssSelectorNode(selector, block);
-                                CssFileNode fileNode = new CssFileNode(block.getContainingFile().getOriginalFile());
+                                CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
 
                                 candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
                             }
                         }
+                    }
+                    if (!hasDeclaration)
+                    {
+                        // non-existing - create new
+                        CssDeclaration declaration = CssUtils.createDeclaration(project, selector, property, value);
+                        CssDeclarationNode declarationNode = new CssNewDeclarationNode(declaration, block, deleted);
+                        CssSelectorNode selectorNode = new CssSelectorNode(selector, block);
+                        CssFileNode fileNode = new CssFileNode(block.getContainingFile().getOriginalFile());
+
+                        candidates.add(new CssDeclarationPath(fileNode, selectorNode, declarationNode));
                     }
                 }
 
@@ -282,5 +259,4 @@ public class IncomingChangesComponent implements ProjectComponent
     {
         return cssToolWindow;
     }
-
 }

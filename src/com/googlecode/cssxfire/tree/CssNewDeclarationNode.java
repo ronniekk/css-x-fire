@@ -32,9 +32,9 @@ public class CssNewDeclarationNode extends CssDeclarationNode
     private final CssBlock destinationBlock;
     private final String property;
 
-    public CssNewDeclarationNode(CssDeclaration cssDeclaration, CssBlock destinationBlock)
+    public CssNewDeclarationNode(CssDeclaration cssDeclaration, CssBlock destinationBlock, boolean deleted)
     {
-        super(cssDeclaration, cssDeclaration.getValue().getText());
+        super(cssDeclaration, cssDeclaration.getValue().getText(), deleted);
         this.destinationBlock = destinationBlock;
         this.property = cssDeclaration.getPropertyName();
     }
