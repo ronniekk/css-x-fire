@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <p>Reduces the candidates down to the elements which matches the given filename. If the collection contains only one
- * element, or if it is empty, or if no element matches the given filename, then this reducer does nothing.
+ * <p>Reduces the candidates down to the elements which matches the given filename. If the collection is
+ * empty this reducer does nothing.
  * <p><p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
@@ -42,7 +42,7 @@ public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 
     public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
     {
-        if (candidates.size() <= 1)
+        if (candidates.isEmpty())
         {
             // nothing to do here
             return;
@@ -58,9 +58,6 @@ public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath>
             }
         }
 
-        if (!matches.isEmpty())
-        {
-            candidates.retainAll(matches);
-        }
+        candidates.retainAll(matches);
     }
 }

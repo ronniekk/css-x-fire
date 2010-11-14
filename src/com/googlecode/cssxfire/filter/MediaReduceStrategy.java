@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * <p>Reduces the candidates down to the elements (selectors) which matches the media query.
- * If the collection contains only one element, or if it is empty, this reducer does nothing.
+ * If the collection is empty this reducer does nothing.
  * <p><p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
@@ -43,7 +43,7 @@ public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 
     public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
     {
-        if (candidates.size() <= 1)
+        if (candidates.isEmpty())
         {
             // nothing to do here
             return;
@@ -60,9 +60,6 @@ public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
             }
         }
 
-        if (!matches.isEmpty())
-        {
-            candidates.retainAll(matches);
-        }
+        candidates.retainAll(matches);
     }
 }
