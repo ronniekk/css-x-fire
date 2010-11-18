@@ -20,7 +20,6 @@ import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.impl.util.CssUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,13 +33,19 @@ import java.awt.*;
 public class CssSelectorNode extends CssTreeNode
 {
     private final @NotNull String selector;
-    private final @NotNull CssBlock cssBlock;
+    protected final @NotNull PsiElement cssBlock;
     private static final String EMPTY_STRING = "";
 
-    public CssSelectorNode(String selector, @NotNull CssBlock cssBlock)
+    public CssSelectorNode(@NotNull String selector, @NotNull PsiElement cssBlock)
     {
         this.selector = selector;
         this.cssBlock = cssBlock;
+    }
+
+    @NotNull
+    String getSelector()
+    {
+        return selector;
     }
 
     @Override
@@ -83,18 +88,13 @@ public class CssSelectorNode extends CssTreeNode
 
         CssSelectorNode that = (CssSelectorNode) o;
 
-        if (selector != null ? !selector.equals(that.selector) : that.selector != null)
-        {
-            return false;
-        }
-
-        return true;
+        return selector.equals(that.selector);
     }
 
     @Override
     public int hashCode()
     {
-        return selector != null ? selector.hashCode() : 0;
+        return selector.hashCode();
     }
 
     @NotNull
