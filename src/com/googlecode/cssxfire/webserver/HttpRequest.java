@@ -17,6 +17,8 @@
 package com.googlecode.cssxfire.webserver;
 
 import com.googlecode.cssxfire.CssXFireConnector;
+import com.googlecode.cssxfire.FirebugChangesBean;
+import com.googlecode.cssxfire.StringUtils;
 
 import java.net.Socket;
 import java.net.URLDecoder;
@@ -103,12 +105,10 @@ public class HttpRequest implements Runnable
                 // Notify application component
                 if (property != null && value != null && selector != null)
                 {
-                    CssXFireConnector.getInstance().processCss(media != null ? media : EMPTY_STRING,
-                            href != null ? href : EMPTY_STRING,
-                            selector,
-                            property,
-                            value,
-                            deleted);
+                    final FirebugChangesBean changesBean = new FirebugChangesBean(media != null ? media : EMPTY_STRING,
+                            href != null ? StringUtils.extractFilename(href) : EMPTY_STRING,
+                            selector, property, value, deleted);
+                    CssXFireConnector.getInstance().processCss(changesBean);
                 }
 
                 response = HttpResponse.createEmptyOkResponse();

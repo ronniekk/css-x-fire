@@ -33,7 +33,7 @@ public class ReduceStrategyManager
 {
     /**
      * Get a filter for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
-     * candidates. The filter is based on settings from the toolwindow and/or a given filename.
+     * candidates. The filter is based on settings from the toolwindow and/or a given filename and media query.
      * @param project the current project
      * @param filename the filename specified (optional)
      * @param media the media query (optional)
