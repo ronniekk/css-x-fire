@@ -71,6 +71,10 @@ public class CssDeclarationNode extends CssTreeNode
         return cssDeclaration.isValid();
     }
 
+    /**
+     * Applies this change to the corresponding source code.<br><br>
+     * <b>Note:</b> Must be invoked in a {@link com.intellij.openapi.application.Application#runWriteAction write-action}
+     */
     public void applyToCode()
     {
         try
