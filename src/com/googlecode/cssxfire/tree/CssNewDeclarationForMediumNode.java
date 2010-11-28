@@ -57,7 +57,13 @@ public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
         PsiElement parent = destinationBlock.getParent();
         // if "destinationBlock" is a CssMediumList its parent must be a CssMedia element
         CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
-        parent.addAfter(ruleset, destinationBlock);
+        PsiElement psiElement = parent.addAfter(ruleset, destinationBlock);
+        if (psiElement instanceof CssRuleset)
+        {
+            return ((CssRuleset) psiElement).getBlock();
+        }
+
+        // we really shouldn't get here TODO: raise some error?
         return ruleset.getBlock();
     }
 

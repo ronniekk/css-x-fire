@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.tree;
 
 import com.googlecode.cssxfire.CssUtils;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +55,13 @@ public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
         // not found, which is also expected... we have to create a new one
 
         CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
-        rulesetList.add(ruleset);
+        PsiElement psiElement = rulesetList.add(ruleset);
+        if (psiElement instanceof CssRuleset)
+        {
+            return ((CssRuleset) psiElement).getBlock();
+        }
+
+        // we really shouldn't get here TODO: raise some error?
         return ruleset.getBlock();
     }
 
