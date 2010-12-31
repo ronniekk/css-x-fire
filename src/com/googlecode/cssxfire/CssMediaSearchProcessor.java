@@ -17,7 +17,6 @@
 package com.googlecode.cssxfire;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.TextOccurenceProcessor;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +53,7 @@ public class CssMediaSearchProcessor implements TextOccurenceProcessor
     public boolean execute(PsiElement element, int offsetInElement)
     {
         // CssMediumListImpl mediumList = element.getParent()
-        PsiElement mediumList = CssUtil.getMediumList(element);
+        PsiElement mediumList = CssUtils.findMediumList(element);
         if (mediumList != null)
         {
             // CssMediaImpl mediaImpl = mediumList.getParent()

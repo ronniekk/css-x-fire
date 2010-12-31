@@ -16,11 +16,11 @@
 
 package com.googlecode.cssxfire.tree;
 
+import com.googlecode.cssxfire.CssUtils;
 import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.css.impl.util.CssUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -100,11 +100,7 @@ public class CssSelectorNode extends CssTreeNode
     @NotNull
     public String getMedia()
     {
-        /*
-            This heavily depends on the CSS plugin doing its job (media query support may differ depending on the
-            IDE and version used).
-         */
-        PsiElement mediumList = CssUtil.getMediumList(cssBlock);
+        PsiElement mediumList = CssUtils.findMediumList(cssBlock);
 
         return mediumList == null ? EMPTY_STRING : mediumList.getText();
     }

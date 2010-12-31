@@ -24,7 +24,6 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRulesetList;
-import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiSearchHelper;
@@ -105,7 +104,7 @@ public class IncomingChangesProcessor
 
             // remove from collected files and media
             deleteCandidate(fileCandidates, file);
-            deleteCandidate(mediaCandidates, CssUtil.getMediumList(block));
+            deleteCandidate(mediaCandidates, CssUtils.findMediumList(block));
         }
 
         // add candidates from remaining media candidates
