@@ -8,8 +8,8 @@
     <version>1.12</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
-        <ul>1.11
-            <li></li>
+        <ul>1.12
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=12">Issue 12</a> Compatible with Firefox 4.</li>
         </ul>
         <ul>1.11
             <li>Fixed linking against latest EAPs.</li>
