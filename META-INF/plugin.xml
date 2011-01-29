@@ -5,9 +5,11 @@
         <p>Please read the installation guidelines here: <a href="http://code.google.com/p/css-x-fire/wiki/Installation">http://code.google.com/p/css-x-fire/wiki/Installation</a></p>
         <p>Style with pleasure!</p>
     ]]></description>
-    <version>1.12</version>
+    <version>1.13</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.13
+        </ul>
         <ul>1.12
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=12">Issue 12</a> Compatible with Firefox 4.</li>
         </ul>
