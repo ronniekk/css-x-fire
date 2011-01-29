@@ -22,6 +22,7 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssElement;
 import com.intellij.util.IncorrectOperationException;
@@ -83,6 +84,11 @@ public class CssDeclarationNode extends CssTreeNode
             {
                 if (deleted)
                 {
+                    PsiElement nextSibling = cssDeclaration.getNextSibling();
+                    if (nextSibling != null && ";".equals(nextSibling.getText()))
+                    {
+                        nextSibling.delete(); // delete trailing semi-colon
+                    }
                     cssDeclaration.delete();
                 }
                 else

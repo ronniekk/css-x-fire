@@ -9,6 +9,7 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.13
+            <li>Also delete trailing semi-colon when removing a declaration.</li>
         </ul>
         <ul>1.12
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=12">Issue 12</a> Compatible with Firefox 4.</li>
