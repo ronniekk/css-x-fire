@@ -93,12 +93,20 @@ var cssxfire = {
      * @param deleted if the property was deleted or not
      */
     send: function(media, href, selector, property, value, deleted) {
-        var querystring = "http://localhost:6776/?selector=" + this.encode(selector) + "&property="
+        var querystring = "http://" + this.getIdeAddress() + "/?selector=" + this.encode(selector) + "&property="
                 + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted + "&href="
                 + this.encode(href || window.content.location.href) + "&media=" + this.encode(media || "");
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
         httpRequest.send(null);
+    },
+
+    /**
+     * Get the address of the CSS-X-Fire server (IDE).
+     */
+    getIdeAddress: function() {
+        var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        return prefManager.getCharPref("extensions.cssxfire@cssxfire.host") + ":" + prefManager.getIntPref("extensions.cssxfire@cssxfire.port");
     },
 
     /**
