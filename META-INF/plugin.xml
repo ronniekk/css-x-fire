@@ -9,7 +9,7 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.14
-            <li></li>
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=13">Issue 13</a> Made server IP configurable for remote setup (in about:config, filter on cssxfire for options).</li>
         </ul>
         <ul>1.13
             <li>Also delete trailing semi-colon when removing a declaration.</li>
