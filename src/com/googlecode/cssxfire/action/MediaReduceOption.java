@@ -17,12 +17,9 @@
 package com.googlecode.cssxfire.action;
 
 import com.googlecode.cssxfire.CssXFireConnector;
-import com.googlecode.cssxfire.IncomingChangesComponent;
+import com.googlecode.cssxfire.ProjectSettings;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,32 +34,23 @@ public class MediaReduceOption extends BooleanOption
         return "Reduce for @media query";
     }
 
-    @Nullable
     @Override
-    protected AtomicBoolean getOptionValue(AnActionEvent event)
+    protected boolean getOptionValue(AnActionEvent event)
     {
-        IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
-        if (changesComponent != null)
-        {
-            return changesComponent.getMediaReduce();
-        }
-        return null;
-
+        ProjectSettings projectSettings = getProjectSettings(event);
+        return projectSettings != null && projectSettings.isMediaReduce();
     }
 
     @Override
-    public void actionPerformed(AnActionEvent event)
+    protected void setOptionValue(AnActionEvent event, boolean value)
     {
-        AtomicBoolean mediaReduce = getOptionValue(event);
-        if (mediaReduce == null)
+        ProjectSettings projectSettings = getProjectSettings(event);
+        if (projectSettings != null)
         {
-            return;
+            projectSettings.setMediaReduce(value);
         }
 
-        // Flip value
-        mediaReduce.set(!mediaReduce.get());
-
-        // Store new value as default for new projects
-        CssXFireConnector.getInstance().getState().setMediaReduce(mediaReduce.get());
+        // Store value as default for new projects
+        CssXFireConnector.getInstance().getState().setMediaReduce(value);
     }
 }

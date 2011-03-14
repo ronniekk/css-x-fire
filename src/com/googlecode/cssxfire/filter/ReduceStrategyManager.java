@@ -16,7 +16,7 @@
 
 package com.googlecode.cssxfire.filter;
 
-import com.googlecode.cssxfire.IncomingChangesComponent;
+import com.googlecode.cssxfire.ProjectSettings;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
@@ -43,12 +43,12 @@ public class ReduceStrategyManager
     {
         final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
 
-        if (IncomingChangesComponent.getInstance(project).getMediaReduce().get())
+        if (ProjectSettings.getInstance(project).isMediaReduce())
         {
             // Reduce for @media is checked
             reduceChain.add(new MediaReduceStrategy(media));
         }
-        if (IncomingChangesComponent.getInstance(project).getFileReduce().get())
+        if (ProjectSettings.getInstance(project).isFileReduce())
         {
             // Reduce for file is checked
             reduceChain.add(new FileReduceStrategy(filename));

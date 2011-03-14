@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.action;
 
+import com.googlecode.cssxfire.ProjectSettings;
 import com.googlecode.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -38,5 +39,16 @@ public abstract class AbstractIncomingChangesAction extends AnAction
             return null;
         }
         return IncomingChangesComponent.getInstance(project);
+    }
+
+    @Nullable
+    protected ProjectSettings getProjectSettings(AnActionEvent event)
+    {
+        Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
+        if (project == null)
+        {
+            return null;
+        }
+        return ProjectSettings.getInstance(project);
     }
 }

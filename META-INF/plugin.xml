@@ -79,6 +79,9 @@
         <component>
             <implementation-class>com.googlecode.cssxfire.IncomingChangesComponent</implementation-class>
         </component>
+        <component>
+            <implementation-class>com.googlecode.cssxfire.ProjectSettings</implementation-class>
+        </component>
     </project-components>
 
     <actions>
@@ -190,11 +193,18 @@
             <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
             <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
             <separator/>
+            <action id="IncomingChanges.ToolBar.ShowSettings"
+                    class="com.googlecode.cssxfire.action.ShowSettings"
+                    text="Show Settings"
+                    description="Show Settings"
+                    icon="/general/applicationSettings.png"/>
+            <separator/>
             <reference id="IncomingChanges.ToolBar.Button.Filter" ref="IncomingChanges.ToolBar.Filter"/>
         </group>
 
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable id="com.googlecode.cssxfire.ProjectSettingsConfigurable" implementation="com.googlecode.cssxfire.ProjectSettingsConfigurable"/>
     </extensions>
 </idea-plugin>

@@ -16,34 +16,28 @@
 
 package com.googlecode.cssxfire.action;
 
-import com.googlecode.cssxfire.ui.Icons;
+import com.googlecode.cssxfire.ProjectSettingsConfigurable;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.Project;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public abstract class BooleanOption extends AbstractIncomingChangesAction
+public class ShowSettings extends AnAction
 {
-    protected abstract boolean getOptionValue(AnActionEvent event);
-
-    protected abstract void setOptionValue(AnActionEvent event, boolean value);
-
-    @NotNull
-    protected abstract String getOptionName();
-
     @Override
-    public final void update(AnActionEvent event)
+    public void actionPerformed(AnActionEvent event)
     {
-        // Set "check" icon if option is active
-        event.getPresentation().setIcon(getOptionValue(event) ? Icons.CHECK : null);
-    }
+        Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
+        if (project == null)
+        {
+            return;
+        }
 
-    @Override
-    public final void actionPerformed(AnActionEvent event)
-    {
-        // Flip value
-        setOptionValue(event, !getOptionValue(event));
+        ShowSettingsUtil.getInstance().editConfigurable(project, ProjectSettingsConfigurable.getInstance(project));
     }
 }

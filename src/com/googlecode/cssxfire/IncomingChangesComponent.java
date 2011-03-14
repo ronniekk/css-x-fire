@@ -42,7 +42,6 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,8 +53,6 @@ public class IncomingChangesComponent implements ProjectComponent
 
     private final Project project;
     private final CssToolWindow cssToolWindow;
-    private final AtomicBoolean fileReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isSmartReduce());
-    private final AtomicBoolean mediaReduce = new AtomicBoolean(CssXFireConnector.getInstance().getState().isMediaReduce());
 
     private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
     {
@@ -94,18 +91,6 @@ public class IncomingChangesComponent implements ProjectComponent
     public static IncomingChangesComponent getInstance(Project project)
     {
         return project.getComponent(IncomingChangesComponent.class);
-    }
-
-    @NotNull
-    public AtomicBoolean getFileReduce()
-    {
-        return fileReduce;
-    }
-
-    @NotNull
-    public AtomicBoolean getMediaReduce()
-    {
-        return mediaReduce;
     }
 
     public void initComponent()

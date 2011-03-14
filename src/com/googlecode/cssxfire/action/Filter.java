@@ -20,7 +20,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 
 import java.util.BitSet;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,8 +46,7 @@ public class Filter extends AbstractIncomingChangesOptionGroup
         // Pretty description
         for (BooleanOption optionClass : getOptionClasses(event))
         {
-            AtomicBoolean optionValue = optionClass.getOptionValue(event);
-            if (optionValue != null && optionValue.get())
+            if (optionClass.getOptionValue(event))
             {
                 sb.append(prepend);
                 sb.append(optionClass.getOptionName());

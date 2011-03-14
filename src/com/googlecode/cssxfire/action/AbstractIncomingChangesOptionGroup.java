@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,9 +39,7 @@ public abstract class AbstractIncomingChangesOptionGroup extends DefaultActionGr
 
         for (int i = 0; i < children.length; i++)
         {
-            AtomicBoolean option = children[i].getOptionValue(event);
-            boolean value = option != null && option.get();
-            options.set(i, value);
+            options.set(i, children[i].getOptionValue(event));
         }
 
         return options;
