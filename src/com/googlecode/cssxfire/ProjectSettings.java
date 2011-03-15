@@ -168,8 +168,8 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
                 {
                     continue;
                 }
-                VirtualFile file = url.equals("PROJECT") ? null : VirtualFileManager.getInstance().findFileByUrl(url);
-                if (file != null || url.equals("PROJECT"))
+                VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(url);
+                if (file != null)
                 {
                     routeMappings.put(file, route);
                 }
