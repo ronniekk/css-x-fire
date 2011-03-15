@@ -25,6 +25,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.ui.tree.AbstractFileTreeTable;
 import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -201,5 +202,28 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         {
             super(myProject, String.class, "Route");
         }
+
+        @Override
+        protected boolean isValueEditableForFile(VirtualFile virtualFile)
+        {
+            if (virtualFile == null)
+            {
+                return false;
+            }
+            return !virtualFile.getUrl().startsWith(getSettingsUrl());
+        }
+
+        @Override
+        protected boolean isNullObject(String value)
+        {
+            return value == null || value.trim().length() == 0;
+        }
+    }
+
+    @NotNull
+    private String getSettingsUrl()
+    {
+        VirtualFile settingsDir = myProject.getBaseDir();
+        return (settingsDir != null ? settingsDir.getUrl() : "") + "/.idea";
     }
 }

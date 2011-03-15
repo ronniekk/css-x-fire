@@ -135,11 +135,11 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         for (VirtualFile file : files)
         {
             String route = this.routes.getMappings().get(file);
-            if (!StringUtil.isEmptyOrSpaces(route))
+            if (!StringUtil.isEmptyOrSpaces(route) && file != null)
             {
                 Element child = new Element("file");
-                child.setAttribute("url", file == null ? "PROJECT" : file.getUrl());
-                child.setAttribute("route", route);
+                child.setAttribute("url", file.getUrl());
+                child.setAttribute("route", route.trim());
                 routes.addContent(child);
             }
         }
