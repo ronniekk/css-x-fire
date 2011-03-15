@@ -153,6 +153,10 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         state.setMediaReduce(checkBoxMediaReduce.isSelected());
         state.setFileReduce(checkBoxFileReduce.isSelected());
         state.setUseRoutes(checkBoxUseRoutes.isSelected());
+
+        // set defalut values for new projects (legacy)
+        CssXFireConnector.getInstance().getState().setMediaReduce(checkBoxMediaReduce.isSelected());
+        CssXFireConnector.getInstance().getState().setSmartReduce(checkBoxFileReduce.isSelected());
     }
 
     public void reset()

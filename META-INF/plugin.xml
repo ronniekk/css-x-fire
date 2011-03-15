@@ -150,23 +150,11 @@
                 text="Collapse All"
                 description="Collapse all elements in the tool window"
                 icon="/actions/collapseall.png"/>
-        <group id="IncomingChanges.ToolBar.Filter"
-                class="com.googlecode.cssxfire.action.Filter"
-                text="Filter options"
-                description="Active filters"
-                icon="/com/googlecode/cssxfire/images/filter.png"
-                popup="true">
-            <action id="IncomingChanges.ToolBar.Filter.MediaReduce"
-                    class="com.googlecode.cssxfire.action.MediaReduceOption"
-                    text="@media reduce filter"
-                    description="Reduce incoming changes for matching @media query">
-            </action>
-            <action id="IncomingChanges.ToolBar.Filter.FileReduce"
-                    class="com.googlecode.cssxfire.action.FileReduceOption"
-                    text="filename reduce filter"
-                    description="Reduce incoming changes for matching filename">
-            </action>
-        </group>
+        <action id="IncomingChanges.ToolBar.ShowSettings"
+                class="com.googlecode.cssxfire.action.ShowSettings"
+                text="Show Settings"
+                description="Edit CSS-X-Fire Settings"
+                icon="/general/applicationSettings.png"/>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
@@ -196,13 +184,7 @@
             <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
             <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
             <separator/>
-            <action id="IncomingChanges.ToolBar.ShowSettings"
-                    class="com.googlecode.cssxfire.action.ShowSettings"
-                    text="Show Settings"
-                    description="Show Settings"
-                    icon="/general/applicationSettings.png"/>
-            <separator/>
-            <reference id="IncomingChanges.ToolBar.Button.Filter" ref="IncomingChanges.ToolBar.Filter"/>
+            <reference id="IncomingChanges.ToolBar.Button.ShowSettings" ref="IncomingChanges.ToolBar.ShowSettings"/>
         </group>
 
     </actions>
