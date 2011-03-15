@@ -16,11 +16,8 @@
 
 package com.googlecode.cssxfire;
 
-import com.intellij.lang.PerFileMappings;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +25,7 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class RoutePerFileMappings implements PerFileMappings<String>
+public class RoutePerFileMappings
 {
     private Map<VirtualFile, String> myMappings = new HashMap<VirtualFile, String>();
 
@@ -41,11 +38,6 @@ public class RoutePerFileMappings implements PerFileMappings<String>
     {
         myMappings.clear();
         myMappings.putAll(mappings);
-    }
-
-    public Collection<String> getAvailableValues(VirtualFile file)
-    {
-        return Collections.emptyList();
     }
 
     public String getMapping(VirtualFile file)
