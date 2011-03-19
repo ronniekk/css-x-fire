@@ -16,9 +16,11 @@
 
 package com.googlecode.cssxfire.filter;
 
+import com.googlecode.cssxfire.FirebugChangesBean;
 import com.googlecode.cssxfire.ProjectSettings;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,23 +37,31 @@ public class ReduceStrategyManager
      * Get a filter for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
      * candidates. The filter is based on settings from the toolwindow and/or a given filename and media query.
      * @param project the current project
-     * @param filename the filename specified (optional)
-     * @param media the media query (optional)
+     * @param bean the container holding path, media and filename information
      * @return a suitable {@link com.googlecode.cssxfire.filter.ReduceStrategy}
      */
-    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @NotNull String filename, @NotNull String media)
+    public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @NotNull FirebugChangesBean bean)
     {
         final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
 
         if (ProjectSettings.getInstance(project).isMediaReduce())
         {
             // Reduce for @media is checked
-            reduceChain.add(new MediaReduceStrategy(media));
+            reduceChain.add(new MediaReduceStrategy(bean.getMedia()));
         }
         if (ProjectSettings.getInstance(project).isFileReduce())
         {
             // Reduce for file is checked
-            reduceChain.add(new FileReduceStrategy(filename));
+            reduceChain.add(new FileReduceStrategy(bean.getFilename()));
+        }
+        if (ProjectSettings.getInstance(project).isUseRoutes())
+        {
+            // Use routes is checked
+            VirtualFile projectBaseDir = project.getBaseDir();
+            if (projectBaseDir != null)
+            {
+                reduceChain.add(new UrlReduceStrategy(projectBaseDir + bean.getPath()));
+            }
         }
 
         return new ReduceStrategy<CssDeclarationPath>()

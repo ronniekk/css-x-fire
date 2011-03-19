@@ -18,13 +18,14 @@ package com.googlecode.cssxfire.webserver;
 
 import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.FirebugChangesBean;
-import com.googlecode.cssxfire.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URLDecoder;
-import java.io.*;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -106,7 +107,7 @@ public class HttpRequest implements Runnable
                 if (property != null && value != null && selector != null)
                 {
                     final FirebugChangesBean changesBean = new FirebugChangesBean(media != null ? media : EMPTY_STRING,
-                            href != null ? StringUtils.extractFilename(href) : EMPTY_STRING,
+                            href != null ? href : EMPTY_STRING,
                             selector, property, value, deleted);
                     CssXFireConnector.getInstance().processCss(changesBean);
                 }

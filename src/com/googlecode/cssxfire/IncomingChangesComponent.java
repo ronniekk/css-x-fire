@@ -184,11 +184,14 @@ public class IncomingChangesComponent implements ProjectComponent
                     return;
                 }
 
+                // Apply routes
+                FirebugChangesBean routedChangesBean = changesBean.applyRoutes(project);
+
                 // Get all possible candidates from the style info provided by Firebug
-                final Collection<CssDeclarationPath> candidates = IncomingChangesProcessor.getProjectCandidates(project, changesBean);
+                final Collection<CssDeclarationPath> candidates = IncomingChangesProcessor.getProjectCandidates(project, routedChangesBean);
 
                 // Reduce results if any of the filter options are checked
-                ReduceStrategyManager.getStrategy(project, changesBean.getFilename(), changesBean.getMedia()).reduce(candidates);
+                ReduceStrategyManager.getStrategy(project, routedChangesBean).reduce(candidates);
 
                 // Render remaining candidates in the "Incoming changes" tree view
                 for (CssDeclarationPath candidate : candidates)

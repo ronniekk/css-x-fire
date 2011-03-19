@@ -21,6 +21,7 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -40,6 +41,12 @@ public class CssFileNode extends CssTreeNode
     public String getFilename()
     {
         return psiFile.getName();
+    }
+
+    @Nullable
+    public VirtualFile getVirtualFile()
+    {
+        return psiFile.getVirtualFile();
     }
 
     @Override

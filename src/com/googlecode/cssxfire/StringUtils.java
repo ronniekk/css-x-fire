@@ -16,10 +16,13 @@
 
 package com.googlecode.cssxfire;
 
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.CharArrayWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,20 +30,37 @@ import java.io.CharArrayWriter;
  */
 public class StringUtils
 {
+    private static final Logger LOG = Logger.getInstance(StringUtils.class.getName());
+
+    @NotNull
+    public static String extractPath(@NotNull String url)
+    {
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("extractPath() in = " + url);
+        }
+        String path;
+        try
+        {
+            path = new URL(url).getPath();
+            return path;
+        }
+        catch (MalformedURLException e)
+        {
+            LOG.warn("WARN: " + e);
+            path = trimEnd(trimEnd(url, "?"), "#");
+        }
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("extractPath() out = " + path);
+        }
+        return path;
+    }
+
     @NotNull
     public static String extractFilename(@NotNull String path)
     {
-        if (path.length() == 0)
-        {
-            return path;
-        }
-        int endIndex = path.indexOf('?');
-        if (endIndex != -1)
-        {
-            path = path.substring(0, endIndex);
-        }
-        int startIndex = path.lastIndexOf('/');
-        return path.substring(startIndex + 1);
+        return path.substring(path.lastIndexOf('/') + 1);
     }
 
     public static boolean equalsNormalizeWhitespace(@Nullable String s1, @Nullable String s2)
@@ -94,6 +114,16 @@ public class StringUtils
             }
         }
         return writer.toString();
+    }
+
+    public static String trimEnd(String input, String delim)
+    {
+        int ix = input.indexOf(delim);
+        if (ix == -1)
+        {
+            return input;
+        }
+        return input.substring(0, ix);
     }
 
     public static void main(String[] args)

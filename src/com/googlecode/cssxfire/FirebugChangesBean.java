@@ -16,6 +16,8 @@
 
 package com.googlecode.cssxfire;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,6 +30,8 @@ public class FirebugChangesBean
     @NotNull
     private final String media;
     @NotNull
+    private final String path;
+    @NotNull
     private final String filename;
     @NotNull
     private final String selector;
@@ -37,10 +41,23 @@ public class FirebugChangesBean
     private final String value;
     private final boolean deleted;
 
-    public FirebugChangesBean(@NotNull String media, @NotNull String filename, @NotNull String selector,
+    public FirebugChangesBean(@NotNull String media, @NotNull String url, @NotNull String selector,
                               @NotNull String property, @NotNull String value, boolean deleted)
     {
         this.media = media;
+        this.path = StringUtils.extractPath(url);
+        this.filename = StringUtils.extractFilename(path);
+        this.selector = selector;
+        this.property = property;
+        this.value = value;
+        this.deleted = deleted;
+    }
+
+    private FirebugChangesBean(@NotNull String media, @NotNull String path, @NotNull String filename, @NotNull String selector,
+                              @NotNull String property, @NotNull String value, boolean deleted)
+    {
+        this.media = media;
+        this.path = path;
         this.filename = filename;
         this.selector = selector;
         this.property = property;
@@ -48,10 +65,42 @@ public class FirebugChangesBean
         this.deleted = deleted;
     }
 
+    /**
+     * Applies project routes (depending on project settings) and returns a copy itself
+     * with possibly modified properties.
+     * @param project the project
+     * @return a new bean instance
+     */
+    public FirebugChangesBean applyRoutes(@NotNull Project project)
+    {
+        if (ProjectSettings.getInstance(project).isUseRoutes())
+        {
+            VirtualFile targetFile = RouteUtils.detectLocalFile(project, path);
+            if (targetFile != null)
+            {
+                VirtualFile projectBaseDir = project.getBaseDir();
+                if (projectBaseDir != null)
+                {
+                    // replace path and filename
+                    String filename = targetFile.getName();
+                    String path = targetFile.getUrl().substring(projectBaseDir.getUrl().length());
+                    return new FirebugChangesBean(media, path, filename, selector, property, value, deleted);
+                }
+            }
+        }
+        return new FirebugChangesBean(media, path, filename, selector, property, value, deleted);
+    }
+
     @NotNull
     public String getMedia()
     {
         return media;
+    }
+
+    @NotNull
+    public String getPath()
+    {
+        return path;
     }
 
     @NotNull
