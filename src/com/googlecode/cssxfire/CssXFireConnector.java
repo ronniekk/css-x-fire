@@ -23,6 +23,7 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +42,8 @@ import java.util.Collection;
 )
 public class CssXFireConnector implements ApplicationComponent, PersistentStateComponent<AppMeta>
 {
+    private static final Logger LOG = Logger.getInstance(CssXFireConnector.class.getName());
+
     private AppMeta appMeta = new AppMeta();
     private SimpleWebServer webServer;
     private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<IncomingChangesComponent>();
@@ -90,7 +93,7 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
             }
             catch (IOException e)
             {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOG.error(e);
             }
         }
         webServer = null;
