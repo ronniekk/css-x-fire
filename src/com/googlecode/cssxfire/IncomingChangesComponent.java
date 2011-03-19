@@ -207,4 +207,23 @@ public class IncomingChangesComponent implements ProjectComponent
     {
         return cssToolWindow;
     }
+
+    public void handleEvent(final FirebugEvent event)
+    {
+        DumbService.getInstance(project).smartInvokeLater(new Runnable()
+        {
+            public void run()
+            {
+                if (!project.isInitialized())
+                {
+                    return;
+                }
+
+                if ("refresh".equals(event.getName()) && ProjectSettings.getInstance(project).isAutoClear())
+                {
+                    cssToolWindow.clearTree();
+                }
+            }
+        });
+    }
 }

@@ -125,6 +125,20 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
         incomingChangesComponents.remove(incomingChangesComponent);
     }
 
+    public void processEvent(final FirebugEvent event)
+    {
+        // Dispatch the incoming event to every open project
+        for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents)
+        {
+            ApplicationManager.getApplication().invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    incomingChangesComponent.handleEvent(event);
+                }
+            });
+        }
+    }
     public void processCss(final FirebugChangesBean changesBean)
     {
         // Dispatch the incoming change to every open project

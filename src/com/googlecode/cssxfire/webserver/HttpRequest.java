@@ -18,6 +18,7 @@ package com.googlecode.cssxfire.webserver;
 
 import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.FirebugChangesBean;
+import com.googlecode.cssxfire.FirebugEvent;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -95,7 +96,8 @@ public class HttpRequest implements Runnable
                 // Parse query params
                 Map<String, String> params = getQueryMap(requestLine);
 
-                // Extract the filename
+                // Extract the parameters
+                String event = params.get("event");
                 String property = params.get("property");
                 String value = params.get("value");
                 String selector = params.get("selector");
@@ -110,6 +112,10 @@ public class HttpRequest implements Runnable
                             href != null ? href : EMPTY_STRING,
                             selector, property, value, deleted);
                     CssXFireConnector.getInstance().processCss(changesBean);
+                }
+                if (event != null)
+                {
+                    CssXFireConnector.getInstance().processEvent(new FirebugEvent(event));
                 }
 
                 response = HttpResponse.createEmptyOkResponse();
