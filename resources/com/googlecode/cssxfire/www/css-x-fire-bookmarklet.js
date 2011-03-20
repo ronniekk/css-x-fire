@@ -89,6 +89,21 @@ var cssxfire = {
     },
 
     /**
+     * Sends a signal to the local web server
+     * @param eventName the name of event
+     */
+    sendEvent: function(eventName) {
+        var querystring = "http://localhost:6776/?event=" + eventName;
+        try {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", querystring, true);
+            httpRequest.send(null);
+        } catch(e) {
+            alert("CSS-X-Fire communication error: " + e.toString());
+        }
+    },
+
+    /**
      * URLEncoder
      * @param str the string to encode
      * @return the encoded string
@@ -101,6 +116,7 @@ var cssxfire = {
 // Initialization
 try {
     Firebug.CSSModule.addListener(cssPropertyListener);
+    cssxfire.sendEvent("refresh");
     // Place a marker in the DOM so that we don't inject more than one Firebug listener
     var e = document.createElement("script");
     e.setAttribute("type","text/javascript");
