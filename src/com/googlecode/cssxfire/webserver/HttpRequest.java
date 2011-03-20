@@ -19,6 +19,7 @@ package com.googlecode.cssxfire.webserver;
 import com.googlecode.cssxfire.CssXFireConnector;
 import com.googlecode.cssxfire.FirebugChangesBean;
 import com.googlecode.cssxfire.FirebugEvent;
+import com.intellij.openapi.diagnostic.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -34,6 +35,8 @@ import java.util.Map;
  */
 public class HttpRequest implements Runnable
 {
+    private static final Logger LOG = Logger.getInstance(HttpRequest.class.getName());
+
     private static final String EMPTY_STRING = "";
     private Socket socket;
 
@@ -111,10 +114,18 @@ public class HttpRequest implements Runnable
                     final FirebugChangesBean changesBean = new FirebugChangesBean(media != null ? media : EMPTY_STRING,
                             href != null ? href : EMPTY_STRING,
                             selector, property, value, deleted);
+                    if (LOG.isDebugEnabled())
+                    {
+                        LOG.debug("Got CSS property change: " + changesBean);
+                    }
                     CssXFireConnector.getInstance().processCss(changesBean);
                 }
                 if (event != null)
                 {
+                    if (LOG.isDebugEnabled())
+                    {
+                        LOG.debug("Got event: " + event);
+                    }
                     CssXFireConnector.getInstance().processEvent(new FirebugEvent(event));
                 }
 
