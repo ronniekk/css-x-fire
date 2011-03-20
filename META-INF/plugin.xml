@@ -11,6 +11,7 @@
         <ul>1.15
             <li>New settings form.</li>
             <li>Configurable route mappings.</li>
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=14">Issue 14</a> Clear pending changes on page leave or refresh (configurable in settings).</li>
         </ul>
         <ul>1.14
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=13">Issue 13</a> Made server IP configurable for remote setup (in about:config, filter on cssxfire for options).</li>
