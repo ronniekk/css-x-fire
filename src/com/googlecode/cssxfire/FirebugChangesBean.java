@@ -131,4 +131,11 @@ public class FirebugChangesBean
     {
         return deleted;
     }
+
+    @Override
+    public String toString()
+    {
+        return "{media=" + media + ", path=" + path + ", filename=" + filename + ", selector=" + selector
+                + ", property=" + property + ", value=" + value + ", deleted=" + deleted + "}";
+    }
 }
