@@ -17,6 +17,15 @@
 var cssPropertyListener = {
 
     /**
+     * Called from Firebug when a page is opened or refreshed, or when Firebug is activated
+     * @param context the page context
+     * @param state the state
+     */
+    initContext: function(context, state) {
+        cssxfire.sendEvent("refresh");
+    },
+
+    /**
      * The registered listener function for property change. Receives callbacks from Firebug CSS editor
      * @param style
      * @param propName
@@ -64,18 +73,6 @@ var cssPropertyListener = {
 var cssxfire = {
 
     /**
-     * Initialization
-     */
-    onLoad: function() {
-        try {
-            Firebug.CSSModule.addListener(cssPropertyListener);
-            // this.alert("CSS-X-Fire initialized");
-        } catch (err) {
-            this.alert(err.toString() + "\n\nMake sure you have Firebug installed properly: http://www.getfirebug.com/");
-        }
-    },
-
-    /**
      * Alerts a message, like the regular "alert" function
      * @param msg the text to alert
      */
@@ -102,6 +99,17 @@ var cssxfire = {
     },
 
     /**
+     * Sends a signal to the local web server
+     * @param eventName the name of event
+     */
+    sendEvent: function(eventName) {
+        var querystring = "http://" + this.getIdeAddress() + "/?event=" + eventName;
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("GET", querystring, true);
+        httpRequest.send(null);
+    },
+
+    /**
      * Get the address of the CSS-X-Fire server (IDE).
      */
     getIdeAddress: function() {
@@ -121,5 +129,13 @@ var cssxfire = {
 
 
 // load plugin
-window.addEventListener("load", function(e) { cssxfire.onLoad(e); }, false);
+window.addEventListener("load", function(e) {
+    if (FBL && Firebug && Firebug.Module && Firebug.CSSModule) {
+        var CssXFireModule = FBL.extend(Firebug.Module, cssPropertyListener);
+        Firebug.registerModule(CssXFireModule);
+        Firebug.CSSModule.addListener(CssXFireModule);
+    } else {
+        cssxfire.alert("Unable to start CSS-X-Fire - Firebug dependencies are not met...");
+    }
+}, false);
 
