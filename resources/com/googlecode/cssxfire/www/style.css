@@ -1,15 +1,36 @@
-body {
-
+html body {
+    color: #333333;
+    font-family: trebuchet ms,verdana,tahoma,arial,sans-serif;
+    font-size: 13px;
+    line-height: 1.5em;
+    text-align: left;
 }
-
+h1, h2, h3, h4, h5, h6 {
+    color: #333333;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 0 4px;
+}
 h1 {
-
+    font-size: 18pt;
+    text-shadow: 2px 2px 2px #CCCCCC;
 }
-
-h2 {
-
+p {
+    width: 800px;
 }
-
-h3 {
-
+a {
+    font-weight: bold;
+}
+a, a:visited {
+    color: #355491;
+    text-decoration: none;
+}
+a:hover {
+    color: #51A2FF;
+    text-decoration: underline;
+}
+.screenshot {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

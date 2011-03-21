@@ -5,57 +5,71 @@
     </head>
 
     <body>
-        <h2>CSS-X-Fire (1.15)</h2>
+        <h1>CSS-X-Fire (1.15)</h1>
 
         <h3>Requirements</h3>
-        <div>This plugin requires Firefox with Firebug.</div>
-        <div>&nbsp;</div>
-        <div><i>Users of Google Chrome or Firefox with Firebug Lite, look <a href="lite.html">here</a>.</i></div>
+        <p>This plugin requires Firefox with Firebug.</p>
+        <p><i>Users of Google Chrome or Firefox with Firebug Lite, please look <a href="lite.html">here</a>.</i></p>
 
         <h3>Get connected</h3>
-        <div>Download and install the corresponding browser plugin - <a href="/files/cssxfire.xpi">cssxfire.xpi</a> (1.15) - to connect Firebug CSS editor with the IDE plugin.</div>
+        <p>
+            Download and install the corresponding browser plugin -
+            <a href="/files/cssxfire.xpi">cssxfire.xpi</a>
+            (1.15) - to connect Firebug CSS editor with the IDE plugin.
+        </p>
 
         <h3>Using</h3>
-        <div>Use Firebug CSS editor to edit and add style properties.</div>
-        <div><img src="/files/css-x-fire-5.png" alt="Firebug CSS editor" /></div>
-        <div>&nbsp;</div>
-        <div>
-            The IDE toolwindow shows the changes made in Firebug in a tree view, categorized by file and CSS selector, provided that the<br/>
-            CSS selectors exist in the project opened. From here you can apply or discard changes on an entire file, selector or on a specific property.
-        </div>
-        <div>&nbsp;</div>
+        <p>
+            Use Firebug CSS editor to edit and add style properties.
+            <img class="screenshot" src="/files/css-x-fire-5.png" alt="Firebug CSS editor" />
+        </p>
+        <p>
+            The IDE toolwindow shows the changes made in Firebug in a tree view, categorized by file and CSS selector.
+            From here you can apply or discard changes on an entire file, selector or on a specific property.
+            <img class="screenshot" src="/files/css-x-fire-2.png" alt="CSS property nodes" />
+        </p>
+        <p>
+            The property nodes - the tree leafs - will either be blue (modified), green (new) or gray (invalid). They
+            are also navigatable, e.g. double-click or press enter key on a valid property to jump to the corresponding
+            highlighted source code.
+            <img class="screenshot" src="/files/css-x-fire-4.png" alt="Jump-to-source" />
+        </p>
 
-        <div><img src="/files/css-x-fire-2.png" alt="CSS property nodes" /></div>
-        <div>&nbsp;</div>
-        <div>
-            The property nodes - the tree leafs - will either be blue (modified), green (new) or gray (invalid). They are also navigatable, e.g.<br/>
-            double-click or press enter key on a valid property to show the corresponding source code.
-        </div>
-        <div><img src="/files/css-x-fire-4.png" alt="Jump-to-source" /></div>
-        <div>&nbsp;</div>
-            <div>
-                <b>Media query reduce filter:</b> When checked, all incoming changes will be filtered down to the selectors matching the media query.
-            </div>
-        <div>&nbsp;</div>
-            <div>
-                <b>Filename reduce filter:</b> When checked, all incoming changes will be filtered down to files with a given filename, if these files can be<br/>
-                determined from the filename provided by Firebug.<br/>
-            </div>
-        <div>&nbsp;</div>
-
-        <div><img src="/files/css-x-fire-3.png" alt="Reduce filter" /></div>
+        <h3>Settings</h3>
+        <p>
+            The settings are stored on a project level. Here is a brief explanation of the parameters and what they do:
+        </p>
+        <p>
+            <b>Clear pending changes when leaving or reloading page:</b> When checked, all pending changes will be
+            cleared whenever the web page is refreshed or left, or when Firebug is (re)opened.
+        </p>
+        <p>
+            <b>Match CSS3 media queries:</b> When checked, all incoming changes will be filtered down to the selectors
+            matching the media query.
+        </p>
+        <p>
+            <b>Match filename:</b> When checked, all incoming changes will be filtered down to files with a
+            the given filename provided by Firebug, regardless of path. Note that this setting will have no
+            effect when using route mappings (see below).
+        </p>
+        <p>
+            <b>Use routes:</b> When checked, each incoming change will be routed one single project file, based
+            on the mappings table.
+            <img class="screenshot" src="/files/css-x-fire-3.png" alt="Settings" />
+        </p>
 
         <h3>About</h3>
-        <div>
-            Plugin home: <a href="http://plugins.intellij.net/plugin/?idea&id=5348">http://plugins.intellij.net/plugin/?idea&id=5348</a><br/>
-            Please use the above link to comment or rate this plugin, or for making a feature request. All feedback is greatly appreciated!
-        </div>
-        <div>&nbsp;</div>
-        <div>Project home: <a href="http://code.google.com/p/css-x-fire/">http://code.google.com/p/css-x-fire/</a></div>
-        <div>&nbsp;</div>
-        <div>This help page can be accessed by clicking the help button in CSS-X-Fire toolwindow.</div>
-        <div><img src="/files/css-x-fire-1.png" alt="help" /></div>
-        <div>&nbsp;</div>
-        <div>Style with pleasure!</div>
+        <p>
+            Plugin home: <a href="http://plugins.intellij.net/plugin/?idea&id=5348">http://plugins.intellij.net/plugin/?idea&id=5348</a>
+            <br/>
+            Please use the above link to comment or rate this plugin, or for making a feature request. All feedback
+            is greatly appreciated!
+        </p>
+        <p>Project home: <a href="http://code.google.com/p/css-x-fire/">http://code.google.com/p/css-x-fire/</a></p>
+        <p>
+            This help page can be accessed by clicking the help button in CSS-X-Fire toolwindow.
+            <img class="screenshot" src="/files/css-x-fire-1.png" alt="help" />
+        </p>
+        <p><i>Style with pleasure!</i></p>
     </body>
 </html>
