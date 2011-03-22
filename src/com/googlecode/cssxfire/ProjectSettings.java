@@ -16,10 +16,7 @@
 
 package com.googlecode.cssxfire;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -39,7 +36,10 @@ import java.util.List;
  */
 @State(
     name = "CssXFireSettings",
-    storages = {@Storage(id = "CSS-X-Fire", file = "$PROJECT_CONFIG_DIR$/cssxfire.xml")}
+    storages = {
+            @Storage(id = "default", file = "$PROJECT_FILE$"),
+            @Storage(id = "CSS-X-Fire", file = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
+    }
 )
 public class ProjectSettings implements ProjectComponent, PersistentStateComponent<Element>
 {
