@@ -31,6 +31,7 @@ import java.util.Map;
 public class RouteUtils
 {
     private static final Logger LOG = Logger.getInstance(RouteUtils.class.getName());
+    private static final String[] ROOT_MAPPING = new String[] {""};
 
     /**
      * Finds the local file for a given route, if any. This method does not perform any I/O
@@ -71,7 +72,7 @@ public class RouteUtils
             {
                 continue;
             }
-            String[] routeParts = route.split("/");
+            String[] routeParts = "/".equals(route) ? ROOT_MAPPING : route.split("/");
             if (routeParts.length <= parts.length && routeParts.length > longestMatch.length)
             {
                 if (startsWith(parts, routeParts))
