@@ -217,6 +217,10 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         @Override
         protected boolean isNullObject(String value)
         {
+            /*
+                Disallow any route that has leading or trailing whitespace, or
+                does not start with a forward slash.
+             */
             if (value == null)
             {
                 return true;

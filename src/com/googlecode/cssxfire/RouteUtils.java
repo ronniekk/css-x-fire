@@ -72,7 +72,7 @@ public class RouteUtils
             {
                 continue;
             }
-            String[] routeParts = "/".equals(route) ? ROOT_MAPPING : route.split("/");
+            String[] routeParts = "/".equals(route) ? ROOT_MAPPING : route.split("/"); // fix for String.split() inconsistency
             if (routeParts.length <= parts.length && routeParts.length > longestMatch.length)
             {
                 if (startsWith(parts, routeParts))
