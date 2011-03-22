@@ -22,7 +22,6 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.ui.tree.AbstractFileTreeTable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.ScrollPaneUI;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -193,7 +194,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
 
     private void createUIComponents()
     {
-        routesScrollPane = ScrollPaneFactory.createScrollPane(new JTable());
+        routesScrollPane = new MyScrollPane(new JTable());
     }
 
     private class FileTreeTable extends AbstractFileTreeTable<String>
@@ -218,12 +219,39 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         {
             return value == null || value.trim().length() == 0;
         }
+
+        @NotNull
+        private String getSettingsUrl()
+        {
+            VirtualFile settingsDir = myProject.getBaseDir();
+            return (settingsDir != null ? settingsDir.getUrl() : "") + "/.idea";
+        }
     }
 
-    @NotNull
-    private String getSettingsUrl()
+    private static class MyScrollPane extends JScrollPane
     {
-        VirtualFile settingsDir = myProject.getBaseDir();
-        return (settingsDir != null ? settingsDir.getUrl() : "") + "/.idea";
+        MyScrollPane(JComponent view)
+        {
+            super(view);
+        }
+
+        /**
+         * Scrollpane's background should be always in sync with view's background
+         */
+        public void setUI(ScrollPaneUI ui)
+        {
+            super.setUI(ui);
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    Component component = getViewport().getView();
+                    if (component != null)
+                    {
+                        getViewport().setBackground(component.getBackground());
+                    }
+                }
+            });
+        }
     }
 }
