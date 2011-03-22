@@ -217,7 +217,12 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         @Override
         protected boolean isNullObject(String value)
         {
-            return value == null || value.trim().length() == 0;
+            if (value == null)
+            {
+                return true;
+            }
+            String trimmed = value.trim();
+            return !trimmed.equals(value) || !trimmed.startsWith("/");
         }
 
         @NotNull
