@@ -52,4 +52,13 @@ public class CssDeclarationPath
     {
         return declarationNode;
     }
+
+    @Override
+    public String toString()
+    {
+        return getClass().getSimpleName()
+                + " ['" + fileNode.getVirtualFile()
+                + "', '" + selectorNode.getSelector()
+                + "', '" + declarationNode.getPropertyName() + "']";
+    }
 }

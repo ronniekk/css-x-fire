@@ -52,6 +52,16 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         return word;
     }
 
+    /**
+     * Get the entire selector string, with whitespace normalized
+     * @return the selector string used for final match
+     */
+    @NotNull
+    public String getSelector()
+    {
+        return selector;
+    }
+
     public boolean execute(PsiElement psiElement, int i)
     {
         if (psiElement instanceof CssSelector || psiElement instanceof CssSelectorList)

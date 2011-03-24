@@ -17,6 +17,8 @@
 package com.googlecode.cssxfire.webserver;
 
 
+import com.intellij.openapi.diagnostic.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -26,6 +28,7 @@ import java.net.ServerSocket;
  */
 public class SimpleWebServer implements Runnable
 {
+    private static final Logger LOG = Logger.getInstance(SimpleWebServer.class.getName());
     public static final int DEFAULT_PORT = 6776;
     private ServerSocket listenSocket;
 
@@ -41,6 +44,7 @@ public class SimpleWebServer implements Runnable
 
     public void run()
     {
+        LOG.debug("Starting web server on port " + listenSocket.getLocalPort());
         try
         {
             //Process HTTP service requests in an infinite loop

@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.filter;
 
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +34,8 @@ import java.util.List;
  */
 public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 {
+    private static final Logger LOG = Logger.getInstance(UrlReduceStrategy.class.getName());
+
     @NotNull
     private final String url;
 
@@ -43,6 +46,10 @@ public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 
     public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
     {
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("Reducing " + candidates.size() + " candidates for url: " + url);
+        }
         if (candidates.isEmpty())
         {
             // nothing to do here
@@ -57,6 +64,10 @@ public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath>
             {
                 // candidate file url matches routed file
                 matches.add(candidate);
+                if (LOG.isDebugEnabled())
+                {
+                    LOG.debug("  Match: " + candidate);
+                }
             }
         }
 

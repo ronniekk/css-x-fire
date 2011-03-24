@@ -72,6 +72,11 @@ public class CssDeclarationNode extends CssTreeNode
         return cssDeclaration.isValid();
     }
 
+    public String getPropertyName()
+    {
+        return cssDeclaration.getPropertyName();
+    }
+
     /**
      * Applies this change to the corresponding source code.<br><br>
      * <b>Note:</b> Must be invoked in a {@link com.intellij.openapi.application.Application#runWriteAction write-action}

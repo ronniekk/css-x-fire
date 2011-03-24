@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.tree.*;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -40,6 +41,8 @@ import java.util.*;
  */
 public class IncomingChangesProcessor
 {
+    private static final Logger LOG = Logger.getInstance(IncomingChangesProcessor.class.getName());
+
     private final Project project;
     private final FirebugChangesBean changesBean;
     private final GlobalSearchScope searchScope;
@@ -78,8 +81,15 @@ public class IncomingChangesProcessor
         CssSelectorSearchProcessor selectorProcessor = new CssSelectorSearchProcessor(changesBean.getSelector());
         PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
         helper.processElementsWithWord(selectorProcessor, searchScope, selectorProcessor.getSearchWord(), searchContext, true);
+        CssBlock[] cssBlocks = selectorProcessor.getBlocks();
 
-        for (CssBlock block : selectorProcessor.getBlocks())
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("Searched CSS selectors for '" + selectorProcessor.getSearchWord()
+                    + "' ('" + selectorProcessor.getSelector() + "'), got " + cssBlocks.length + " results");
+        }
+
+        for (CssBlock block : cssBlocks)
         {
             boolean hasDeclaration = false;
             CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(block, CssDeclaration.class);
@@ -173,7 +183,14 @@ public class IncomingChangesProcessor
             CssMediaSearchProcessor mediaProcessor = new CssMediaSearchProcessor(changesBean.getMedia());
             PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
             helper.processElementsWithWord(mediaProcessor, searchScope, mediaProcessor.getSearchWord(), searchContext, true);
-            elements.addAll(mediaProcessor.getMediaLists());
+            Set<PsiElement> mediaLists = mediaProcessor.getMediaLists();
+
+            if (LOG.isDebugEnabled())
+            {
+                LOG.debug("Searched CSS media for " + mediaProcessor.getSearchWord() + ", got " + mediaLists.size() + " results");
+            }
+
+            elements.addAll(mediaLists);
         }
         return elements;
     }

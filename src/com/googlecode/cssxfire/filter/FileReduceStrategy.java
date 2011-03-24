@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.filter;
 
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ import java.util.List;
  */
 public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 {
+    private static final Logger LOG = Logger.getInstance(FileReduceStrategy.class.getName());
+
     @NotNull
     private String filename;
 
@@ -42,6 +45,10 @@ public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath>
 
     public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
     {
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("Reducing " + candidates.size() + " candidates for filename: " + filename);
+        }
         if (candidates.isEmpty())
         {
             // nothing to do here

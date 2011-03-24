@@ -19,6 +19,7 @@ package com.googlecode.cssxfire.filter;
 import com.googlecode.cssxfire.FirebugChangesBean;
 import com.googlecode.cssxfire.ProjectSettings;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,8 @@ import java.util.List;
  */
 public class ReduceStrategyManager
 {
+    private static final Logger LOG = Logger.getInstance(ReduceStrategyManager.class.getName());
+
     /**
      * Get a filter for (possibly) reducing a collection of {@link com.googlecode.cssxfire.tree.CssDeclarationPath}
      * candidates. The filter is based on settings from the toolwindow and/or a given filename and media query.
@@ -68,9 +71,21 @@ public class ReduceStrategyManager
         {
             public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
             {
+                if (LOG.isDebugEnabled())
+                {
+                    LOG.debug("Filtering " + candidates.size() + " candidates");
+                    for (CssDeclarationPath candidate : candidates)
+                    {
+                        LOG.debug("  Candidate: " + candidate);
+                    }
+                }
                 for (ReduceStrategy<CssDeclarationPath> reduceStrategy : reduceChain)
                 {
                     reduceStrategy.reduce(candidates);
+                }
+                if (LOG.isDebugEnabled())
+                {
+                    LOG.debug("Filtering done, remaining " + candidates.size() + " candidates");
                 }
             }
         };

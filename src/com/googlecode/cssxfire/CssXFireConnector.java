@@ -74,10 +74,12 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
          }
          catch (BindException e)
          {
+             LOG.error("Unable to start web server - address in use: ", e);
              Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
          }
          catch (IOException e)
          {
+             LOG.error("Unable to start web server: ", e);
              Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
          }
     }
@@ -90,6 +92,7 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
             try
             {
                 webServer.stop();
+                LOG.debug("Web server stopped");
             }
             catch (IOException e)
             {
