@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.tree;
 
 import com.googlecode.cssxfire.CssUtils;
+import com.googlecode.cssxfire.StringUtils;
 import com.googlecode.cssxfire.ui.Icons;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -88,7 +89,7 @@ public class CssSelectorNode extends CssTreeNode
 
         CssSelectorNode that = (CssSelectorNode) o;
 
-        return selector.equals(that.selector);
+        return StringUtils.normalizeWhitespace(selector).equals(StringUtils.normalizeWhitespace(that.selector));
     }
 
     @Override
