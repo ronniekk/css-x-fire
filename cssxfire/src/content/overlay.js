@@ -72,6 +72,8 @@ var cssPropertyListener = {
 
 var cssxfire = {
 
+    timerId: null,
+    
     /**
      * Alerts a message, like the regular "alert" function
      * @param msg the text to alert
@@ -95,7 +97,19 @@ var cssxfire = {
                 + this.encode(href || window.content.location.href) + "&media=" + this.encode(media || "");
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
-        httpRequest.send(null);
+        // send event in 0.5 seconds from now
+        this.sendDelayed(httpRequest);
+    },
+
+    /**
+     * Simple DOS protection: schedules a send(null) on the httpRequest in 500 ms and aborts any already scheduled.
+     * @param httpRequest the XMLHttpRequest
+     */
+    sendDelayed: function(httpRequest) {
+        window.clearTimeout(this.timerId);
+        this.timerId = window.setTimeout( function() {
+            httpRequest.send(null);
+        }, 500);
     },
 
     /**
