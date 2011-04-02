@@ -66,6 +66,8 @@ var cssPropertyListener = {
 
 var cssxfire = {
 
+    timerId: null,
+
     /**
      * Sends a change to the local web server
      * @param media media query text (null means not specified)
@@ -82,10 +84,22 @@ var cssxfire = {
         try {
             var httpRequest = new XMLHttpRequest();
             httpRequest.open("GET", querystring, true);
-            httpRequest.send(null);
+            // send event in 0.5 seconds from now
+            this.sendDelayed(httpRequest);
         } catch(e) {
             alert("CSS-X-Fire communication error: " + e.toString());
         }
+    },
+
+    /**
+     * Simple DOS protection: schedules a send(null) on the httpRequest in 500 ms and aborts any already scheduled.
+     * @param httpRequest the XMLHttpRequest
+     */
+    sendDelayed: function(httpRequest) {
+        window.clearTimeout(this.timerId);
+        this.timerId = window.setTimeout( function() {
+            httpRequest.send(null);
+        }, 500);
     },
 
     /**
