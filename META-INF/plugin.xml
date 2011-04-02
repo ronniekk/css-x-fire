@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.16
             <li>Added debug logging</li>
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=17">Issue 17</a> Spam protection when using arrow keys in Firebug.</li>
         </ul>
         <ul>1.15
             <li>New settings form.</li>
