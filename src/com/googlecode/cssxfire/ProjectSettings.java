@@ -48,6 +48,8 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     private boolean useRoutes;
     private boolean mediaReduce;
     private boolean fileReduce;
+    private boolean autoExpand;
+
     private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>()
     {
         public int compare(final VirtualFile o1, final VirtualFile o2)
@@ -68,6 +70,16 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     public RoutePerFileMappings getRoutes()
     {
         return routes;
+    }
+
+    public boolean isAutoExpand()
+    {
+        return autoExpand;
+    }
+
+    public void setAutoExpand(boolean autoExpand)
+    {
+        this.autoExpand = autoExpand;
     }
 
     public boolean isAutoClear()
@@ -144,6 +156,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
             }
         }
         general.setAttribute("autoClear", Boolean.toString(this.autoClear));
+        general.setAttribute("autoExpand", Boolean.toString(this.autoExpand));
         strategy.setAttribute("useRoutes", Boolean.toString(this.useRoutes));
         strategy.setAttribute("mediaReduce", Boolean.toString(this.mediaReduce));
         strategy.setAttribute("fileReduce", Boolean.toString(this.fileReduce));
@@ -179,6 +192,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
 
         Element general = root.getChild("general");
         this.autoClear = general != null && Boolean.parseBoolean(general.getAttributeValue("autoClear"));
+        this.autoExpand = general == null || general.getAttributeValue("autoExpand") == null || Boolean.parseBoolean(general.getAttributeValue("autoExpand"));
         Element strategy = root.getChild("strategy");
         this.fileReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("fileReduce"));
         this.mediaReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("mediaReduce"));

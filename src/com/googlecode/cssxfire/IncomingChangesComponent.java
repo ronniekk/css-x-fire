@@ -198,6 +198,11 @@ public class IncomingChangesComponent implements ProjectComponent
                 {
                     cssToolWindow.getTreeModel().intersect(candidate);
                 }
+
+                if (ProjectSettings.getInstance(project).isAutoExpand())
+                {
+                    cssToolWindow.expandAll();
+                }
             }
         });
     }

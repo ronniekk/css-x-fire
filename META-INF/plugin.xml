@@ -141,6 +141,11 @@
                 text="Help"
                 description="Show the CSS-X-Fire help page"
                 icon="/com/googlecode/cssxfire/images/help.png"/>
+        <action id="IncomingChanges.ToolBar.AutoExpand"
+                class="com.googlecode.cssxfire.action.AutoExpand"
+                text="Auto Expand"
+                description="Expand entire tree on every incoming change."
+                icon="/com/googlecode/cssxfire/images/autoexpand.png"/>
         <action id="IncomingChanges.ToolBar.ExpandAll"
                 class="com.googlecode.cssxfire.action.ExpandAll"
                 text="Expand All"
@@ -182,6 +187,7 @@
             <reference id="IncomingChanges.ToolBar.Button.Up" ref="IncomingChanges.ToolBar.Up"/>
             <reference id="IncomingChanges.ToolBar.Button.Down" ref="IncomingChanges.ToolBar.Down"/>
             <separator/>
+            <reference id="IncomingChanges.ToolBar.Button.AutoExpand" ref="IncomingChanges.ToolBar.AutoExpand"/>
             <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
             <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
             <separator/>
