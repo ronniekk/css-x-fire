@@ -80,7 +80,8 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1)
+                if ((e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1)
+                        || (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON2))
                 {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
                     navigateTo(selPath);
@@ -155,9 +156,9 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         if (path != null)
         {
             Object source = path.getLastPathComponent();
-            if (source instanceof CssDeclarationNode)
+            if (source instanceof Navigatable)
             {
-                ((CssDeclarationNode) source).navigate();
+                ((Navigatable) source).navigate();
             }
         }
     }

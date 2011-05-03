@@ -24,12 +24,13 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.tree.TreeNode;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssFileNode extends CssTreeNode
+public class CssFileNode extends CssTreeNode implements Navigatable
 {
     private final PsiFile psiFile;
 
@@ -68,6 +69,19 @@ public class CssFileNode extends CssTreeNode
     public ActionGroup getActionGroup()
     {
         return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.File");
+    }
+
+    public void navigate()
+    {
+        // this check shouldn't be needed but better safe than sorry...
+        if (getChildCount() > 0)
+        {
+            TreeNode firstChild = getChildAt(0);
+            if (firstChild instanceof Navigatable)
+            {
+                ((Navigatable) firstChild).navigate();
+            }
+        }
     }
 
     @Override

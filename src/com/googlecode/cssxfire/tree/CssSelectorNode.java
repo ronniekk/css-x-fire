@@ -19,8 +19,11 @@ package com.googlecode.cssxfire.tree;
 import com.googlecode.cssxfire.CssUtils;
 import com.googlecode.cssxfire.StringUtils;
 import com.googlecode.cssxfire.ui.Icons;
+import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +34,7 @@ import java.awt.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssSelectorNode extends CssTreeNode
+public class CssSelectorNode extends CssTreeNode implements Navigatable
 {
     private final @NotNull String selector;
     protected final @NotNull PsiElement cssBlock;
@@ -73,6 +76,20 @@ public class CssSelectorNode extends CssTreeNode
     public ActionGroup getActionGroup()
     {
         return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Selector");
+    }
+
+    public void navigate()
+    {
+        if (cssBlock.isValid())
+        {
+            SelectInEditorManager selectInEditorManager = SelectInEditorManager.getInstance(cssBlock.getProject());
+            VirtualFile virtualFile = cssBlock.getContainingFile().getVirtualFile();
+            if (virtualFile != null)
+            {
+                TextRange textRange = cssBlock.getTextRange();
+                selectInEditorManager.selectInEditor(virtualFile, textRange.getStartOffset(), textRange.getEndOffset(), false, false);
+            }
+        }
     }
 
     @Override
