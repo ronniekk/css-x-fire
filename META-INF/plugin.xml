@@ -8,6 +8,9 @@
     <version>1.18</version>
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.18
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=21">Issue 21</a> Reduce filter for currently opened files.</li>
+        </ul>
         <ul>1.17
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=18">Issue 18</a> Quick navigation from all nodes with double click or middle mouse click.</li>
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=19">Issue 19</a> Toggle option for automatic expand of changes tree.</li>
