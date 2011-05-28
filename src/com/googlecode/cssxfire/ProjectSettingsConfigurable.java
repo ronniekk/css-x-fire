@@ -52,6 +52,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
     private JCheckBox checkBoxMediaReduce;
     private JCheckBox checkBoxFileReduce;
     private JCheckBox checkBoxUseRoutes;
+    private JCheckBox checkBoxCurrentDocumentsReduce;
     private FileTreeTable routesTable;
     private JScrollPane routesScrollPane;
     private JPanel myPanel;
@@ -144,7 +145,8 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
                 || state.isAutoClear() != checkBoxAutoClear.isSelected()
                 || state.isMediaReduce() != checkBoxMediaReduce.isSelected()
                 || state.isFileReduce() != checkBoxFileReduce.isSelected()
-                || state.isUseRoutes() != checkBoxUseRoutes.isSelected();
+                || state.isUseRoutes() != checkBoxUseRoutes.isSelected()
+                || state.isCurrentDocumentsReduce() != checkBoxCurrentDocumentsReduce.isSelected();
     }
 
     public void apply() throws ConfigurationException
@@ -154,9 +156,10 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         state.setAutoClear(checkBoxAutoClear.isSelected());
         state.setMediaReduce(checkBoxMediaReduce.isSelected());
         state.setFileReduce(checkBoxFileReduce.isSelected());
+        state.setCurrentDocumentsReduce(checkBoxCurrentDocumentsReduce.isSelected());
         state.setUseRoutes(checkBoxUseRoutes.isSelected());
 
-        // set defalut values for new projects (legacy)
+        // set default values for new projects (legacy)
         CssXFireConnector.getInstance().getState().setMediaReduce(checkBoxMediaReduce.isSelected());
         CssXFireConnector.getInstance().getState().setSmartReduce(checkBoxFileReduce.isSelected());
     }
@@ -168,6 +171,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         checkBoxAutoClear.setSelected(state.isAutoClear());
         checkBoxFileReduce.setSelected(state.isFileReduce());
         checkBoxMediaReduce.setSelected(state.isMediaReduce());
+        checkBoxCurrentDocumentsReduce.setSelected(state.isCurrentDocumentsReduce());
         checkBoxUseRoutes.setSelected(state.isUseRoutes());
     }
 

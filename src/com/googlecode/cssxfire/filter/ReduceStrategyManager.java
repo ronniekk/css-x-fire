@@ -57,6 +57,11 @@ public class ReduceStrategyManager
             // Reduce for file is checked
             reduceChain.add(new FileReduceStrategy(bean.getFilename()));
         }
+        if (ProjectSettings.getInstance(project).isCurrentDocumentsReduce())
+        {
+            // Reduce for currently opened files (documents)
+            reduceChain.add(new CurrentDocumentsReduceStrategy(project));
+        }
         if (ProjectSettings.getInstance(project).isUseRoutes())
         {
             // Use routes is checked
