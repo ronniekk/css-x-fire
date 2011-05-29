@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * <p>Reduces the candidates down to the elements which are in files currently opened in editor(s).
+ * If the collection is empty this reducer does nothing.
+ * <p><p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
