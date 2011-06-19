@@ -101,7 +101,17 @@
     </project-components>
 
     <actions>
-        
+
+        <action id="com.googlecode.cssxfire.action.ApplyAll"
+                class="com.googlecode.cssxfire.action.ApplyAll"
+                text="Apply all changes"
+                description="Applies all pending changes"
+                icon="/com/googlecode/cssxfire/images/commit.png"/>
+        <action id="com.googlecode.cssxfire.action.ClearAll"
+                class="com.googlecode.cssxfire.action.ClearAll"
+                text="Clear list"
+                description="Clears all pending changes"
+                icon="/com/googlecode/cssxfire/images/gc.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSingle"
                 class="com.googlecode.cssxfire.action.DeleteNode"
                 text="Remove selected change"

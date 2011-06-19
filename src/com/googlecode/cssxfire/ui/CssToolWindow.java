@@ -17,12 +17,11 @@
 package com.googlecode.cssxfire.ui;
 
 import com.googlecode.cssxfire.IncomingChangesComponent;
+import com.googlecode.cssxfire.action.ApplyAll;
+import com.googlecode.cssxfire.action.ClearAll;
 import com.googlecode.cssxfire.tree.*;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -111,22 +110,24 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
 
         incomingChangesPanel.add(scrollPane, BorderLayout.CENTER);
 
-        clearButton = new JButton("Clear list", Icons.TRASHCAN);
+        Presentation clearAllPresentation = ActionManager.getInstance().getAction(ClearAll.ID).getTemplatePresentation();
+        clearButton = new JButton(clearAllPresentation.getText(), clearAllPresentation.getIcon());
         clearButton.setEnabled(false);
         clearButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                clearTree();
+                ActionManager.getInstance().getAction(ClearAll.ID).actionPerformed(createAnActionEvent(ClearAll.ID));
             }
         });
-        applyButton = new JButton("Apply all changes", Icons.COMMIT);
+        Presentation applyAllPresentation = ActionManager.getInstance().getAction(ApplyAll.ID).getTemplatePresentation();
+        applyButton = new JButton(applyAllPresentation.getText(), applyAllPresentation.getIcon());
         applyButton.setEnabled(false);
         applyButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                applyPending();
+                ActionManager.getInstance().getAction(ApplyAll.ID).actionPerformed(createAnActionEvent(ApplyAll.ID));
             }
         });
 
@@ -173,16 +174,30 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
 
             if (actionGroup != null)
             {
-                DataContext dataContext = DataManager.getInstance().getDataContext(tree);
                 ListPopup listPopup = JBPopupFactory.getInstance().createActionGroupPopup(null,
                         actionGroup,
-                        dataContext,
+                        createDataContext(),
                         JBPopupFactory.ActionSelectionAid.MNEMONICS,
                         true);
 
                 listPopup.showInScreenCoordinates(tree, point);
             }
         }
+    }
+
+    private AnActionEvent createAnActionEvent(String actionId)
+    {
+        return new AnActionEvent(null,
+                createDataContext(),
+                ActionPlaces.UNKNOWN,
+                ActionManager.getInstance().getAction(actionId).getTemplatePresentation(),
+                ActionManager.getInstance(),
+                0);
+    }
+
+    private DataContext createDataContext()
+    {
+        return DataManager.getInstance().getDataContext(tree);
     }
 
     private void updateButtons()
