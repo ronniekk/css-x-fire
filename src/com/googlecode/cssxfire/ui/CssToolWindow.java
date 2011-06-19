@@ -273,7 +273,12 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
 
     public void applySelectedNode()
     {
-        Object source = tree.getSelectionPath().getLastPathComponent();
+        TreePath selectedPath = tree.getSelectionPath();
+        if (selectedPath == null)
+        {
+            return;
+        }
+        Object source = selectedPath.getLastPathComponent();
         if (source instanceof CssFileNode || source instanceof CssSelectorNode)
         {
             final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
