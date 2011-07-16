@@ -38,6 +38,7 @@
       <entry name="?*.xpi" />
       <entry name="?*.js" />
       <entry name="?*.css" />
+      <entry name="*.rdf" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>
