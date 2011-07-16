@@ -135,6 +135,10 @@ public class HttpResponse
             {
                 return "Content-Type: text/plain; charset=utf-8";
             }
+            if (filename.endsWith(".rdf"))
+            {
+                return "Content-Type: text/xml; charset=utf-8";
+            }
 
             return "Content-Type: application/octet-stream";
         }
