@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
- xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-  <Description about="urn:mozilla:install-manifest">
-    <em:id>cssxfire@cssxfire</em:id>
-    <em:name>CSS-X-Fire</em:name>
-    <em:version>1.20</em:version>
-    <em:creator>Ronnie Kolehmainen</em:creator>
-    <em:description>Connects Firebug CSS editor with IntelliJ IDEA</em:description>
-    <em:homepageURL>http://code.google.com/p/css-x-fire/</em:homepageURL>
-    <em:targetApplication>
-      <Description>
-        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->
-        <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>5.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-    <em:requires>
-      <Description>
-        <em:id>firebug@software.joehewitt.com</em:id>
-        <em:minVersion>1.3</em:minVersion>
-        <em:maxVersion>1.8</em:maxVersion>
-      </Description>
-    </em:requires>
-  </Description>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+    <Description about="urn:mozilla:install-manifest">
+        <em:id>cssxfire@cssxfire</em:id>
+        <em:name>CSS-X-Fire</em:name>
+        <em:version>1.20</em:version>
+        <em:creator>Ronnie Kolehmainen</em:creator>
+        <em:description>Connects Firebug CSS editor with IntelliJ IDEA</em:description>
+        <em:homepageURL>http://code.google.com/p/css-x-fire/</em:homepageURL>
+        <em:updateURL>http://localhost:6776/files/xpiupdate.rdf</em:updateURL>
+        <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDr+dkt+L+zxr+yWv/9vvyjiPBb/xBaokf/MELWjYyTfoQosPm9Wj0ByfxLEglzfXZBadF7AwBwCboRB1b3Mm1Sd7/9I9XYzJrZ2LHDQcwSPHj6iEyYy27rnjU7+wIT+m+n0D6DwdzrHFHDUNtZBPE2vjQAqy6B9u+3zZHvqaPoPQIDAQAB</em:updateKey>
+
+        <em:targetApplication>
+            <Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <!-- firefox -->
+                <em:minVersion>1.5</em:minVersion>
+                <em:maxVersion>7.*</em:maxVersion>
+            </Description>
+        </em:targetApplication>
+        <em:requires>
+            <Description>
+                <em:id>firebug@software.joehewitt.com</em:id>
+                <em:minVersion>1.3</em:minVersion>
+                <em:maxVersion>1.8.*</em:maxVersion>
+            </Description>
+        </em:requires>
+    </Description>
 </RDF>
