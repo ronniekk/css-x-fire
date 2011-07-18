@@ -9,7 +9,8 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen@esn.me">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.20
-            <li></li>
+            <li>Enabled (automatic) xpi updates from Firefox.</li>
+            <li>Support for Firefox 7.</li>
         </ul>
         <ul>1.19
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=22">Issue 22</a> Fixed hotkey error.</li>
