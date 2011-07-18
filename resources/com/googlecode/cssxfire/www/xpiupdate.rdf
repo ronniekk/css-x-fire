@@ -2,20 +2,21 @@
 <RDF:RDF xmlns:NS1="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <RDF:Description RDF:about="rdf:#$5jwSp3"
-                     NS1:version="1.20">
-        <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
-    </RDF:Description>
-    <RDF:Seq RDF:about="rdf:#$4jwSp3">
-        <RDF:li RDF:resource="rdf:#$5jwSp3"/>
-    </RDF:Seq>
-    <RDF:Description RDF:about="rdf:#$8jwSp3"
-                     NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                     NS1:minVersion="1.5"
-                     NS1:maxVersion="7.*"
-                     NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"/>
-    <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
-                     NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAF7C2ElBPZksmq8kSZLyUjn26gqU0Mzph4yy1aSksXxejr+a/Rr1ZH1YKE/lAHSj2TYb7BNCqBt8LTuZlayMVa//ppbFb73bBY5j/7ajgyFz1IjrIF/bs2SR7YuAb05/UFOfkDoGjE8eWxo1nDDAWvfJKfNRROW4srECeMZPJGgH">
-        <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
-    </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$5jwSp3"
+                   NS1:version="1.20">
+    <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$8jwSp3"
+                   NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   NS1:minVersion="1.5"
+                   NS1:maxVersion="7.*"
+                   NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"
+                   NS1:updateHash="sha1:4300D263EBE8F2C441BE67F721323D548F52EB26" />
+  <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADOXux90n9+OyrTjUfc0gUZqFgKmMHSWWuf/WEhRW7Yxsabz9mupxPnSMLImx9fC2KP30Q7Rpe9r231fA8rcTTTYWRZGSnIDHPzZZ/DlPybdE4IwwPbmMHHxmEga+QteCvhSS1y8xuxo6SLJvwmosyN5q7Me+rpnOaJ+Da/T3DO8">
+    <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$4jwSp3">
+    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
+  </RDF:Seq>
 </RDF:RDF>
