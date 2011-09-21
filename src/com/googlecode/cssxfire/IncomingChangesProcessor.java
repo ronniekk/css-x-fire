@@ -16,12 +16,15 @@
 
 package com.googlecode.cssxfire;
 
-import com.googlecode.cssxfire.tree.*;
+import com.googlecode.cssxfire.tree.CssDeclarationNode;
+import com.googlecode.cssxfire.tree.CssDeclarationPath;
+import com.googlecode.cssxfire.tree.CssFileNode;
+import com.googlecode.cssxfire.tree.CssNewDeclarationNode;
+import com.googlecode.cssxfire.tree.CssSelectorNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRulesetList;
@@ -33,7 +36,12 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,7 +87,7 @@ public class IncomingChangesProcessor
 
         // search for existing selectors
         CssSelectorSearchProcessor selectorProcessor = new CssSelectorSearchProcessor(changesBean.getSelector());
-        PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
+        PsiSearchHelper helper = CssUtils.getPsiSearchHelper(project);
         helper.processElementsWithWord(selectorProcessor, searchScope, selectorProcessor.getSearchWord(), searchContext, true);
         CssBlock[] cssBlocks = selectorProcessor.getBlocks();
 
@@ -181,7 +189,7 @@ public class IncomingChangesProcessor
         if (changesBean.getMedia().length() > 0)
         {
             CssMediaSearchProcessor mediaProcessor = new CssMediaSearchProcessor(changesBean.getMedia());
-            PsiSearchHelper helper = PsiManager.getInstance(project).getSearchHelper();
+            PsiSearchHelper helper = CssUtils.getPsiSearchHelper(project);
             helper.processElementsWithWord(mediaProcessor, searchScope, mediaProcessor.getSearchWord(), searchContext, true);
             Set<PsiElement> mediaLists = mediaProcessor.getMediaLists();
 
