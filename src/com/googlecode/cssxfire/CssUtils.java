@@ -18,21 +18,23 @@ package com.googlecode.cssxfire;
 
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.css.CssRulesetList;
 import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.PsiElementProcessor;
+import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -109,6 +111,27 @@ public class CssUtils
         catch (Exception e)
         {
             throw new RuntimeException("Unable to get medium list");
+        }
+    }
+
+    public static PsiSearchHelper getPsiSearchHelper(Project project)
+    {
+        /*
+            Temporary(?) facade for getting PsiSearchHelper before and after v 11
+         */
+        PsiSearchHelper helper = ServiceManager.getService(project, PsiSearchHelper.class);
+        if (helper != null)
+        {
+            return helper;
+        }
+        PsiManager psiManager = PsiManager.getInstance(project);
+        try
+        {
+            return (PsiSearchHelper) PsiManager.class.getMethod("getSearchHelper").invoke(psiManager);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Unable to get PsiSearchHelper");
         }
     }
 }
