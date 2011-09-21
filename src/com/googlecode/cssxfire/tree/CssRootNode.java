@@ -45,10 +45,10 @@ public class CssRootNode extends CssTreeNode
         {
             if (!project.isInitialized())
             {
-                return baseDir.getIcon();
+                return null; // VirtualFile.getIcon() removed in v 11
             }
             PsiDirectory directory = PsiManager.getInstance(project).findDirectory(baseDir);
-            return directory != null ? directory.getIcon(1) : baseDir.getIcon();
+            return directory != null ? directory.getIcon(1) : null; // // VirtualFile.getIcon() removed in v 11
         }
         return null;
     }
