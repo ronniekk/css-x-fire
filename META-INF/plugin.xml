@@ -9,7 +9,7 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.21
-            <li>Fixed compability issues with latest EAP's.</li>
+            <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=23">Issue 23</a> Fixed compability issues with latest EAP's.</li>
         </ul>
         <ul>1.20
             <li>Enabled (automatic) xpi updates from Firefox.</li>
