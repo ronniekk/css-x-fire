@@ -16,11 +16,7 @@
 
 package com.googlecode.cssxfire;
 
-import com.googlecode.cssxfire.tree.CssDeclarationNode;
-import com.googlecode.cssxfire.tree.CssDeclarationPath;
-import com.googlecode.cssxfire.tree.CssFileNode;
-import com.googlecode.cssxfire.tree.CssNewDeclarationNode;
-import com.googlecode.cssxfire.tree.CssSelectorNode;
+import com.googlecode.cssxfire.tree.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -30,18 +26,11 @@ import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRulesetList;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.PsiSearchHelper;
-import com.intellij.psi.search.UsageSearchContext;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,14 +42,11 @@ public class IncomingChangesProcessor
 
     private final Project project;
     private final FirebugChangesBean changesBean;
-    private final GlobalSearchScope searchScope;
-    private final short searchContext = UsageSearchContext.ANY;
 
     private IncomingChangesProcessor(Project project, FirebugChangesBean changesBean)
     {
         this.project = project;
         this.changesBean = changesBean;
-        this.searchScope = GlobalSearchScope.projectScope(project);
     }
 
     /**
@@ -86,9 +72,7 @@ public class IncomingChangesProcessor
         Set<PsiFile> fileCandidates = findCandidateFiles();
 
         // search for existing selectors
-        CssSelectorSearchProcessor selectorProcessor = new CssSelectorSearchProcessor(changesBean.getSelector());
-        PsiSearchHelper helper = CssUtils.getPsiSearchHelper(project);
-        helper.processElementsWithWord(selectorProcessor, searchScope, selectorProcessor.getSearchWord(), searchContext, true);
+        CssSelectorSearchProcessor selectorProcessor = SearchProcessorCache.getInstance(project).getSelectorSearchProcessor(changesBean.getSelector());
         CssBlock[] cssBlocks = selectorProcessor.getBlocks();
 
         if (LOG.isDebugEnabled())
@@ -188,9 +172,7 @@ public class IncomingChangesProcessor
         final Set<PsiElement> elements = new HashSet<PsiElement>();
         if (changesBean.getMedia().length() > 0)
         {
-            CssMediaSearchProcessor mediaProcessor = new CssMediaSearchProcessor(changesBean.getMedia());
-            PsiSearchHelper helper = CssUtils.getPsiSearchHelper(project);
-            helper.processElementsWithWord(mediaProcessor, searchScope, mediaProcessor.getSearchWord(), searchContext, true);
+            CssMediaSearchProcessor mediaProcessor = SearchProcessorCache.getInstance(project).getMediaSearchProcessor(changesBean.getMedia());
             Set<PsiElement> mediaLists = mediaProcessor.getMediaLists();
 
             if (LOG.isDebugEnabled())
@@ -213,7 +195,7 @@ public class IncomingChangesProcessor
         final Set<PsiFile> files = new HashSet<PsiFile>();
         if (changesBean.getFilename().length() > 0)
         {
-            files.addAll(Arrays.asList(FilenameIndex.getFilesByName(project, changesBean.getFilename(), searchScope)));
+            files.addAll(Arrays.asList(FilenameIndex.getFilesByName(project, changesBean.getFilename(), GlobalSearchScope.projectScope(project))));
         }
         return files;
     }
