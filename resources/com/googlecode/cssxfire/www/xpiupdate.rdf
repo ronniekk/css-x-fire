@@ -16,7 +16,7 @@
     <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$5jwSp3"
-                   NS1:version="1.21">
+                   NS1:version="1.22">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
 </RDF:RDF>
