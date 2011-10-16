@@ -134,4 +134,22 @@ public class CssUtils
             throw new RuntimeException("Unable to get PsiSearchHelper");
         }
     }
+
+    public static boolean processParents(@NotNull PsiElement element, @NotNull PsiElementProcessor<PsiElement> processor)
+    {
+        PsiElement parent = element.getParent();
+        while (parent != null)
+        {
+            if (parent instanceof PsiFile)
+            {
+                break;
+            }
+            if (!processor.execute(parent))
+            {
+                return false;
+            }
+            parent = parent.getParent();
+        }
+        return true;
+    }
 }

@@ -16,8 +16,10 @@
 
 package com.googlecode.cssxfire;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
+import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +34,8 @@ import java.util.List;
  */
 public class CssSelectorSearchProcessor implements TextOccurenceProcessor
 {
+    private static final Logger LOG = Logger.getInstance(CssSelectorSearchProcessor.class.getName());
+
     private final List<CssElement> selectors = new ArrayList<CssElement>();
     private @NotNull String selector;
     private @NotNull String word;
@@ -67,13 +71,64 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         if (psiElement instanceof CssSelector || psiElement instanceof CssSelectorList)
         {
             CssElement cssSelector = (CssElement) psiElement;
-            if ((!(cssSelector.getParent() instanceof CssSelectorList)) && selector.equals(StringUtils.normalizeWhitespace(cssSelector.getText())))
+            if ((!(cssSelector.getParent() instanceof CssSelectorList)) && canBeReference(cssSelector))
             {
                 selectors.add(cssSelector);
             }
         }
 
         return true;
+    }
+
+    /**
+     * Checks (stringwise) if the given css element could reference the selector to search for. The check is
+     * done by expanding the rule of the given css selector by checking all of its parent elements within the
+     * same file. This allows for nested rules (Less/Sass).
+     * @param cssSelector the candidate element
+     * @return true if and only if the rule of the given element matches this selector
+     */
+    private boolean canBeReference(@NotNull CssElement cssSelector)
+    {
+        final List<String> candidatePartList = ThreadLocals.stringList.get();
+
+        CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
+        {
+            public boolean execute(PsiElement element)
+            {
+                if (element instanceof CssRuleset)
+                {
+                    CssRuleset cssRuleset = (CssRuleset) element;
+                    CssSelectorList selectorList = cssRuleset.getSelectorList();
+                    candidatePartList.add(0, selectorList.getText());
+                }
+                return true;
+            }
+        });
+
+        String candidatePath = createComparablePath(candidatePartList);
+        if (LOG.isDebugEnabled())
+        {
+            LOG.debug("comparable path = " + candidatePath);
+        }
+        return selector.equals(candidatePath);
+    }
+
+    private String createComparablePath(List<String> pathParts)
+    {
+        StringBuilder sb = ThreadLocals.stringBuilder.get();
+        for (String part : pathParts)
+        {
+            if (part.startsWith("&") && sb.length() > 0)
+            {
+                sb.replace(sb.length() - 1, sb.length(), part.substring(1));
+            }
+            else
+            {
+                sb.append(part);
+            }
+            sb.append(" ");
+        }
+        return StringUtils.normalizeWhitespace(sb.toString());
     }
 
     /**

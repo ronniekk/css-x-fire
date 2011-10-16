@@ -79,16 +79,16 @@ public class StringUtils
     @NotNull
     public static String extractSearchWord(@NotNull String s)
     {
-        CharArrayWriter writer = new CharArrayWriter(s.length());
-        for (char c : s.trim().toCharArray())
+        s = s.trim();
+        char[] chars = s.toCharArray();
+        for (int i = chars.length - 1; i > 0; i--)
         {
-            if (Character.isWhitespace(c) || c == ',')
+            if (Character.isWhitespace(chars[i]))
             {
-                break;
+                return s.substring(i + 1);
             }
-            writer.append(c);
         }
-        return writer.toString();
+        return s;
     }
 
     @NotNull
