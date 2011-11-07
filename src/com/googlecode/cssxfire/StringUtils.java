@@ -80,10 +80,10 @@ public class StringUtils
     public static String extractSearchWord(@NotNull String s)
     {
         s = s.trim();
-        char[] chars = s.toCharArray();
-        for (int i = chars.length - 1; i > 0; i--)
+        for (int i = s.length() - 1; i > 0; i--)
         {
-            if (Character.isWhitespace(chars[i]))
+            char c = s.charAt(i);
+            if (c == ':' || c == ',' || Character.isWhitespace(c))
             {
                 return s.substring(i + 1);
             }
