@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.PsiElementProcessor;
@@ -24,9 +25,7 @@ import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,6 +34,7 @@ import java.util.List;
 public class CssSelectorSearchProcessor implements TextOccurenceProcessor
 {
     private static final Logger LOG = Logger.getInstance(CssSelectorSearchProcessor.class.getName());
+    private static final String DUMMY = "";
 
     private final List<CssElement> selectors = new ArrayList<CssElement>();
     private @NotNull String selector;
@@ -89,7 +89,9 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
      */
     private boolean canBeReference(@NotNull CssElement cssSelector)
     {
-        final List<String> candidatePartList = ThreadLocals.stringList.get();
+        final List<List<String>> selectorPaths = createSelectorParts(selector);
+        final Ref<Boolean> isReference = new Ref<Boolean>(false);
+        final WildcardMatcher wildcardMatcher = new WildcardMatcher();
 
         CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
         {
@@ -99,36 +101,157 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
                 {
                     CssRuleset cssRuleset = (CssRuleset) element;
                     CssSelectorList selectorList = cssRuleset.getSelectorList();
-                    candidatePartList.add(0, selectorList.getText());
+                    String selectorText = StringUtils.normalizeWhitespace(selectorList.getText());
+                    List<List<String>> comparePaths = createSelectorParts(selectorText);
+
+                    int numWildcards = wildcardMatcher.getWildcards();
+                    if (numWildcards != 0)
+                    {
+                        boolean empty = false;
+                        for (int i = 0; i < numWildcards; i++)
+                        {
+                            for (List<String> comparePath : comparePaths)
+                            {
+                                if (comparePath.isEmpty())
+                                {
+                                    empty = true;
+                                    break;
+                                }
+                            }
+                            if (empty)
+                            {
+                                break;
+                            }
+                            for (List<String> comparePath : comparePaths)
+                            {
+                                pop(comparePath);
+                            }
+                            wildcardMatcher.decrement();
+                        }
+                    }
+
+                    if (wildcardMatcher.getWildcards() != 0)
+                    {
+                        return true; // Keep walking up
+                    }
+
+                    int matches = 0;
+
+                    for (List<String> selectorPath : selectorPaths)
+                    {
+                        for (List<String> comparePath : comparePaths)
+                        {
+                            wildcardMatcher.reset();
+                            if (endsWith(selectorPath, comparePath, wildcardMatcher))
+                            {
+                                int numToRemove = comparePath.size();
+                                for (int i = 0; i < numToRemove; i++)
+                                {
+                                    pop(selectorPath);
+                                }
+                                matches++;
+                                selectorPath.add(DUMMY); // Add a dummy marker that won't match again
+                            }
+                        }
+                    }
+                    cleanupSelectorParts(comparePaths);
+
+                    isReference.set(matches == selectorPaths.size());
+                    if (!isReference.get())
+                    {
+                        return false; // Abort processing
+                    }
+                    for (List<String> selectorPath : selectorPaths)
+                    {
+                        pop(selectorPath); // Clear dummy markers
+                    }
+                    return true;
                 }
                 return true;
             }
         });
 
-        String candidatePath = createComparablePath(candidatePartList);
-        if (LOG.isDebugEnabled())
+        if (cleanupSelectorParts(selectorPaths))
         {
-            LOG.debug("comparable path = " + candidatePath);
+            return false;
         }
-        return selector.equals(candidatePath);
+        return isReference.get();
     }
 
-    private String createComparablePath(List<String> pathParts)
+    /**
+     * Checks if <tt>match</tt> is equal to the tail of <tt>candidate</tt>
+     * @param candidate the list to test
+     * @param match the tail to test for
+     * @param comparator used for comparing elements
+     * @param <T> the element type
+     * @return <tt>true</tt> if <tt>match</tt> is a tailing sublist of <tt>candidate</tt>,
+     * given the semantics of <tt>comparator</tt>
+     */
+    private <T> boolean endsWith(List<T> candidate, List<T> match, Comparator<T> comparator)
     {
-        StringBuilder sb = ThreadLocals.stringBuilder.get();
-        for (String part : pathParts)
+        if (candidate.isEmpty() || match.isEmpty() || match.size() > candidate.size())
         {
-            if (part.startsWith("&") && sb.length() > 0)
-            {
-                sb.replace(sb.length() - 1, sb.length(), part.substring(1));
-            }
-            else
-            {
-                sb.append(part);
-            }
-            sb.append(" ");
+            return false;
         }
-        return StringUtils.normalizeWhitespace(sb.toString());
+        for (int i = 0; i < match.size(); i++)
+        {
+            if (comparator.compare(candidate.get(candidate.size() - 1 - i), match.get(match.size() - 1 - i)) != 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Removes the last element of the given list of strings
+     * @param strings the list to pop
+     * @return the removed element, or <tt>null</tt> if the list is empty
+     */
+    private String pop(List<String> strings)
+    {
+        if (!strings.isEmpty())
+        {
+            return strings.remove(strings.size() - 1);
+        }
+        return null;
+    }
+
+    private List<List<String>> createSelectorParts(String s)
+    {
+        List<List<String>> parts = new ArrayList<List<String>>();
+        String[] selectorParts = s.split(",");
+        for (String part : selectorParts)
+        {
+            List<String> sub = new ArrayList<String>();
+            String[] subParts = part.split(" ");
+            for (String subPart : subParts)
+            {
+                sub.add(subPart);
+            }
+            parts.add(sub);
+        }
+        return parts;
+    }
+
+    /**
+     * Clean up and free memory
+     * @param parts the list to clean
+     * @return true if there was any strings left
+     */
+    private boolean cleanupSelectorParts(List<List<String>> parts)
+    {
+        boolean leftovers = false;
+        for (List<String> part : parts)
+        {
+            if (!part.isEmpty())
+            {
+                leftovers = true;
+            }
+            part.clear();
+        }
+        parts.clear();
+        return leftovers;
     }
 
     /**
@@ -175,5 +298,46 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         }
 
         return blocks.toArray(new CssBlock[blocks.size()]);
+    }
+
+    private static class WildcardMatcher implements Comparator<String>
+    {
+        private int wildcards = 0;
+
+        public int compare(String s1, String s2)
+        {
+            if (s1.equals(s2))
+            {
+                return 0;
+            }
+
+            if (s2.startsWith("&:") && s1.indexOf(':') != -1 && s2.substring(1).equals(s1.substring(s1.indexOf(':'))))
+            {
+                increment();
+                return 0;
+            }
+
+            return s1.compareTo(s2);
+        }
+
+        public int getWildcards()
+        {
+            return wildcards;
+        }
+
+        public void reset()
+        {
+            wildcards = 0;
+        }
+
+        public void increment()
+        {
+            wildcards++;
+        }
+
+        public void decrement()
+        {
+            wildcards--;
+        }
     }
 }
