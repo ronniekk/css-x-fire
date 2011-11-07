@@ -90,7 +90,6 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
     private boolean canBeReference(@NotNull CssElement cssSelector)
     {
         final List<List<String>> selectorPaths = createSelectorParts(selector);
-        final WildcardMatcher wildcardMatcher = new WildcardMatcher();
 
         CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
         {
@@ -108,7 +107,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
                         int numToRemove = 0;
                         for (List<String> selectorPath : selectorPaths)
                         {
-                            if (endsWith(selectorPath, comparePath, wildcardMatcher))
+                            if (endsWith(selectorPath, comparePath))
                             {
                                 numToRemove = comparePath.size();
                                 for (int i = 0; i < numToRemove; i++)
@@ -155,12 +154,10 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
      * Checks if <tt>match</tt> is equal to the tail of <tt>candidate</tt>
      * @param candidate the list to test
      * @param match the tail to test for
-     * @param comparator used for comparing elements
-     * @param <T> the element type
      * @return <tt>true</tt> if <tt>match</tt> is a tailing sublist of <tt>candidate</tt>,
      * given the semantics of <tt>comparator</tt>
      */
-    private <T> boolean endsWith(List<T> candidate, List<T> match, Comparator<T> comparator)
+    private boolean endsWith(List<String> candidate, List<String> match)
     {
         if (candidate.isEmpty() || match.isEmpty() || match.size() > candidate.size())
         {
@@ -168,9 +165,19 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         }
         for (int i = 0; i < match.size(); i++)
         {
-            if (comparator.compare(candidate.get(candidate.size() - 1 - i), match.get(match.size() - 1 - i)) != 0)
+            int cix = candidate.size() - 1 - i;
+            int mix = match.size() - 1 - i;
+
+            String s1 = candidate.get(cix);
+            String s2 = match.get(mix);
+
+            if (!s1.equals(s2))
             {
-                return false;
+                if ( !(s2.startsWith("&:") && s1.indexOf(':') != -1 && s2.substring(1).equals(s1.substring(s1.indexOf(':')))))
+                {
+                    return false;
+                }
+                candidate.add(cix, s1.substring(0, s1.indexOf(':')));
             }
         }
         return true;
@@ -271,46 +278,5 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         }
 
         return blocks.toArray(new CssBlock[blocks.size()]);
-    }
-
-    private static class WildcardMatcher implements Comparator<String>
-    {
-        private int wildcards = 0;
-
-        public int compare(String s1, String s2)
-        {
-            if (s1.equals(s2))
-            {
-                return 0;
-            }
-
-            if (s2.startsWith("&:") && s1.indexOf(':') != -1 && s2.substring(1).equals(s1.substring(s1.indexOf(':'))))
-            {
-                increment();
-                return 0;
-            }
-
-            return s1.compareTo(s2);
-        }
-
-        public int getWildcards()
-        {
-            return wildcards;
-        }
-
-        public void reset()
-        {
-            wildcards = 0;
-        }
-
-        public void increment()
-        {
-            wildcards++;
-        }
-
-        public void decrement()
-        {
-            wildcards--;
-        }
     }
 }
