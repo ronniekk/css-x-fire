@@ -90,7 +90,6 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
     private boolean canBeReference(@NotNull CssElement cssSelector)
     {
         final List<List<String>> selectorPaths = createSelectorParts(selector);
-        final Ref<Boolean> isReference = new Ref<Boolean>(false);
         final WildcardMatcher wildcardMatcher = new WildcardMatcher();
 
         CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
@@ -104,66 +103,40 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
                     String selectorText = StringUtils.normalizeWhitespace(selectorList.getText());
                     List<List<String>> comparePaths = createSelectorParts(selectorText);
 
-                    int numWildcards = wildcardMatcher.getWildcards();
-                    if (numWildcards != 0)
+                    for (List<String> comparePath : comparePaths)
                     {
-                        boolean empty = false;
-                        for (int i = 0; i < numWildcards; i++)
+                        int numToRemove = 0;
+                        for (List<String> selectorPath : selectorPaths)
                         {
-                            for (List<String> comparePath : comparePaths)
-                            {
-                                if (comparePath.isEmpty())
-                                {
-                                    empty = true;
-                                    break;
-                                }
-                            }
-                            if (empty)
-                            {
-                                break;
-                            }
-                            for (List<String> comparePath : comparePaths)
-                            {
-                                pop(comparePath);
-                            }
-                            wildcardMatcher.decrement();
-                        }
-                    }
-
-                    if (wildcardMatcher.getWildcards() != 0)
-                    {
-                        return true; // Keep walking up
-                    }
-
-                    int matches = 0;
-
-                    for (List<String> selectorPath : selectorPaths)
-                    {
-                        for (List<String> comparePath : comparePaths)
-                        {
-                            wildcardMatcher.reset();
                             if (endsWith(selectorPath, comparePath, wildcardMatcher))
                             {
-                                int numToRemove = comparePath.size();
+                                numToRemove = comparePath.size();
                                 for (int i = 0; i < numToRemove; i++)
                                 {
                                     pop(selectorPath);
                                 }
-                                matches++;
                                 selectorPath.add(DUMMY); // Add a dummy marker that won't match again
                             }
                         }
+                        for (int i = 0; i < numToRemove; i++)
+                        {
+                            pop(comparePath);
+                        }
                     }
-                    cleanupSelectorParts(comparePaths);
 
-                    isReference.set(matches == selectorPaths.size());
-                    if (!isReference.get())
+                    if (cleanupSelectorParts(comparePaths))
                     {
-                        return false; // Abort processing
+                        return false;
                     }
+
                     for (List<String> selectorPath : selectorPaths)
                     {
-                        pop(selectorPath); // Clear dummy markers
+                        String stack = pop(selectorPath);// Clear dummy markers
+                        if (!"".equals(stack))
+                        {
+                            selectorPath.add(DUMMY);
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -175,7 +148,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         {
             return false;
         }
-        return isReference.get();
+        return true;
     }
 
     /**
