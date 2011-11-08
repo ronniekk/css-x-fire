@@ -10,7 +10,11 @@
     <change-notes><![CDATA[
         <ul>1.23
             <li>Support for Firefox 8.</li>
-            <li>Support for nested rules (Less and Sass).</li>
+            <li>
+                <a href="http://code.google.com/p/css-x-fire/issues/detail?id=4">Issue 4</a> and
+                <a href="http://code.google.com/p/css-x-fire/issues/detail?id=5">Issue 5</a>
+                Initial support for Less and Sass (nested rules).
+            </li>
         </ul>
         <ul>1.22
             <li>Internal caching of selector and media query searches.</li>
