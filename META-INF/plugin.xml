@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.24
             <li><a href="http://code.google.com/p/css-x-fire/issues/detail?id=27">Issue 27</a> Support for the !important construct.</li>
+            <li>Support for Firefox 9.</li>
         </ul>
         <ul>1.23
             <li>Support for Firefox 8.</li>
