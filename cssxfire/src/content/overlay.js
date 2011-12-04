@@ -37,9 +37,9 @@ var cssPropertyListener = {
      * @param baseText
      */
     onCSSSetProperty: function(style, propName, propValue, propPriority, prevValue, prevPriority, rule, baseText) {
-        if (propValue != prevValue) {
+        if (propValue != prevValue || propPriority != prevPriority) {
             // if value has changed, send change to the IDE
-            cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, propValue, false);
+            cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, propValue, propPriority, false);
         }
     },
 
@@ -53,7 +53,7 @@ var cssPropertyListener = {
      * @param baseText
      */
     onCSSRemoveProperty: function(style, propName, prevValue, prevPriority, rule, baseText) {
-        cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, true);
+        cssxfire.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, prevPriority, true);
     },
 
     /**
@@ -89,12 +89,14 @@ var cssxfire = {
      * @param selector the selector name
      * @param property the property name
      * @param value the value
+     * @param important the priority
      * @param deleted if the property was deleted or not
      */
-    send: function(media, href, selector, property, value, deleted) {
+    send: function(media, href, selector, property, value, important, deleted) {
         var querystring = "http://" + this.getIdeAddress() + "/?selector=" + this.encode(selector) + "&property="
-                + this.encode(property) + "&value=" + this.encode(value) + "&deleted=" + deleted + "&href="
-                + this.encode(href || window.content.location.href) + "&media=" + this.encode(media || "");
+                + this.encode(property) + "&value=" + this.encode(value) + "&important=" + (important ? "true" : "false")
+                + "&deleted=" + deleted + "&href=" + this.encode(href || window.content.location.href)
+                + "&media=" + this.encode(media || "");
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", querystring, true);
         // send event in 0.5 seconds from now

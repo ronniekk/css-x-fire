@@ -44,7 +44,7 @@ public class CssNewDeclarationForBlockNode extends CssNewDeclarationNode
                 CssDeclaration relativeTo = declarations != null && declarations.length > 0
                         ? declarations[declarations.length - 1]
                         : null;
-                ((CssBlock) destinationBlock).addDeclaration(property, value, relativeTo);
+                ((CssBlock) destinationBlock).addDeclaration(property, value + (important ? " !important" : ""), relativeTo);
             }
         }
         catch (IncorrectOperationException e)

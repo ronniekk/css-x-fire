@@ -78,7 +78,7 @@ public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
                 CssDeclaration anchor = declarations != null && declarations.length > 0
                         ? declarations[declarations.length - 1]
                         : null;
-                cssBlock.addDeclaration(property, value, anchor);
+                cssBlock.addDeclaration(property, value + (important ? " !important" : ""), anchor);
             }
         }
         catch (IncorrectOperationException e)

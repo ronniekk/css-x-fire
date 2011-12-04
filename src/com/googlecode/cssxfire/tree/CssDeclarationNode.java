@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire.tree;
 
+import com.googlecode.cssxfire.CssUtils;
 import com.googlecode.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
@@ -38,12 +39,14 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
     protected final CssDeclaration cssDeclaration;
     protected final String value;
     protected boolean deleted;
+    protected boolean important;
 
-    public CssDeclarationNode(CssDeclaration cssDeclaration, String value, boolean deleted)
+    public CssDeclarationNode(CssDeclaration cssDeclaration, String value, boolean deleted, boolean important)
     {
         this.cssDeclaration = cssDeclaration;
         this.value = value;
         this.deleted = deleted;
+        this.important = important;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
     @Override
     public String getText()
     {
-        String text = cssDeclaration.getPropertyName() + ": " + value;
+        String text = cssDeclaration.getPropertyName() + ": " + value + (important ? " !important" : "");
         return deleted
                 ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.MODIFIED : Colors.INVALID)
                 : wrapWithHtmlColor(text, isValid() ? Colors.MODIFIED : Colors.INVALID);
@@ -98,7 +101,17 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
                 }
                 else
                 {
-                    cssDeclaration.setValue(value);
+                    if (cssDeclaration.isImportant() == important)
+                    {
+                        // Priority not changed - only need to alter the value text.
+                        cssDeclaration.setValue(value);
+                    }
+                    else
+                    {
+                        // Priority has changed. In this case we need to create a new declaration element and replace the old one.
+                        CssDeclaration newDeclaration = CssUtils.createDeclaration(cssDeclaration.getProject(), ".foo", cssDeclaration.getPropertyName(), value, important);
+                        cssDeclaration.replace(newDeclaration);
+                    }
                 }
             }
         }

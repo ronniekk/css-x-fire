@@ -107,13 +107,14 @@ public class HttpRequest implements Runnable
                 String href = params.get("href");
                 String media = params.get("media");
                 boolean deleted = Boolean.parseBoolean(params.get("deleted"));
+                boolean important = Boolean.parseBoolean(params.get("important"));
 
                 // Notify application component
                 if (property != null && value != null && selector != null)
                 {
                     final FirebugChangesBean changesBean = new FirebugChangesBean(media != null ? media : EMPTY_STRING,
                             href != null ? href : EMPTY_STRING,
-                            selector, property, value, deleted);
+                            selector, property, value, deleted, important);
                     if (LOG.isDebugEnabled())
                     {
                         LOG.debug("Got CSS property change: " + changesBean);

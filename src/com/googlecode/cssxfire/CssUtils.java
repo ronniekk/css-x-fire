@@ -43,10 +43,11 @@ import java.lang.reflect.Method;
  */
 public class CssUtils
 {
-    public static CssDeclaration createDeclaration(Project project, String selector, String property, String value)
+    public static CssDeclaration createDeclaration(Project project, String selector, String property, String value, boolean important)
     {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
-        PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, selector + " {" + property + ":" + value + ";}\n");
+        String text = selector + " {" + property + ":" + value + (important ? " !important" : "") + ";}\n";
+        PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, text);
         return findFirstChildOfType(dummyFile, CssDeclaration.class);
     }
 

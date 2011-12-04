@@ -40,9 +40,10 @@ public class FirebugChangesBean
     @NotNull
     private final String value;
     private final boolean deleted;
+    private final boolean important;
 
     public FirebugChangesBean(@NotNull String media, @NotNull String url, @NotNull String selector,
-                              @NotNull String property, @NotNull String value, boolean deleted)
+                              @NotNull String property, @NotNull String value, boolean deleted, boolean important)
     {
         this.media = media;
         this.path = StringUtils.extractPath(url);
@@ -51,10 +52,11 @@ public class FirebugChangesBean
         this.property = property;
         this.value = value;
         this.deleted = deleted;
+        this.important = important;
     }
 
     private FirebugChangesBean(@NotNull String media, @NotNull String path, @NotNull String filename, @NotNull String selector,
-                              @NotNull String property, @NotNull String value, boolean deleted)
+                              @NotNull String property, @NotNull String value, boolean deleted, boolean important)
     {
         this.media = media;
         this.path = path;
@@ -63,6 +65,7 @@ public class FirebugChangesBean
         this.property = property;
         this.value = value;
         this.deleted = deleted;
+        this.important = important;
     }
 
     /**
@@ -84,11 +87,11 @@ public class FirebugChangesBean
                     // replace path and filename
                     String filename = targetFile.getName();
                     String path = targetFile.getUrl().substring(projectBaseDir.getUrl().length());
-                    return new FirebugChangesBean(media, path, filename, selector, property, value, deleted);
+                    return new FirebugChangesBean(media, path, filename, selector, property, value, deleted, important);
                 }
             }
         }
-        return new FirebugChangesBean(media, path, filename, selector, property, value, deleted);
+        return new FirebugChangesBean(media, path, filename, selector, property, value, deleted, important);
     }
 
     @NotNull
@@ -132,10 +135,15 @@ public class FirebugChangesBean
         return deleted;
     }
 
+    public boolean isImportant()
+    {
+        return important;
+    }
+
     @Override
     public String toString()
     {
         return "{media=" + media + ", path=" + path + ", filename=" + filename + ", selector=" + selector
-                + ", property=" + property + ", value=" + value + ", deleted=" + deleted + "}";
+                + ", property=" + property + ", value=" + value + ", important=" + important + ", deleted=" + deleted + "}";
     }
 }

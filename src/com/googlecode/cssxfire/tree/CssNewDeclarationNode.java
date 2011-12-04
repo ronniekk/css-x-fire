@@ -33,7 +33,7 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
     @NotNull protected final CssElement destinationBlock;
     @NotNull protected final String property;
 
-    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull PsiElement destinationElement, boolean deleted)
+    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull PsiElement destinationElement, boolean deleted, boolean important)
     {
         String name = destinationElement.getClass().getSimpleName();
         /*
@@ -59,7 +59,7 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
 
     protected CssNewDeclarationNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)
     {
-        super(cssDeclaration, cssDeclaration.getValue().getText(), deleted);
+        super(cssDeclaration, cssDeclaration.getValue().getText(), deleted, cssDeclaration.isImportant());
         this.destinationBlock = destinationElement;
         this.property = cssDeclaration.getPropertyName();
     }

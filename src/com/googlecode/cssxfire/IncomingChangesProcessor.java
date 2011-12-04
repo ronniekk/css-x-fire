@@ -139,7 +139,7 @@ public class IncomingChangesProcessor
      */
     private CssDeclarationPath createPath(CssDeclaration declaration, CssBlock block)
     {
-        CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, changesBean.getValue(), changesBean.isDeleted());
+        CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, changesBean.getValue(), changesBean.isDeleted(), changesBean.isImportant());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), block);
         CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
 
@@ -154,8 +154,8 @@ public class IncomingChangesProcessor
      */
     private CssDeclarationPath createNewPath(PsiFile file, PsiElement destinationElement)
     {
-        CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue());
-        CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
+        CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue(), changesBean.isImportant());
+        CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted(), changesBean.isImportant());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
         CssFileNode fileNode = new CssFileNode(file);
 
