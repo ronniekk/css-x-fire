@@ -90,7 +90,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
     {
         final List<List<String>> selectorPaths = createSelectorParts(selector);
 
-        CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
+        boolean complete = CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>()
         {
             public boolean execute(PsiElement element)
             {
@@ -143,31 +143,11 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
         });
 
         // Check for loose ends in given selector and in code.
-        if (cleanupSelectorParts(selectorPaths) || isNestedRuleSet(cssSelector))
+        if (cleanupSelectorParts(selectorPaths) || !complete)
         {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Checks if given ruleset of given selector has a parent ruleset.
-     * @param selector the selector to test
-     * @return true if and only if the current rule is nested within another rule.
-     */
-    private boolean isNestedRuleSet(CssElement selector)
-    {
-        PsiElement element = selector;
-        int ctr = 0;
-        while (element != null)
-        {
-            if (element instanceof CssRuleset)
-            {
-                ctr += 1;
-            }
-            element = element.getParent();
-        }
-        return ctr > 1;
     }
 
     /**
