@@ -17,7 +17,6 @@
 package com.googlecode.cssxfire;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.PsiElementProcessor;
@@ -143,11 +142,32 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor
             }
         });
 
-        if (cleanupSelectorParts(selectorPaths))
+        // Check for loose ends in given selector and in code.
+        if (cleanupSelectorParts(selectorPaths) || isNestedRuleSet(cssSelector))
         {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Checks if given ruleset of given selector has a parent ruleset.
+     * @param selector the selector to test
+     * @return true if and only if the current rule is nested within another rule.
+     */
+    private boolean isNestedRuleSet(CssElement selector)
+    {
+        PsiElement element = selector;
+        int ctr = 0;
+        while (element != null)
+        {
+            if (element instanceof CssRuleset)
+            {
+                ctr += 1;
+            }
+            element = element.getParent();
+        }
+        return ctr > 1;
     }
 
     /**
