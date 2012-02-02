@@ -4,7 +4,7 @@
     <Description about="urn:mozilla:install-manifest">
         <em:id>cssxfire@cssxfire</em:id>
         <em:name>CSS-X-Fire</em:name>
-        <em:version>1.24</em:version>
+        <em:version>1.25</em:version>
         <em:creator>Ronnie Kolehmainen</em:creator>
         <em:description>Connects Firebug CSS editor with IntelliJ IDEA</em:description>
         <em:homepageURL>http://code.google.com/p/css-x-fire/</em:homepageURL>
@@ -16,7 +16,7 @@
                 <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
                 <!-- firefox -->
                 <em:minVersion>1.5</em:minVersion>
-                <em:maxVersion>9.*</em:maxVersion>
+                <em:maxVersion>12.*</em:maxVersion>
             </Description>
         </em:targetApplication>
         <em:requires>
