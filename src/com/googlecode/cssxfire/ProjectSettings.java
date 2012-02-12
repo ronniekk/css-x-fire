@@ -50,6 +50,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     private boolean fileReduce;
     private boolean currentDocumentsReduce;
     private boolean autoExpand;
+    private boolean resolveVariables;
 
     private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>()
     {
@@ -133,6 +134,16 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         this.currentDocumentsReduce = currentDocumentsReduce;
     }
 
+    public boolean isResolveVariables()
+    {
+        return resolveVariables;
+    }
+
+    public void setResolveVariables(boolean resolveVariables) 
+    {
+        this.resolveVariables = resolveVariables;
+    }
+
     @NotNull
     public String getComponentName()
     {
@@ -172,6 +183,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         strategy.setAttribute("mediaReduce", Boolean.toString(this.mediaReduce));
         strategy.setAttribute("fileReduce", Boolean.toString(this.fileReduce));
         strategy.setAttribute("currentDocumentsReduce", Boolean.toString(this.currentDocumentsReduce));
+        strategy.setAttribute("resolveVariables", Boolean.toString(this.resolveVariables));
         root.addContent(general);
         root.addContent(strategy);
         root.addContent(routes);
@@ -209,6 +221,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         this.fileReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("fileReduce"));
         this.mediaReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("mediaReduce"));
         this.currentDocumentsReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("currentDocumentsReduce"));
+        this.resolveVariables = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("resolveVariables"));
         this.useRoutes = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("useRoutes"));
     }
 

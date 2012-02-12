@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire.tree;
 
 import com.googlecode.cssxfire.CssUtils;
+import com.googlecode.cssxfire.ProjectSettings;
 import com.googlecode.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
@@ -26,6 +27,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssElement;
+import com.intellij.psi.css.CssTermList;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
 import javax.swing.*;
@@ -104,7 +107,15 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
                     if (cssDeclaration.isImportant() == important)
                     {
                         // Priority not changed - only need to alter the value text.
-                        cssDeclaration.setValue(value);
+                        CssElement navigationElement = getNavigationElement();
+                        if (navigationElement instanceof CssTermList)
+                        {
+                            navigationElement.replace(CssUtils.createTermList(navigationElement.getProject(), value));
+                        }
+                        else if (navigationElement instanceof CssDeclaration)
+                        {
+                            ((CssDeclaration) navigationElement).setValue(value);
+                        }
                     }
                     else
                     {
@@ -131,7 +142,19 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
 
     protected CssElement getNavigationElement()
     {
-        return isValid() ? cssDeclaration : null;
+        if (!isValid())
+        {
+            return null;
+        }
+        if (ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables())
+        {
+            CssTermList assignment = CssUtils.resolveTermList(PsiTreeUtil.getChildOfType(cssDeclaration, CssTermList.class));
+            if (assignment != null)
+            {
+                return assignment;
+            }
+        }
+        return cssDeclaration;
     }
 
     public void navigate()

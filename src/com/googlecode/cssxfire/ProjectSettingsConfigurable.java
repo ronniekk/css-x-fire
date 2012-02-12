@@ -53,6 +53,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
     private JCheckBox checkBoxFileReduce;
     private JCheckBox checkBoxUseRoutes;
     private JCheckBox checkBoxCurrentDocumentsReduce;
+    private JCheckBox checkBoxResolveVariables;
     private FileTreeTable routesTable;
     private JScrollPane routesScrollPane;
     private JPanel myPanel;
@@ -146,7 +147,8 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
                 || state.isMediaReduce() != checkBoxMediaReduce.isSelected()
                 || state.isFileReduce() != checkBoxFileReduce.isSelected()
                 || state.isUseRoutes() != checkBoxUseRoutes.isSelected()
-                || state.isCurrentDocumentsReduce() != checkBoxCurrentDocumentsReduce.isSelected();
+                || state.isCurrentDocumentsReduce() != checkBoxCurrentDocumentsReduce.isSelected()
+                || state.isResolveVariables() != checkBoxResolveVariables.isSelected();
     }
 
     public void apply() throws ConfigurationException
@@ -157,6 +159,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         state.setMediaReduce(checkBoxMediaReduce.isSelected());
         state.setFileReduce(checkBoxFileReduce.isSelected());
         state.setCurrentDocumentsReduce(checkBoxCurrentDocumentsReduce.isSelected());
+        state.setResolveVariables(checkBoxResolveVariables.isSelected());
         state.setUseRoutes(checkBoxUseRoutes.isSelected());
 
         // set default values for new projects (legacy)
@@ -172,6 +175,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         checkBoxFileReduce.setSelected(state.isFileReduce());
         checkBoxMediaReduce.setSelected(state.isMediaReduce());
         checkBoxCurrentDocumentsReduce.setSelected(state.isCurrentDocumentsReduce());
+        checkBoxResolveVariables.setSelected(state.isResolveVariables());
         checkBoxUseRoutes.setSelected(state.isUseRoutes());
     }
 

@@ -21,14 +21,13 @@ import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.css.CssRulesetList;
+import com.intellij.psi.css.CssTermList;
 import com.intellij.psi.css.impl.util.CssUtil;
+import com.intellij.psi.css.impl.util.references.CssIdentifierReference;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -36,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,6 +57,13 @@ public class CssUtils
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
         PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, selector + " {\n\n}\n");
         return findFirstChildOfType(dummyFile, CssRuleset.class);
+    }
+
+    public static CssTermList createTermList(Project project, String value)
+    {
+        CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
+        PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, ".foo { color: " + value + " }");
+        return findFirstChildOfType(dummyFile, CssTermList.class);
     }
 
     private static <T extends PsiElement> T findFirstChildOfType(@NotNull PsiElement element, Class<T> type)
@@ -153,4 +161,77 @@ public class CssUtils
         }
         return true;
     }
+
+    private static ThreadLocal<Ref<CssTermList>> resolveResult = new ThreadLocal<Ref<CssTermList>>()
+    {
+        @Override
+        protected Ref<CssTermList> initialValue() 
+        {
+            return new Ref<CssTermList>();
+        }
+    };
+
+    private static ThreadLocal<Set<CssTermList>> processed = new ThreadLocal<Set<CssTermList>>()
+    {
+        @Override
+        protected Set<CssTermList> initialValue()
+        {
+            return new HashSet<CssTermList>();
+        }
+    };
+
+    @Nullable
+    public static CssTermList resolveTermList(@Nullable CssTermList termList)
+    {
+        resolveResult.get().set(termList);
+        processed.get().clear();
+
+        while (_resolveTermList(resolveResult.get().get())) {}
+
+        processed.get().clear();
+        CssTermList cssTermList = resolveResult.get().get();
+        resolveResult.get().set(null);
+        return cssTermList;
+    }
+
+    private static boolean _resolveTermList(@Nullable CssTermList termList)
+    {
+        if (termList == null)
+        {
+            return false;
+        }
+        if (!processed.get().add(termList))
+        {
+            return false;
+        }
+        boolean done = PsiTreeUtil.processElements(termList, new PsiElementProcessor()
+        {
+            public boolean execute(@NotNull PsiElement psiElement)
+            {
+                for (PsiReference reference : psiElement.getReferences())
+                {
+                    if (reference instanceof CssIdentifierReference)
+                    {
+                        continue;
+                    }
+                    PsiElement referenced = reference.resolve();
+                    if (referenced != null)
+                    {
+                        for (PsiElement child : referenced.getChildren())
+                        {
+                            if (child instanceof CssTermList)
+                            {
+                                resolveResult.get().set((CssTermList) child);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        });
+
+        return !done;
+    }
+
 }
