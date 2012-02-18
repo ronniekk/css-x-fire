@@ -148,7 +148,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
         }
         if (ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables())
         {
-            CssTermList assignment = CssUtils.resolveTermList(PsiTreeUtil.getChildOfType(cssDeclaration, CssTermList.class));
+            CssTermList assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
             if (assignment != null)
             {
                 return assignment;

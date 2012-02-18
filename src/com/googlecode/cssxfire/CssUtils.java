@@ -22,12 +22,8 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.*;
-import com.intellij.psi.css.CssDeclaration;
-import com.intellij.psi.css.CssRuleset;
-import com.intellij.psi.css.CssRulesetList;
-import com.intellij.psi.css.CssTermList;
+import com.intellij.psi.css.*;
 import com.intellij.psi.css.impl.util.CssUtil;
-import com.intellij.psi.css.impl.util.references.CssIdentifierReference;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -162,58 +158,62 @@ public class CssUtils
         return true;
     }
 
-    private static ThreadLocal<Ref<CssTermList>> resolveResult = new ThreadLocal<Ref<CssTermList>>()
+    /** Recursion guard */
+    private static ThreadLocal<Set<PsiElement>> processed = new ThreadLocal<Set<PsiElement>>()
     {
         @Override
-        protected Ref<CssTermList> initialValue() 
+        protected Set<PsiElement> initialValue()
         {
-            return new Ref<CssTermList>();
-        }
-    };
-
-    private static ThreadLocal<Set<CssTermList>> processed = new ThreadLocal<Set<CssTermList>>()
-    {
-        @Override
-        protected Set<CssTermList> initialValue()
-        {
-            return new HashSet<CssTermList>();
+            return new HashSet<PsiElement>();
         }
     };
 
     @Nullable
-    public static CssTermList resolveTermList(@Nullable CssTermList termList)
+    public static CssTermList resolveVariableAssignment(@NotNull CssDeclaration cssDeclaration)
     {
-        resolveResult.get().set(termList);
-        processed.get().clear();
-
-        while (_resolveTermList(resolveResult.get().get())) {}
-
-        processed.get().clear();
-        CssTermList cssTermList = resolveResult.get().get();
-        resolveResult.get().set(null);
-        return cssTermList;
+        CssTermList termList = PsiTreeUtil.getChildOfType(cssDeclaration, CssTermList.class);
+        try
+        {
+            CssTermList result = null;
+            while (termList != null)
+            {
+                if (!processed.get().add(termList))
+                {
+                    return null; // infinite recursion detected
+                }
+                if (PsiTreeUtil.getChildrenOfTypeAsList(termList, CssTerm.class).size() != 1)
+                {
+                    return null; // not an explicit variable reference
+                }
+                termList = resolveTermList(termList);
+                if (termList == null)
+                {
+                    return result;
+                }
+                result = termList;
+            }
+            return result;
+        }
+        finally
+        {
+            processed.get().clear();
+        }
     }
 
-    private static boolean _resolveTermList(@Nullable CssTermList termList)
+    @Nullable
+    private static CssTermList resolveTermList(@NotNull CssTermList termList)
     {
-        if (termList == null)
-        {
-            return false;
-        }
-        if (!processed.get().add(termList))
-        {
-            return false;
-        }
-        boolean done = PsiTreeUtil.processElements(termList, new PsiElementProcessor()
+        final Ref<CssTermList> result = new Ref<CssTermList>(null);
+        PsiTreeUtil.processElements(termList, new PsiElementProcessor()
         {
             public boolean execute(@NotNull PsiElement psiElement)
             {
+                if (psiElement instanceof CssTerm)
+                {
+                    return true; // CssIdentifierReference - skip
+                }
                 for (PsiReference reference : psiElement.getReferences())
                 {
-                    if (reference instanceof CssIdentifierReference)
-                    {
-                        continue;
-                    }
                     PsiElement referenced = reference.resolve();
                     if (referenced != null)
                     {
@@ -221,7 +221,7 @@ public class CssUtils
                         {
                             if (child instanceof CssTermList)
                             {
-                                resolveResult.get().set((CssTermList) child);
+                                result.set((CssTermList) child);
                                 return false;
                             }
                         }
@@ -231,7 +231,7 @@ public class CssUtils
             }
         });
 
-        return !done;
+        return result.get();
     }
 
 }
