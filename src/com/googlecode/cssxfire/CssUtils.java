@@ -181,7 +181,8 @@ public class CssUtils
                 {
                     return null; // infinite recursion detected
                 }
-                if (PsiTreeUtil.getChildrenOfTypeAsList(termList, CssTerm.class).size() != 1)
+                CssTerm[] terms = PsiTreeUtil.getChildrenOfType(termList, CssTerm.class);
+                if (terms == null || terms.length != 1)
                 {
                     return null; // not an explicit variable reference
                 }
