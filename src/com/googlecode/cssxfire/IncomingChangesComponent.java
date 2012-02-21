@@ -18,11 +18,13 @@ package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.action.Help;
 import com.googlecode.cssxfire.filter.ReduceStrategyManager;
+import com.googlecode.cssxfire.resolve.CssXFireReferenceProvider;
 import com.googlecode.cssxfire.tree.CssDeclarationPath;
 import com.googlecode.cssxfire.tree.TreeViewModel;
 import com.googlecode.cssxfire.ui.CssToolWindow;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.extensions.PluginId;
@@ -32,11 +34,11 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiTreeChangeAdapter;
-import com.intellij.psi.PsiTreeChangeEvent;
-import com.intellij.psi.PsiTreeChangeListener;
+import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.*;
 import com.intellij.psi.css.CssDeclaration;
+import com.intellij.psi.css.impl.CssTreeElementFactory;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
@@ -125,6 +127,9 @@ public class IncomingChangesComponent implements ProjectComponent
                 }
             });
         }
+
+        CssXFireReferenceProvider provider = new CssXFireReferenceProvider();
+        ReferenceProvidersRegistry.getInstance().getRegistrar(CSSLanguage.INSTANCE).registerReferenceProvider(PlatformPatterns.instanceOf(CssTreeElementFactory.CssTokenImpl.class), provider);
     }
 
     public void disposeComponent()

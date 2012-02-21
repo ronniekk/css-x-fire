@@ -16,6 +16,7 @@
 
 package com.googlecode.cssxfire;
 
+import com.googlecode.cssxfire.resolve.CssRulesetReference;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
@@ -235,4 +236,50 @@ public class CssUtils
         return result.get();
     }
 
+    public static boolean processCssDeclarations(@Nullable CssBlock block, final PsiElementProcessor<CssDeclaration> declarationProcessor)
+    {
+        if (block == null)
+        {
+            return false;
+        }
+        CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(block, CssDeclaration.class);
+        if (declarations != null)
+        {
+            for (CssDeclaration declaration : declarations)
+            {
+                if (!declarationProcessor.execute(declaration))
+                {
+                    return false;
+                }
+            }
+        }
+        if (ProjectSettings.getInstance(block.getProject()).isResolveMixins())
+        {
+            return PsiTreeUtil.processElements(block, new PsiElementProcessor()
+            {
+                public boolean execute(@NotNull PsiElement element)
+                {
+                    PsiReference[] references = element.getReferences();
+                    for (PsiReference reference : references)
+                    {
+                        if (reference instanceof CssRulesetReference)
+                        {
+                            CssRulesetReference rulesetReference = (CssRulesetReference) reference;
+                            PsiElement resolved = rulesetReference.resolve();
+                            if (resolved instanceof CssRuleset)
+                            {
+                                CssRuleset ruleset = (CssRuleset) resolved;
+                                if (!processCssDeclarations(ruleset.getBlock(), declarationProcessor))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+        return true;
+    }
 }

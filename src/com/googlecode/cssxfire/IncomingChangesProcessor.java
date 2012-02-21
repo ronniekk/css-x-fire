@@ -19,6 +19,7 @@ package com.googlecode.cssxfire;
 import com.googlecode.cssxfire.tree.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.css.CssBlock;
@@ -26,7 +27,7 @@ import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssRulesetList;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.search.PsiElementProcessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,22 +84,27 @@ public class IncomingChangesProcessor
 
         for (CssBlock block : cssBlocks)
         {
-            boolean hasDeclaration = false;
-            CssDeclaration[] declarations = PsiTreeUtil.getChildrenOfType(block, CssDeclaration.class);
-            if (declarations != null)
+            final Ref<CssDeclaration> destination = new Ref<CssDeclaration>();
+            CssUtils.processCssDeclarations(block, new PsiElementProcessor<CssDeclaration>()
             {
-                for (CssDeclaration declaration : declarations)
+                public boolean execute(@NotNull CssDeclaration declaration)
                 {
                     if (changesBean.getProperty().equals(declaration.getPropertyName()))
                     {
-                        hasDeclaration = true;
-
-                        candidates.add(createPath(declaration, block));
+                        destination.set(declaration);
+                        return false;
                     }
+                    return true;
                 }
-            }
+            });
+            CssDeclaration existingDeclaration = destination.get();
             PsiFile file = block.getContainingFile().getOriginalFile();
-            if (!hasDeclaration)
+            if (existingDeclaration != null)
+            {
+                // found existing declaration, possibly by resolving mixin
+                candidates.add(createPath(existingDeclaration, block));
+            }
+            else
             {
                 // non-existing - create new
                 candidates.add(createNewPath(file, block));

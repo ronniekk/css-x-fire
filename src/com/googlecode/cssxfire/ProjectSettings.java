@@ -51,6 +51,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     private boolean currentDocumentsReduce;
     private boolean autoExpand;
     private boolean resolveVariables;
+    private boolean resolveMixins;
 
     private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>()
     {
@@ -144,6 +145,16 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         this.resolveVariables = resolveVariables;
     }
 
+    public boolean isResolveMixins()
+    {
+        return resolveMixins;
+    }
+
+    public void setResolveMixins(boolean resolveMixins)
+    {
+        this.resolveMixins = resolveMixins;
+    }
+
     @NotNull
     public String getComponentName()
     {
@@ -184,6 +195,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         strategy.setAttribute("fileReduce", Boolean.toString(this.fileReduce));
         strategy.setAttribute("currentDocumentsReduce", Boolean.toString(this.currentDocumentsReduce));
         strategy.setAttribute("resolveVariables", Boolean.toString(this.resolveVariables));
+        strategy.setAttribute("resolveMixins", Boolean.toString(this.resolveMixins));
         root.addContent(general);
         root.addContent(strategy);
         root.addContent(routes);
@@ -222,6 +234,7 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         this.mediaReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("mediaReduce"));
         this.currentDocumentsReduce = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("currentDocumentsReduce"));
         this.resolveVariables = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("resolveVariables"));
+        this.resolveMixins = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("resolveMixins"));
         this.useRoutes = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("useRoutes"));
     }
 
