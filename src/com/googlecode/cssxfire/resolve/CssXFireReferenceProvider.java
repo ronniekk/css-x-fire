@@ -31,6 +31,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CssXFireReferenceProvider extends PsiReferenceProvider
 {
+    private static final CssXFireReferenceProvider INSTANCE = new CssXFireReferenceProvider();
+    private static final ProcessingContext MY_PROCESSING_CONTEXT = new ProcessingContext();
+
+
+    @NotNull
+    public static PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement)
+    {
+        return INSTANCE.getReferencesByElement(psiElement, MY_PROCESSING_CONTEXT);
+    }
+
     @NotNull
     @Override
     public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext)

@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.resolve.CssRulesetReference;
+import com.googlecode.cssxfire.resolve.CssXFireReferenceProvider;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
@@ -234,7 +235,7 @@ public class CssUtils
             {
                 public boolean execute(@NotNull PsiElement element)
                 {
-                    PsiReference[] references = element.getReferences();
+                    PsiReference[] references = getFromElementAndMyProviders(element);
                     for (PsiReference reference : references)
                     {
                         if (reference instanceof CssRulesetReference)
@@ -242,8 +243,7 @@ public class CssUtils
                             PsiElement resolved = reference.resolve();
                             if (resolved instanceof CssRuleset)
                             {
-                                CssRuleset ruleset = (CssRuleset) resolved;
-                                if (!processCssDeclarations(ruleset.getBlock(), declarationProcessor))
+                                if (!processCssDeclarations(((CssRuleset) resolved).getBlock(), declarationProcessor))
                                 {
                                     return false;
                                 }
@@ -266,6 +266,26 @@ public class CssUtils
             });
         }
         return true;
+    }
+
+    private static PsiReference[] getFromElementAndMyProviders(@NotNull PsiElement element)
+    {
+        PsiReference[] original = element.getReferences();
+        PsiReference[] extras = CssXFireReferenceProvider.getReferencesByElement(element);
+        if (original.length == 0)
+        {
+            return extras;
+        }
+        if (extras.length == 0)
+        {
+            return original;
+        }
+
+        PsiReference[] all = new PsiReference[original.length + extras.length];
+        System.arraycopy(original, 0, all, 0, original.length);
+        System.arraycopy(extras, 0, all, original.length, extras.length);
+
+        return all;
     }
 
     /**
