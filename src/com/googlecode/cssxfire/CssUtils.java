@@ -238,12 +238,22 @@ public class CssUtils
                     {
                         if (reference instanceof CssRulesetReference)
                         {
-                            CssRulesetReference rulesetReference = (CssRulesetReference) reference;
-                            PsiElement resolved = rulesetReference.resolve();
+                            PsiElement resolved = reference.resolve();
                             if (resolved instanceof CssRuleset)
                             {
                                 CssRuleset ruleset = (CssRuleset) resolved;
                                 if (!processCssDeclarations(ruleset.getBlock(), declarationProcessor))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                        else if (reference != null && "org.jetbrains.plugins.scss.references.SCSSMixinReference".equals(reference.getClass().getName()))
+                        {
+                            PsiElement resolved = reference.resolve();
+                            if (resolved != null)
+                            {
+                                if (!processCssDeclarations(PsiTreeUtil.getChildOfType(resolved, CssBlock.class), declarationProcessor))
                                 {
                                     return false;
                                 }
