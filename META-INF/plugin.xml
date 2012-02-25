@@ -9,7 +9,8 @@
     <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.26
-            <li>Optional resolving of variables.</li>
+            <li>Variables support.</li>
+            <li>Mixins support.</li>
         </ul>
         <ul>1.25
             <li>Bumped Firefox version to 12.</li>
