@@ -23,7 +23,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.css.CssRulesetList;
 import com.intellij.psi.css.CssStylesheet;
-import com.intellij.psi.css.impl.CssTreeElementFactory;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiPolyVariantCachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -43,10 +42,10 @@ public class CssRulesetReference extends PsiPolyVariantCachingReference
     /** Avoid completion on mixins for now */
     private static final boolean COMPLETION_ENABLED = false;
 
-    private final CssTreeElementFactory.CssTokenImpl place;
+    private final PsiElement place;
     private static final LookupElement[] EMPTY_VARIANTS = new LookupElement[0];
 
-    public CssRulesetReference(CssTreeElementFactory.CssTokenImpl place)
+    public CssRulesetReference(PsiElement place)
     {
         this.place = place;
     }

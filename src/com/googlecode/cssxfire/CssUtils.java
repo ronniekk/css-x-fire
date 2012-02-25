@@ -17,6 +17,7 @@
 package com.googlecode.cssxfire;
 
 import com.googlecode.cssxfire.resolve.CssRulesetReference;
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
@@ -277,5 +278,23 @@ public class CssUtils
         PsiFile file = element instanceof PsiFile ? (PsiFile) element : element.getContainingFile();
         FileType fileType = file.getFileType();
         return !(fileType instanceof PlainTextFileType) && DYNAMIC_CSS_FILETYPES.contains(fileType);
+    }
+
+    @Nullable
+    public static CssMediumList findMediumList(@Nullable PsiElement element)
+    {
+        while (element != null)
+        {
+            ASTNode node = element.getNode();
+            if (node != null)
+            {
+                if ("CSS_MEDIA".equals(node.getElementType().toString()))
+                {
+                    return PsiTreeUtil.getChildOfType(element, CssMediumList.class);
+                }
+            }
+            element = element.getParent();
+        }
+        return null;
     }
 }

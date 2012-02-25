@@ -37,8 +37,8 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.psi.css.CssDeclaration;
-import com.intellij.psi.css.impl.CssTreeElementFactory;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
+import com.intellij.psi.xml.XmlToken;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
@@ -129,7 +129,7 @@ public class IncomingChangesComponent implements ProjectComponent
         }
 
         CssXFireReferenceProvider provider = new CssXFireReferenceProvider();
-        ReferenceProvidersRegistry.getInstance().getRegistrar(CSSLanguage.INSTANCE).registerReferenceProvider(PlatformPatterns.instanceOf(CssTreeElementFactory.CssTokenImpl.class), provider);
+        ReferenceProvidersRegistry.getInstance().getRegistrar(CSSLanguage.INSTANCE).registerReferenceProvider(PlatformPatterns.instanceOf(XmlToken.class), provider);
     }
 
     public void disposeComponent()

@@ -26,7 +26,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssMediumList;
-import com.intellij.psi.css.impl.util.CssUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -120,7 +119,7 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable
     @NotNull
     public String getMedia()
     {
-        CssMediumList mediumList = CssUtil.getMediumList(cssBlock);
+        CssMediumList mediumList = CssUtils.findMediumList(cssBlock);
 
         return mediumList == null ? EMPTY_STRING : mediumList.getText();
     }

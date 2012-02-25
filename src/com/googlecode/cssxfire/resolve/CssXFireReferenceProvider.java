@@ -20,8 +20,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceProvider;
 import com.intellij.psi.css.CssRuleset;
-import com.intellij.psi.css.impl.CssTreeElementFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.xml.XmlToken;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +35,7 @@ public class CssXFireReferenceProvider extends PsiReferenceProvider
     @Override
     public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext)
     {
-        if (psiElement instanceof CssTreeElementFactory.CssTokenImpl)
+        if (psiElement instanceof XmlToken)
         {
             if (PsiTreeUtil.getParentOfType(psiElement, CssRuleset.class) == null)
             {
@@ -44,7 +44,7 @@ public class CssXFireReferenceProvider extends PsiReferenceProvider
             PsiElement prevSibling = psiElement.getPrevSibling();
             if (prevSibling != null && ".".equals(prevSibling.getText()))
             {
-                return new PsiReference[] {new CssRulesetReference((CssTreeElementFactory.CssTokenImpl) psiElement)};
+                return new PsiReference[] {new CssRulesetReference(psiElement)};
             }
         }
         return PsiReference.EMPTY_ARRAY;
