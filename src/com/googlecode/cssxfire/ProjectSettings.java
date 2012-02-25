@@ -50,8 +50,8 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     private boolean fileReduce;
     private boolean currentDocumentsReduce;
     private boolean autoExpand;
-    private boolean resolveVariables;
-    private boolean resolveMixins;
+    private boolean resolveVariables = true;
+    private boolean resolveMixins = true;
 
     private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>()
     {
