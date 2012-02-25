@@ -102,23 +102,7 @@ public class CssUtils
 
     public static PsiSearchHelper getPsiSearchHelper(Project project)
     {
-        /*
-            Temporary(?) facade for getting PsiSearchHelper before and after v 11
-         */
-        PsiSearchHelper helper = ServiceManager.getService(project, PsiSearchHelper.class);
-        if (helper != null)
-        {
-            return helper;
-        }
-        PsiManager psiManager = PsiManager.getInstance(project);
-        try
-        {
-            return (PsiSearchHelper) PsiManager.class.getMethod("getSearchHelper").invoke(psiManager);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Unable to get PsiSearchHelper");
-        }
+        return ServiceManager.getService(project, PsiSearchHelper.class);
     }
 
     public static boolean processParents(@NotNull PsiElement element, @NotNull PsiElementProcessor<PsiElement> processor)
