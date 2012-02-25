@@ -17,6 +17,8 @@
 package com.googlecode.cssxfire;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.css.CssMediumList;
+import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.TextOccurenceProcessor;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +31,7 @@ import java.util.Set;
  */
 public class CssMediaSearchProcessor implements TextOccurenceProcessor
 {
-    private final Set<PsiElement> mediaLists = new HashSet<PsiElement>();
+    private final Set<CssMediumList> mediaLists = new HashSet<CssMediumList>();
     private @NotNull String media;
     private @NotNull String word;
 
@@ -52,11 +54,9 @@ public class CssMediaSearchProcessor implements TextOccurenceProcessor
 
     public boolean execute(PsiElement element, int offsetInElement)
     {
-        // CssMediumListImpl mediumList = element.getParent()
-        PsiElement mediumList = CssUtils.findMediumList(element);
+        CssMediumList mediumList = CssUtil.getMediumList(element);
         if (mediumList != null)
         {
-            // CssMediaImpl mediaImpl = mediumList.getParent()
             String text = mediumList.getText();
             if (media.equals(StringUtils.normalizeWhitespace(text)))
             {
@@ -66,8 +66,8 @@ public class CssMediaSearchProcessor implements TextOccurenceProcessor
         return false;
     }
 
-    public Set<PsiElement> getMediaLists()
+    public Set<CssMediumList> getMediaLists()
     {
-        return new HashSet<PsiElement>(mediaLists);
+        return new HashSet<CssMediumList>(mediaLists);
     }
 }

@@ -20,11 +20,9 @@ import com.googlecode.cssxfire.tree.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.css.CssBlock;
-import com.intellij.psi.css.CssDeclaration;
-import com.intellij.psi.css.CssRulesetList;
+import com.intellij.psi.css.*;
+import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
@@ -67,7 +65,7 @@ public class IncomingChangesProcessor
         final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
 
         // find possible media query targets with its own processor
-        Set<PsiElement> mediaCandidates = findCandidateMediaLists();
+        Set<CssMediumList> mediaCandidates = findCandidateMediaLists();
 
         // find possible file targets with its own search
         Set<PsiFile> fileCandidates = findCandidateFiles();
@@ -112,11 +110,11 @@ public class IncomingChangesProcessor
 
             // remove from collected files and media
             deleteCandidate(fileCandidates, file);
-            deleteCandidate(mediaCandidates, CssUtils.findMediumList(block));
+            deleteCandidate(mediaCandidates, CssUtil.getMediumList(block));
         }
 
         // add candidates from remaining media candidates
-        for (PsiElement mediaCandidate : mediaCandidates)
+        for (CssMediumList mediaCandidate : mediaCandidates)
         {
             // remove from collected files
             deleteCandidate(fileCandidates, mediaCandidate.getContainingFile().getOriginalFile());
@@ -158,10 +156,10 @@ public class IncomingChangesProcessor
      * @param destinationElement the anchor
      * @return a path for a non-existing CSS declaration
      */
-    private CssDeclarationPath createNewPath(PsiFile file, PsiElement destinationElement)
+    private CssDeclarationPath createNewPath(PsiFile file, CssElement destinationElement)
     {
         CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue(), changesBean.isImportant());
-        CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted(), changesBean.isImportant());
+        CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
         CssFileNode fileNode = new CssFileNode(file);
 
@@ -173,13 +171,13 @@ public class IncomingChangesProcessor
      * @return all matching media query elements
      */
     @NotNull
-    private Set<PsiElement> findCandidateMediaLists()
+    private Set<CssMediumList> findCandidateMediaLists()
     {
-        final Set<PsiElement> elements = new HashSet<PsiElement>();
+        final Set<CssMediumList> elements = new HashSet<CssMediumList>();
         if (changesBean.getMedia().length() > 0)
         {
             CssMediaSearchProcessor mediaProcessor = SearchProcessorCache.getInstance(project).getMediaSearchProcessor(changesBean.getMedia());
-            Set<PsiElement> mediaLists = mediaProcessor.getMediaLists();
+            Set<CssMediumList> mediaLists = mediaProcessor.getMediaLists();
 
             if (LOG.isDebugEnabled())
             {

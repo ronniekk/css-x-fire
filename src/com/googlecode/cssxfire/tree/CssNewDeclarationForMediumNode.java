@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
 {
-    protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)
+    protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssMediumList destinationElement, boolean deleted)
     {
         super(cssDeclaration, destinationElement, deleted);
     }

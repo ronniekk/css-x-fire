@@ -18,8 +18,7 @@ package com.googlecode.cssxfire.tree;
 
 import com.googlecode.cssxfire.ui.Colors;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.css.CssDeclaration;
-import com.intellij.psi.css.CssElement;
+import com.intellij.psi.css.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.TreeNode;
@@ -33,28 +32,21 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
     @NotNull protected final CssElement destinationBlock;
     @NotNull protected final String property;
 
-    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull PsiElement destinationElement, boolean deleted, boolean important)
+    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)
     {
-        String name = destinationElement.getClass().getSimpleName();
-        /*
-            Following checks are really ugly but exists only for the reason that the expected classes
-            are package protected and may not be referenced (applies to both interfaces and implementations).
-
-            TODO: do a cleaner/better type check, perhaps by inspecting the AST element types instead
-         */
-        if ("CssBlockImpl".equals(name))
+        if (destinationElement instanceof CssBlock)
         {
-            return new CssNewDeclarationForBlockNode(cssDeclaration, (CssElement) destinationElement, deleted);
+            return new CssNewDeclarationForBlockNode(cssDeclaration, (CssBlock) destinationElement, deleted);
         }
-        if ("CssMediumListImpl".equals(name))
+        if (destinationElement instanceof CssMediumList)
         {
-            return new CssNewDeclarationForMediumNode(cssDeclaration, (CssElement) destinationElement, deleted);
+            return new CssNewDeclarationForMediumNode(cssDeclaration, (CssMediumList) destinationElement, deleted);
         }
-        if ("CssRulesetListImpl".equals(name))
+        if (destinationElement instanceof CssRulesetList)
         {
-            return new CssNewDeclarationForRulesetListNode(cssDeclaration, (CssElement) destinationElement, deleted);
+            return new CssNewDeclarationForRulesetListNode(cssDeclaration, (CssRulesetList) destinationElement, deleted);
         }
-        throw new IllegalArgumentException("Can not create CssNewDeclarationNode for destination of type " + name);
+        throw new IllegalArgumentException("Can not create CssNewDeclarationNode for destination of type " + destinationElement.getClass().getName());
     }
 
     protected CssNewDeclarationNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)

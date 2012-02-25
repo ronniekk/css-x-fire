@@ -100,26 +100,6 @@ public class CssUtils
         return ref.get();
     }
 
-    public static PsiElement findMediumList(PsiElement element)
-    {
-        /*
-            This is a facade for the helper method in CssUtil. Reflection is used since the signature
-            return type has changed and we want the plugin to work regardless which library it is compiled and
-            linked against.
-         */
-
-        try
-        {
-            Method method = CssUtil.class.getMethod("getMediumList", PsiElement.class);
-
-            return (PsiElement) method.invoke(null, element);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Unable to get medium list");
-        }
-    }
-
     public static PsiSearchHelper getPsiSearchHelper(Project project)
     {
         /*

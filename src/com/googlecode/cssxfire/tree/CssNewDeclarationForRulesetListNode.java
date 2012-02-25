@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
 {
-    protected CssNewDeclarationForRulesetListNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement /* CssRulesetList */ destinationElement, boolean deleted)
+    protected CssNewDeclarationForRulesetListNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssRulesetList destinationElement, boolean deleted)
     {
         super(cssDeclaration, destinationElement, deleted);
     }

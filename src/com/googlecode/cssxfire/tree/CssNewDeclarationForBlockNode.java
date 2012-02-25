@@ -28,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CssNewDeclarationForBlockNode extends CssNewDeclarationNode
 {
-    public CssNewDeclarationForBlockNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement /* CssBlock */ destinationElement, boolean deleted)
+    public CssNewDeclarationForBlockNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssBlock destinationBlock, boolean deleted)
     {
-        super(cssDeclaration, destinationElement, deleted);
+        super(cssDeclaration, destinationBlock, deleted);
     }
 
     @Override
