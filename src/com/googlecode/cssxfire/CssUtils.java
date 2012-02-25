@@ -20,18 +20,21 @@ import com.googlecode.cssxfire.resolve.CssRulesetReference;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.*;
 import com.intellij.psi.css.*;
-import com.intellij.psi.css.impl.util.CssUtil;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.PsiSearchHelper;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +44,13 @@ import java.util.Set;
  */
 public class CssUtils
 {
+    /** See {@link #isDynamicCssLanguage(com.intellij.psi.PsiElement)} */
+    private static final Collection<FileType> DYNAMIC_CSS_FILETYPES = Arrays.asList(
+            FileTypeManager.getInstance().getStdFileType("LESS"),
+            FileTypeManager.getInstance().getStdFileType("SASS"),
+            FileTypeManager.getInstance().getStdFileType("SCSS")
+    );
+
     public static CssDeclaration createDeclaration(Project project, String selector, String property, String value, boolean important)
     {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
@@ -217,7 +227,7 @@ public class CssUtils
                 }
             }
         }
-        if (ProjectSettings.getInstance(block.getProject()).isResolveMixins())
+        if (isDynamicCssLanguage(block) && ProjectSettings.getInstance(block.getProject()).isResolveMixins())
         {
             return PsiTreeUtil.processElements(block, new PsiElementProcessor()
             {
@@ -245,5 +255,17 @@ public class CssUtils
             });
         }
         return true;
+    }
+
+    /**
+     * Checks if the element is contained in a Less or Sass language file
+     * @param element an element
+     * @return <tt>true</tt> if the element is a file or is contained in a file of type Less/Sass
+     */
+    public static boolean isDynamicCssLanguage(@NotNull PsiElement element)
+    {
+        PsiFile file = element instanceof PsiFile ? (PsiFile) element : element.getContainingFile();
+        FileType fileType = file.getFileType();
+        return !(fileType instanceof PlainTextFileType) && DYNAMIC_CSS_FILETYPES.contains(fileType);
     }
 }

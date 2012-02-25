@@ -146,7 +146,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
         {
             return null;
         }
-        if (ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables())
+        if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables())
         {
             CssTermList assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
             if (assignment != null)
