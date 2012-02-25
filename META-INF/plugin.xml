@@ -115,7 +115,7 @@
         </ul>
     ]]>
     </change-notes>
-    <idea-version since-build="93.13"/>
+    <idea-version since-build="111.1"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
 
