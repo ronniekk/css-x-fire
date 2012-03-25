@@ -1,4 +1,4 @@
-<idea-plugin version="2" url="http://code.google.com/p/css-x-fire/">
+<idea-plugin version="2" url="https://github.com/ronniekk/css-x-fire">
     <name>CSS-X-Fire</name>
     <description><![CDATA[
         <p>Connects Firebug CSS editor with any IDE with CSS capabilities (IntelliJ IDEA Ultimate, PhpStorm, WebStorm, PyCharm, RubyMine).</p>
