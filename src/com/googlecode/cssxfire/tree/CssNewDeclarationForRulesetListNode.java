@@ -26,27 +26,21 @@ import org.jetbrains.annotations.NotNull;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
-{
-    protected CssNewDeclarationForRulesetListNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssRulesetList destinationElement, boolean deleted)
-    {
+public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode {
+    protected CssNewDeclarationForRulesetListNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssRulesetList destinationElement, boolean deleted) {
         super(cssDeclaration, destinationElement, deleted);
     }
 
-    private CssBlock ensureSelectorTargetExists()
-    {
+    private CssBlock ensureSelectorTargetExists() {
         CssSelectorNode selectorNode = getCssSelectorNode();
         String selector = selectorNode.getSelector();
 
         CssRulesetList rulesetList = (CssRulesetList) destinationBlock;
         CssRuleset[] rulesets = rulesetList.getRulesets();
-        if (rulesets != null)
-        {
-            for (CssRuleset ruleset : rulesets)
-            {
+        if (rulesets != null) {
+            for (CssRuleset ruleset : rulesets) {
                 CssSelectorList selectorList = ruleset.getSelectorList();
-                if (selectorList != null && selector.equals(selectorList.getText()))
-                {
+                if (selectorList != null && selector.equals(selectorList.getText())) {
                     return ruleset.getBlock();
                 }
             }
@@ -56,8 +50,7 @@ public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
 
         CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
         PsiElement psiElement = rulesetList.add(ruleset);
-        if (psiElement instanceof CssRuleset)
-        {
+        if (psiElement instanceof CssRuleset) {
             return ((CssRuleset) psiElement).getBlock();
         }
 
@@ -66,12 +59,9 @@ public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
     }
 
     @Override
-    public void applyToCode()
-    {
-        try
-        {
-            if (isValid() && !deleted)
-            {
+    public void applyToCode() {
+        try {
+            if (isValid() && !deleted) {
                 CssBlock cssBlock = ensureSelectorTargetExists();
 
                 CssDeclaration[] declarations = cssBlock.getDeclarations();
@@ -80,9 +70,7 @@ public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode
                         : null;
                 cssBlock.addDeclaration(property, value + (important ? " !important" : ""), anchor);
             }
-        }
-        catch (IncorrectOperationException e)
-        {
+        } catch (IncorrectOperationException e) {
             e.printStackTrace();
         }
     }

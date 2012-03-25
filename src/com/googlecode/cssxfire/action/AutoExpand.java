@@ -27,32 +27,26 @@ import org.jetbrains.annotations.Nullable;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class AutoExpand extends ToggleAction
-{
+public class AutoExpand extends ToggleAction {
     @Nullable
-    protected ProjectSettings getProjectSettings(AnActionEvent event)
-    {
+    protected ProjectSettings getProjectSettings(AnActionEvent event) {
         Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
-        if (project == null)
-        {
+        if (project == null) {
             return null;
         }
         return ProjectSettings.getInstance(project);
     }
 
     @Override
-    public boolean isSelected(AnActionEvent e)
-    {
+    public boolean isSelected(AnActionEvent e) {
         ProjectSettings projectSettings = getProjectSettings(e);
         return projectSettings != null && projectSettings.isAutoExpand();
     }
 
     @Override
-    public void setSelected(AnActionEvent e, boolean state)
-    {
+    public void setSelected(AnActionEvent e, boolean state) {
         ProjectSettings projectSettings = getProjectSettings(e);
-        if (projectSettings != null)
-        {
+        if (projectSettings != null) {
             projectSettings.setAutoExpand(state);
         }
     }

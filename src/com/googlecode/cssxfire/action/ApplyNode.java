@@ -23,14 +23,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ApplyNode extends AbstractIncomingChangesAction
-{
+public class ApplyNode extends AbstractIncomingChangesAction {
     @Override
-    public void actionPerformed(AnActionEvent event)
-    {
+    public void actionPerformed(AnActionEvent event) {
         IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
-        if (changesComponent == null)
-        {
+        if (changesComponent == null) {
             return;
         }
         changesComponent.getTreeViewModel().applySelectedNode();

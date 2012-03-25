@@ -31,35 +31,28 @@ import java.util.List;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath>
-{
+public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
     private static final Logger LOG = Logger.getInstance(FileReduceStrategy.class.getName());
 
     @NotNull
     private String filename;
 
-    public FileReduceStrategy(@NotNull String filename)
-    {
+    public FileReduceStrategy(@NotNull String filename) {
         this.filename = filename;
     }
 
-    public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    public void reduce(@NotNull Collection<CssDeclarationPath> candidates) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reducing " + candidates.size() + " candidates for filename: " + filename);
         }
-        if (candidates.isEmpty())
-        {
+        if (candidates.isEmpty()) {
             // nothing to do here
             return;
         }
 
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
-        for (CssDeclarationPath candidate : candidates)
-        {
-            if (filename.equals(candidate.getFileNode().getFilename()))
-            {
+        for (CssDeclarationPath candidate : candidates) {
+            if (filename.equals(candidate.getFileNode().getFilename())) {
                 // filename matches candidate file
                 matches.add(candidate);
             }

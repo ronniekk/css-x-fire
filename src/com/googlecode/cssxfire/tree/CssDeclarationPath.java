@@ -20,42 +20,35 @@ package com.googlecode.cssxfire.tree;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssDeclarationPath
-{
+public class CssDeclarationPath {
     private CssFileNode fileNode;
     private CssSelectorNode selectorNode;
     private CssDeclarationNode declarationNode;
 
-    public CssDeclarationPath(CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode)
-    {
+    public CssDeclarationPath(CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode) {
         this.fileNode = fileNode;
         this.selectorNode = selectorNode;
         this.declarationNode = declarationNode;
     }
 
-    public CssTreeNode[] getPathFromRoot()
-    {
-        return new CssTreeNode[] {fileNode, selectorNode, declarationNode};
+    public CssTreeNode[] getPathFromRoot() {
+        return new CssTreeNode[]{fileNode, selectorNode, declarationNode};
     }
 
-    public CssFileNode getFileNode()
-    {
+    public CssFileNode getFileNode() {
         return fileNode;
     }
 
-    public CssSelectorNode getSelectorNode()
-    {
+    public CssSelectorNode getSelectorNode() {
         return selectorNode;
     }
 
-    public CssDeclarationNode getDeclarationNode()
-    {
+    public CssDeclarationNode getDeclarationNode() {
         return declarationNode;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getClass().getSimpleName()
                 + " ['" + fileNode.getVirtualFile()
                 + "', '" + selectorNode.getSelector()

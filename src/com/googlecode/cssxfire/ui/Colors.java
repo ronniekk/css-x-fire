@@ -22,8 +22,7 @@ import java.awt.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface Colors
-{
+public interface Colors {
     public static final Color MODIFIED = new Color(0, 0, 255);
     public static final Color INVALID = new Color(128, 128, 128);
     public static final Color ADDED = new Color(0, 128, 0);

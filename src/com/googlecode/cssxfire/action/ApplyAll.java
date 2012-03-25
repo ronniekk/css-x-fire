@@ -23,16 +23,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ApplyAll extends AbstractIncomingChangesAction
-{
+public class ApplyAll extends AbstractIncomingChangesAction {
     public static final String ID = ApplyAll.class.getName();
 
     @Override
-    public void actionPerformed(AnActionEvent event)
-    {
+    public void actionPerformed(AnActionEvent event) {
         IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
-        if (changesComponent == null)
-        {
+        if (changesComponent == null) {
             return;
         }
         changesComponent.getTreeViewModel().applyPending();

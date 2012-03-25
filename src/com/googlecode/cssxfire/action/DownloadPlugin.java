@@ -24,10 +24,8 @@ import com.intellij.ide.BrowserUtil;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class DownloadPlugin extends AnAction
-{
-    public void actionPerformed(AnActionEvent e)
-    {
+public class DownloadPlugin extends AnAction {
+    public void actionPerformed(AnActionEvent e) {
         BrowserUtil.launchBrowser("http://localhost:6776/files/cssxfire.xpi");
     }
 }

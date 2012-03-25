@@ -28,23 +28,18 @@ import javax.swing.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssRootNode extends CssTreeNode
-{
+public class CssRootNode extends CssTreeNode {
     private final Project project;
 
-    public CssRootNode(Project project)
-    {
+    public CssRootNode(Project project) {
         this.project = project;
     }
 
     @Override
-    public Icon getIcon()
-    {
+    public Icon getIcon() {
         VirtualFile baseDir = project.getBaseDir();
-        if (baseDir != null)
-        {
-            if (!project.isInitialized())
-            {
+        if (baseDir != null) {
+            if (!project.isInitialized()) {
                 return null; // VirtualFile.getIcon() removed in v 11
             }
             PsiDirectory directory = PsiManager.getInstance(project).findDirectory(baseDir);
@@ -54,21 +49,18 @@ public class CssRootNode extends CssTreeNode
     }
 
     @Override
-    public String getText()
-    {
+    public String getText() {
         VirtualFile baseDir = project.getBaseDir();
-        return baseDir != null ?  project.getName() + " (" + baseDir.getPresentableUrl() + ")" : project.getName();
+        return baseDir != null ? project.getName() + " (" + baseDir.getPresentableUrl() + ")" : project.getName();
     }
 
     @Override
-    public ActionGroup getActionGroup()
-    {
+    public ActionGroup getActionGroup() {
         return null;
     }
 
     @Override
-    public boolean isRoot()
-    {
+    public boolean isRoot() {
         return true;
     }
 }

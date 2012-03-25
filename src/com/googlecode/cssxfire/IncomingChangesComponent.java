@@ -44,79 +44,65 @@ import java.util.Collection;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class IncomingChangesComponent implements ProjectComponent
-{
+public class IncomingChangesComponent implements ProjectComponent {
     public static final String TOOLWINDOW_ID = "CSS-X-Fire";
 
     private final Project project;
     private final CssToolWindow cssToolWindow;
 
-    private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter()
-    {
+    private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter() {
         @Override
-        public void childReplaced(PsiTreeChangeEvent event)
-        {
+        public void childReplaced(PsiTreeChangeEvent event) {
             IncomingChangesComponent.this.onPsiChange(event);
         }
 
         @Override
-        public void childRemoved(PsiTreeChangeEvent event)
-        {
+        public void childRemoved(PsiTreeChangeEvent event) {
             IncomingChangesComponent.this.onPsiChange(event);
         }
     };
 
-    private void onPsiChange(PsiTreeChangeEvent event)
-    {
-        if (event.getOldChild() instanceof CssDeclaration || event.getParent() instanceof CssDeclaration)
-        {
+    private void onPsiChange(PsiTreeChangeEvent event) {
+        if (event.getOldChild() instanceof CssDeclaration || event.getParent() instanceof CssDeclaration) {
             cssToolWindow.refreshLeafs();
         }
     }
 
-    public IncomingChangesComponent(Project project)
-    {
+    public IncomingChangesComponent(Project project) {
         this.project = project;
         this.cssToolWindow = new CssToolWindow(project);
     }
 
     /**
      * Helper
+     *
      * @param project the project
      * @return the IncomingChangesComponent instance
      */
-    public static IncomingChangesComponent getInstance(Project project)
-    {
+    public static IncomingChangesComponent getInstance(Project project) {
         return project.getComponent(IncomingChangesComponent.class);
     }
 
-    public void initComponent()
-    {
-        if (!CssXFireConnector.getInstance().isInitialized())
-        {
+    public void initComponent() {
+        if (!CssXFireConnector.getInstance().isInitialized()) {
             return;
         }
         IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(PluginId.getId("CSS-X-Fire"));
-        if (pluginDescriptor == null)
-        {
+        if (pluginDescriptor == null) {
             return;
         }
         String currentVersion = pluginDescriptor.getVersion();
         AppMeta appMeta = CssXFireConnector.getInstance().getState();
         String previousVersion = appMeta.getVersion();
-        if (!currentVersion.equals(previousVersion))
-        {
+        if (!currentVersion.equals(previousVersion)) {
             appMeta.setVersion(currentVersion);
             final String message = previousVersion == null
                     ? "CSS-X-Fire has been installed.\n\nPress Yes to install the browser plugin."
                     : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress Yes to update the browser plugin.";
-            ApplicationManager.getApplication().invokeLater(new Runnable()
-            {
-                public void run()
-                {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                public void run() {
                     int res = Messages.showYesNoDialog(project, message, "CSS-X-Fire", null);
-                    if (res == 0)
-                    {
+                    if (res == 0) {
                         new Help().actionPerformed(null);
                     }
                 }
@@ -124,21 +110,17 @@ public class IncomingChangesComponent implements ProjectComponent
         }
     }
 
-    public void disposeComponent()
-    {
+    public void disposeComponent() {
         // TODO: insert component disposal logic here
     }
 
     @NotNull
-    public String getComponentName()
-    {
+    public String getComponentName() {
         return "IncomingChangesComponent";
     }
 
-    public void projectOpened()
-    {
-        if (!CssXFireConnector.getInstance().isInitialized())
-        {
+    public void projectOpened() {
+        if (!CssXFireConnector.getInstance().isInitialized()) {
             return;
         }
         final ToolWindow toolWindow = ToolWindowManager.getInstance(project).registerToolWindow(TOOLWINDOW_ID, true, ToolWindowAnchor.BOTTOM);
@@ -155,10 +137,8 @@ public class IncomingChangesComponent implements ProjectComponent
         PsiManager.getInstance(project).addPsiTreeChangeListener(myListener);
     }
 
-    public void projectClosed()
-    {
-        if (!CssXFireConnector.getInstance().isInitialized())
-        {
+    public void projectClosed() {
+        if (!CssXFireConnector.getInstance().isInitialized()) {
             return;
         }
         PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
@@ -170,14 +150,10 @@ public class IncomingChangesComponent implements ProjectComponent
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
 
-    public void processRule(final FirebugChangesBean changesBean)
-    {
-        DumbService.getInstance(project).smartInvokeLater(new Runnable()
-        {
-            public void run()
-            {
-                if (!project.isInitialized())
-                {
+    public void processRule(final FirebugChangesBean changesBean) {
+        DumbService.getInstance(project).smartInvokeLater(new Runnable() {
+            public void run() {
+                if (!project.isInitialized()) {
                     return;
                 }
 
@@ -191,13 +167,11 @@ public class IncomingChangesComponent implements ProjectComponent
                 ReduceStrategyManager.getStrategy(project, routedChangesBean).reduce(candidates);
 
                 // Render remaining candidates in the "Incoming changes" tree view
-                for (CssDeclarationPath candidate : candidates)
-                {
+                for (CssDeclarationPath candidate : candidates) {
                     cssToolWindow.getTreeModel().intersect(candidate);
                 }
 
-                if (ProjectSettings.getInstance(project).isAutoExpand())
-                {
+                if (ProjectSettings.getInstance(project).isAutoExpand()) {
                     cssToolWindow.expandAll();
                 }
             }
@@ -205,24 +179,18 @@ public class IncomingChangesComponent implements ProjectComponent
     }
 
     @NotNull
-    public TreeViewModel getTreeViewModel()
-    {
+    public TreeViewModel getTreeViewModel() {
         return cssToolWindow;
     }
 
-    public void handleEvent(final FirebugEvent event)
-    {
-        DumbService.getInstance(project).smartInvokeLater(new Runnable()
-        {
-            public void run()
-            {
-                if (!project.isInitialized())
-                {
+    public void handleEvent(final FirebugEvent event) {
+        DumbService.getInstance(project).smartInvokeLater(new Runnable() {
+            public void run() {
+                if (!project.isInitialized()) {
                     return;
                 }
 
-                if ("refresh".equals(event.getName()) && ProjectSettings.getInstance(project).isAutoClear())
-                {
+                if ("refresh".equals(event.getName()) && ProjectSettings.getInstance(project).isAutoClear()) {
                     cssToolWindow.clearTree();
                 }
             }

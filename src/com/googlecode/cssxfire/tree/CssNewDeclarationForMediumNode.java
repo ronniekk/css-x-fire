@@ -26,27 +26,21 @@ import org.jetbrains.annotations.NotNull;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
-{
-    protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssMediumList destinationElement, boolean deleted)
-    {
+public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode {
+    protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssMediumList destinationElement, boolean deleted) {
         super(cssDeclaration, destinationElement, deleted);
     }
 
-    private CssBlock ensureSelectorTargetExists()
-    {
+    private CssBlock ensureSelectorTargetExists() {
         CssSelectorNode selectorNode = getCssSelectorNode();
         String selector = selectorNode.getSelector();
 
         PsiElement element = destinationBlock;
-        while ((element = element.getNextSibling()) != null)
-        {
-            if (element instanceof CssRuleset)
-            {
+        while ((element = element.getNextSibling()) != null) {
+            if (element instanceof CssRuleset) {
                 CssRuleset cssRuleset = (CssRuleset) element;
                 CssSelectorList selectorList = cssRuleset.getSelectorList();
-                if (selectorList != null && selector.equals(selectorList.getText()))
-                {
+                if (selectorList != null && selector.equals(selectorList.getText())) {
                     return cssRuleset.getBlock();
                 }
             }
@@ -58,8 +52,7 @@ public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
         // if "destinationBlock" is a CssMediumList its parent must be a CssMedia element
         CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
         PsiElement psiElement = parent.addAfter(ruleset, destinationBlock);
-        if (psiElement instanceof CssRuleset)
-        {
+        if (psiElement instanceof CssRuleset) {
             return ((CssRuleset) psiElement).getBlock();
         }
 
@@ -68,12 +61,9 @@ public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
     }
 
     @Override
-    public void applyToCode()
-    {
-        try
-        {
-            if (isValid() && !deleted)
-            {
+    public void applyToCode() {
+        try {
+            if (isValid() && !deleted) {
                 CssBlock cssBlock = ensureSelectorTargetExists();
 
                 CssDeclaration[] declarations = cssBlock.getDeclarations();
@@ -82,9 +72,7 @@ public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode
                         : null;
                 cssBlock.addDeclaration(property, value + (important ? " !important" : ""), anchor);
             }
-        }
-        catch (IncorrectOperationException e)
-        {
+        } catch (IncorrectOperationException e) {
             e.printStackTrace();
         }
     }

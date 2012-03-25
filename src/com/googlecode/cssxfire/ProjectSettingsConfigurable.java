@@ -40,10 +40,8 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ProjectSettingsConfigurable implements SearchableConfigurable, NonDefaultProjectConfigurable
-{
-    public static ProjectSettingsConfigurable getInstance(final Project project)
-    {
+public class ProjectSettingsConfigurable implements SearchableConfigurable, NonDefaultProjectConfigurable {
+    public static ProjectSettingsConfigurable getInstance(final Project project) {
         return ShowSettingsUtil.getInstance().findProjectConfigurable(project, ProjectSettingsConfigurable.class);
     }
 
@@ -60,63 +58,50 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
     private JPanel myPanel;
     private JButton buttonSetRoot;
 
-    public ProjectSettingsConfigurable(Project project)
-    {
+    public ProjectSettingsConfigurable(Project project) {
         myProject = project;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return getClass().getName();
     }
 
-    public Runnable enableSearch(String option)
-    {
+    public Runnable enableSearch(String option) {
         return null;
     }
 
-    public JComponent createComponent()
-    {
+    public JComponent createComponent() {
         routesTable = new FileTreeTable();
         routesTable.getColumnModel().getColumn(0).setPreferredWidth(260);
         routesTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 
         routesScrollPane.setViewportView(routesTable);
 
-        routesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
-            public void valueChanged(ListSelectionEvent e)
-            {
+        routesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
                 updateWebRootButton();
             }
         });
-        buttonSetRoot.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        buttonSetRoot.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 updateWebRoot();
             }
         });
 
         reset();
         updateWebRootButton();
-        
+
         return myPanel;
     }
 
-    private void updateWebRoot()
-    {
+    private void updateWebRoot() {
         int selectedRow = routesTable.getSelectedRow();
-        if (selectedRow != -1)
-        {
-            Map<VirtualFile,String> currentValues = routesTable.getValues();
+        if (selectedRow != -1) {
+            Map<VirtualFile, String> currentValues = routesTable.getValues();
             Object file = routesTable.getValueAt(selectedRow, 0);
-            if (file instanceof VirtualFile)
-            {
-                for (VirtualFile key : new HashSet<VirtualFile>(currentValues.keySet()))
-                {
-                    if ("/".equals(currentValues.get(key)))
-                    {
+            if (file instanceof VirtualFile) {
+                for (VirtualFile key : new HashSet<VirtualFile>(currentValues.keySet())) {
+                    if ("/".equals(currentValues.get(key))) {
                         currentValues.remove(key);
                     }
                 }
@@ -127,11 +112,9 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         }
     }
 
-    private void updateWebRootButton()
-    {
+    private void updateWebRootButton() {
         int selectedRow = routesTable.getSelectedRow();
-        if (selectedRow == -1)
-        {
+        if (selectedRow == -1) {
             buttonSetRoot.setEnabled(false);
             return;
         }
@@ -140,8 +123,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         buttonSetRoot.setEnabled(!"/".equals(route) && file instanceof VirtualFile && ((VirtualFile) file).isDirectory());
     }
 
-    public boolean isModified()
-    {
+    public boolean isModified() {
         ProjectSettings state = ProjectSettings.getInstance(myProject);
         return !state.getRoutes().getMappings().equals(routesTable.getValues())
                 || state.isAutoClear() != checkBoxAutoClear.isSelected()
@@ -153,8 +135,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
                 || state.isResolveMixins() != checkBoxResolveMixins.isSelected();
     }
 
-    public void apply() throws ConfigurationException
-    {
+    public void apply() throws ConfigurationException {
         ProjectSettings state = ProjectSettings.getInstance(myProject);
         state.getRoutes().setMappings(routesTable.getValues());
         state.setAutoClear(checkBoxAutoClear.isSelected());
@@ -170,8 +151,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         CssXFireConnector.getInstance().getState().setSmartReduce(checkBoxFileReduce.isSelected());
     }
 
-    public void reset()
-    {
+    public void reset() {
         ProjectSettings state = ProjectSettings.getInstance(myProject);
         routesTable.reset(state.getRoutes().getMappings());
         checkBoxAutoClear.setSelected(state.isAutoClear());
@@ -183,58 +163,47 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         checkBoxUseRoutes.setSelected(state.isUseRoutes());
     }
 
-    public void disposeUIResources()
-    {
+    public void disposeUIResources() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Nls
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return "CSS-X-Fire";
     }
 
-    public Icon getIcon()
-    {
+    public Icon getIcon() {
         return null;
     }
 
-    public String getHelpTopic()
-    {
+    public String getHelpTopic() {
         return null;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         routesScrollPane = new MyScrollPane(new JTable());
     }
 
-    private class FileTreeTable extends AbstractFileTreeTable<String>
-    {
-        private FileTreeTable()
-        {
+    private class FileTreeTable extends AbstractFileTreeTable<String> {
+        private FileTreeTable() {
             super(myProject, String.class, "Route");
         }
 
         @Override
-        protected boolean isValueEditableForFile(VirtualFile virtualFile)
-        {
-            if (virtualFile == null)
-            {
+        protected boolean isValueEditableForFile(VirtualFile virtualFile) {
+            if (virtualFile == null) {
                 return false;
             }
             return !virtualFile.getUrl().startsWith(getSettingsUrl());
         }
 
         @Override
-        protected boolean isNullObject(String value)
-        {
+        protected boolean isNullObject(String value) {
             /*
                 Disallow any route that has leading or trailing whitespace, or
                 does not start with a forward slash.
              */
-            if (value == null)
-            {
+            if (value == null) {
                 return true;
             }
             String trimmed = value.trim();
@@ -242,33 +211,26 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         }
 
         @NotNull
-        private String getSettingsUrl()
-        {
+        private String getSettingsUrl() {
             VirtualFile settingsDir = myProject.getBaseDir();
             return (settingsDir != null ? settingsDir.getUrl() : "") + "/.idea";
         }
     }
 
-    private static class MyScrollPane extends JScrollPane
-    {
-        MyScrollPane(JComponent view)
-        {
+    private static class MyScrollPane extends JScrollPane {
+        MyScrollPane(JComponent view) {
             super(view);
         }
 
         /**
          * Scrollpane's background should be always in sync with view's background
          */
-        public void setUI(ScrollPaneUI ui)
-        {
+        public void setUI(ScrollPaneUI ui) {
             super.setUI(ui);
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
                     Component component = getViewport().getView();
-                    if (component != null)
-                    {
+                    if (component != null) {
                         getViewport().setBackground(component.getBackground());
                     }
                 }

@@ -33,8 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Project search cache.
  */
-public class SearchProcessorCache implements ProjectComponent
-{
+public class SearchProcessorCache implements ProjectComponent {
     private final Map<String, CssSelectorSearchProcessor> selectorProcessorCache = new ConcurrentHashMap<String, CssSelectorSearchProcessor>();
     private final Map<String, CssMediaSearchProcessor> mediaProcessorCache = new ConcurrentHashMap<String, CssMediaSearchProcessor>();
 
@@ -42,24 +41,22 @@ public class SearchProcessorCache implements ProjectComponent
     private final short searchContext = UsageSearchContext.ANY;
     private final Project project;
 
-    public SearchProcessorCache(Project project)
-    {
+    public SearchProcessorCache(Project project) {
         this.project = project;
         this.searchScope = GlobalSearchScope.projectScope(project);
     }
 
     /**
      * Helper
+     *
      * @param project the project
      * @return the {@link com.googlecode.cssxfire.SearchProcessorCache} instance tied to the project
      */
-    public static SearchProcessorCache getInstance(Project project)
-    {
+    public static SearchProcessorCache getInstance(Project project) {
         return project.getComponent(SearchProcessorCache.class);
     }
 
-    private void clearCaches()
-    {
+    private void clearCaches() {
         selectorProcessorCache.clear();
         mediaProcessorCache.clear();
     }
@@ -67,15 +64,14 @@ public class SearchProcessorCache implements ProjectComponent
     /**
      * Gets a new or cached search processor for given selector. In either case the returned processor has
      * been processed with candidates in the project.
+     *
      * @param selector the selector to search for
      * @return a {@link com.googlecode.cssxfire.CssSelectorSearchProcessor} instance
      */
     @NotNull
-    public CssSelectorSearchProcessor getSelectorSearchProcessor(@NotNull String selector)
-    {
+    public CssSelectorSearchProcessor getSelectorSearchProcessor(@NotNull String selector) {
         CssSelectorSearchProcessor selectorProcessor = selectorProcessorCache.get(selector);
-        if (selectorProcessor != null)
-        {
+        if (selectorProcessor != null) {
             return selectorProcessor;
         }
 
@@ -91,15 +87,14 @@ public class SearchProcessorCache implements ProjectComponent
     /**
      * Gets a new or cached search processor for given media query. In either case the returned processor has
      * been processed with candidates in the project.
+     *
      * @param media the media query to search for
      * @return a {@link com.googlecode.cssxfire.CssMediaSearchProcessor} instance
      */
     @NotNull
-    public CssMediaSearchProcessor getMediaSearchProcessor(@NotNull String media)
-    {
+    public CssMediaSearchProcessor getMediaSearchProcessor(@NotNull String media) {
         CssMediaSearchProcessor mediaProcessor = mediaProcessorCache.get(media);
-        if (mediaProcessor != null)
-        {
+        if (mediaProcessor != null) {
             return mediaProcessor;
         }
 
@@ -112,73 +107,61 @@ public class SearchProcessorCache implements ProjectComponent
         return mediaProcessor;
     }
 
-    public void projectOpened()
-    {
+    public void projectOpened() {
         // Attach cache invalidator
         PsiManager.getInstance(project).addPsiTreeChangeListener(myCacheInvalidator);
     }
 
-    public void projectClosed()
-    {
+    public void projectClosed() {
         // Detach cache invalidator
         PsiManager.getInstance(project).removePsiTreeChangeListener(myCacheInvalidator);
         clearCaches();
     }
 
-    public void initComponent()
-    {
+    public void initComponent() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void disposeComponent()
-    {
+    public void disposeComponent() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @NotNull
-    public String getComponentName()
-    {
+    public String getComponentName() {
         return getClass().getSimpleName();
     }
 
     /**
      * Clears caches on any PSI change
      */
-    private PsiTreeChangeListener myCacheInvalidator = new PsiTreeChangeAdapter()
-    {
+    private PsiTreeChangeListener myCacheInvalidator = new PsiTreeChangeAdapter() {
         @Override
-        public void childAdded(PsiTreeChangeEvent event)
-        {
+        public void childAdded(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childRemoved(PsiTreeChangeEvent event)
-        {
+        public void childRemoved(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childReplaced(PsiTreeChangeEvent event)
-        {
+        public void childReplaced(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childMoved(PsiTreeChangeEvent event)
-        {
+        public void childMoved(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childrenChanged(PsiTreeChangeEvent event)
-        {
+        public void childrenChanged(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void propertyChanged(PsiTreeChangeEvent event)
-        {
+        public void propertyChanged(PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
     };

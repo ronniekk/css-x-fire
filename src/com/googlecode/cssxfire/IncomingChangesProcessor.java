@@ -34,15 +34,13 @@ import java.util.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class IncomingChangesProcessor
-{
+public class IncomingChangesProcessor {
     private static final Logger LOG = Logger.getInstance(IncomingChangesProcessor.class.getName());
 
     private final Project project;
     private final FirebugChangesBean changesBean;
 
-    private IncomingChangesProcessor(Project project, FirebugChangesBean changesBean)
-    {
+    private IncomingChangesProcessor(Project project, FirebugChangesBean changesBean) {
         this.project = project;
         this.changesBean = changesBean;
     }
@@ -50,17 +48,16 @@ public class IncomingChangesProcessor
     /**
      * Process files and CSS elements within the project according to the information reported by the Firebug extension.
      * The mission is to find all possible code that could be affected by the property change in Firebug CSS editor.
-     * @param project the project
+     *
+     * @param project     the project
      * @param changesBean the changes picked up from the Firebug extension
      * @return all candidates matching the selector, media query, and filename contained in the bean
      */
-    static Collection<CssDeclarationPath> getProjectCandidates(Project project, FirebugChangesBean changesBean)
-    {
+    static Collection<CssDeclarationPath> getProjectCandidates(Project project, FirebugChangesBean changesBean) {
         return new IncomingChangesProcessor(project, changesBean).getCandidates();
     }
 
-    private Collection<CssDeclarationPath> getCandidates()
-    {
+    private Collection<CssDeclarationPath> getCandidates() {
         final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
 
         // find possible media query targets with its own processor
@@ -73,21 +70,16 @@ public class IncomingChangesProcessor
         CssSelectorSearchProcessor selectorProcessor = SearchProcessorCache.getInstance(project).getSelectorSearchProcessor(changesBean.getSelector());
         CssBlock[] cssBlocks = selectorProcessor.getBlocks();
 
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Searched CSS selectors for '" + selectorProcessor.getSearchWord()
                     + "' ('" + selectorProcessor.getSelector() + "'), got " + cssBlocks.length + " results");
         }
 
-        for (CssBlock block : cssBlocks)
-        {
+        for (CssBlock block : cssBlocks) {
             final Ref<CssDeclaration> destination = new Ref<CssDeclaration>();
-            CssUtils.processCssDeclarations(block, new PsiElementProcessor<CssDeclaration>()
-            {
-                public boolean execute(@NotNull CssDeclaration declaration)
-                {
-                    if (changesBean.getProperty().equals(declaration.getPropertyName()))
-                    {
+            CssUtils.processCssDeclarations(block, new PsiElementProcessor<CssDeclaration>() {
+                public boolean execute(@NotNull CssDeclaration declaration) {
+                    if (changesBean.getProperty().equals(declaration.getPropertyName())) {
                         destination.set(declaration);
                         return false;
                     }
@@ -96,13 +88,10 @@ public class IncomingChangesProcessor
             });
             CssDeclaration existingDeclaration = destination.get();
             PsiFile file = block.getContainingFile().getOriginalFile();
-            if (existingDeclaration != null)
-            {
+            if (existingDeclaration != null) {
                 // found existing declaration, possibly by resolving mixin
                 candidates.add(createPath(existingDeclaration, block));
-            }
-            else
-            {
+            } else {
                 // non-existing - create new
                 candidates.add(createNewPath(file, block));
             }
@@ -113,8 +102,7 @@ public class IncomingChangesProcessor
         }
 
         // add candidates from remaining media candidates
-        for (CssMediumList mediaCandidate : mediaCandidates)
-        {
+        for (CssMediumList mediaCandidate : mediaCandidates) {
             // remove from collected files
             deleteCandidate(fileCandidates, mediaCandidate.getContainingFile().getOriginalFile());
 
@@ -122,11 +110,9 @@ public class IncomingChangesProcessor
         }
 
         // add candidate paths for remaining files
-        for (PsiFile fileCandidate : fileCandidates)
-        {
+        for (PsiFile fileCandidate : fileCandidates) {
             CssRulesetList rulesetList = CssUtils.findFirstCssRulesetList(fileCandidate);
-            if (rulesetList != null)
-            {
+            if (rulesetList != null) {
                 candidates.add(createNewPath(fileCandidate, rulesetList));
             }
         }
@@ -136,12 +122,12 @@ public class IncomingChangesProcessor
 
     /**
      * Assembles a path for a given CSS declaration and block.
+     *
      * @param declaration the declaration
-     * @param block the block
+     * @param block       the block
      * @return a path for an existing CSS declaration
      */
-    private CssDeclarationPath createPath(CssDeclaration declaration, CssBlock block)
-    {
+    private CssDeclarationPath createPath(CssDeclaration declaration, CssBlock block) {
         CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, changesBean.getValue(), changesBean.isDeleted(), changesBean.isImportant());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), block);
         CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
@@ -151,12 +137,12 @@ public class IncomingChangesProcessor
 
     /**
      * Assembles a declaration path for a file and destination (anchor) psi element
-     * @param file the file
+     *
+     * @param file               the file
      * @param destinationElement the anchor
      * @return a path for a non-existing CSS declaration
      */
-    private CssDeclarationPath createNewPath(PsiFile file, CssElement destinationElement)
-    {
+    private CssDeclarationPath createNewPath(PsiFile file, CssElement destinationElement) {
         CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue(), changesBean.isImportant());
         CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
@@ -167,19 +153,17 @@ public class IncomingChangesProcessor
 
     /**
      * Searches the project for all medium lists with same query text as reported by the bean
+     *
      * @return all matching media query elements
      */
     @NotNull
-    private Set<CssMediumList> findCandidateMediaLists()
-    {
+    private Set<CssMediumList> findCandidateMediaLists() {
         final Set<CssMediumList> elements = new HashSet<CssMediumList>();
-        if (changesBean.getMedia().length() > 0)
-        {
+        if (changesBean.getMedia().length() > 0) {
             CssMediaSearchProcessor mediaProcessor = SearchProcessorCache.getInstance(project).getMediaSearchProcessor(changesBean.getMedia());
             Set<CssMediumList> mediaLists = mediaProcessor.getMediaLists();
 
-            if (LOG.isDebugEnabled())
-            {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Searched CSS media for " + mediaProcessor.getSearchWord() + ", got " + mediaLists.size() + " results");
             }
 
@@ -190,14 +174,13 @@ public class IncomingChangesProcessor
 
     /**
      * Searches the project for files with same name as reported by the bean
+     *
      * @return all files matching the filename
      */
     @NotNull
-    private Set<PsiFile> findCandidateFiles()
-    {
+    private Set<PsiFile> findCandidateFiles() {
         final Set<PsiFile> files = new HashSet<PsiFile>();
-        if (changesBean.getFilename().length() > 0)
-        {
+        if (changesBean.getFilename().length() > 0) {
             files.addAll(Arrays.asList(FilenameIndex.getFilesByName(project, changesBean.getFilename(), GlobalSearchScope.projectScope(project))));
         }
         return files;
@@ -205,14 +188,13 @@ public class IncomingChangesProcessor
 
     /**
      * Deletes <i>object</i> from the <i>collection</i>, if <i>object</i> is not <tt>null</tt> and contained by <i>collection</i>
+     *
      * @param collection the collection
-     * @param object the object to remove
-     * @param <T> the type of collection
+     * @param object     the object to remove
+     * @param <T>        the type of collection
      */
-    private <T> void deleteCandidate(@NotNull Collection<T> collection, @Nullable T object)
-    {
-        if (object != null)
-        {
+    private <T> void deleteCandidate(@NotNull Collection<T> collection, @Nullable T object) {
+        if (object != null) {
             collection.remove(object);
         }
     }

@@ -27,14 +27,11 @@ import org.jetbrains.annotations.Nullable;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public abstract class AbstractIncomingChangesAction extends AnAction
-{
+public abstract class AbstractIncomingChangesAction extends AnAction {
     @Nullable
-    protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event)
-    {
+    protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event) {
         Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
-        if (project == null)
-        {
+        if (project == null) {
             return null;
         }
         return IncomingChangesComponent.getInstance(project);

@@ -26,45 +26,36 @@ import java.net.ServerSocket;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class SimpleWebServer implements Runnable
-{
+public class SimpleWebServer implements Runnable {
     private static final Logger LOG = Logger.getInstance(SimpleWebServer.class.getName());
     public static final int DEFAULT_PORT = 6776;
     private ServerSocket listenSocket;
 
-    public SimpleWebServer() throws IOException
-    {
+    public SimpleWebServer() throws IOException {
         this(DEFAULT_PORT);
     }
 
-    public SimpleWebServer(int port) throws IOException
-    {
+    public SimpleWebServer(int port) throws IOException {
         listenSocket = new ServerSocket(port);
     }
 
-    public void run()
-    {
+    public void run() {
         LOG.debug("Starting web server on port " + listenSocket.getLocalPort());
-        try
-        {
+        try {
             //Process HTTP service requests in an infinite loop
-            while(true)
-            {
+            while (true) {
                 //listen for TCP connection request
                 //Construct an object to process the HTTP request message
                 HttpRequest request = new HttpRequest(listenSocket.accept());
                 Thread thread = new Thread(request);
                 thread.start();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // ignore for now
         }
     }
 
-    public void stop() throws IOException
-    {
+    public void stop() throws IOException {
         listenSocket.close();
     }
 }

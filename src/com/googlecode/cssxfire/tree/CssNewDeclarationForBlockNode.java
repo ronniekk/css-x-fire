@@ -26,29 +26,22 @@ import org.jetbrains.annotations.NotNull;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssNewDeclarationForBlockNode extends CssNewDeclarationNode
-{
-    public CssNewDeclarationForBlockNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssBlock destinationBlock, boolean deleted)
-    {
+public class CssNewDeclarationForBlockNode extends CssNewDeclarationNode {
+    public CssNewDeclarationForBlockNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssBlock destinationBlock, boolean deleted) {
         super(cssDeclaration, destinationBlock, deleted);
     }
 
     @Override
-    public void applyToCode()
-    {
-        try
-        {
-            if (isValid() && !deleted)
-            {
+    public void applyToCode() {
+        try {
+            if (isValid() && !deleted) {
                 CssDeclaration[] declarations = ((CssBlock) destinationBlock).getDeclarations();
                 CssDeclaration relativeTo = declarations != null && declarations.length > 0
                         ? declarations[declarations.length - 1]
                         : null;
                 ((CssBlock) destinationBlock).addDeclaration(property, value + (important ? " !important" : ""), relativeTo);
             }
-        }
-        catch (IncorrectOperationException e)
-        {
+        } catch (IncorrectOperationException e) {
             e.printStackTrace();
         }
     }

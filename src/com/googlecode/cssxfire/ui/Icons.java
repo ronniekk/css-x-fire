@@ -24,8 +24,7 @@ import javax.swing.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface Icons
-{
+public interface Icons {
     public static final Icon FIREFOX_16 = IconLoader.findIcon("/com/googlecode/cssxfire/images/firefox16.png");
     public static final Icon FIREBUG_16 = IconLoader.findIcon("/com/googlecode/cssxfire/images/firebug16.png");
     public static final Icon TRASHCAN = IconLoader.findIcon("/com/googlecode/cssxfire/images/gc.png");

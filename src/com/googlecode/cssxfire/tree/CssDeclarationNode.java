@@ -37,15 +37,13 @@ import javax.swing.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssDeclarationNode extends CssTreeNode implements Navigatable
-{
+public class CssDeclarationNode extends CssTreeNode implements Navigatable {
     protected final CssDeclaration cssDeclaration;
     protected final String value;
     protected boolean deleted;
     protected boolean important;
 
-    public CssDeclarationNode(CssDeclaration cssDeclaration, String value, boolean deleted, boolean important)
-    {
+    public CssDeclarationNode(CssDeclaration cssDeclaration, String value, boolean deleted, boolean important) {
         this.cssDeclaration = cssDeclaration;
         this.value = value;
         this.deleted = deleted;
@@ -53,33 +51,28 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public boolean getAllowsChildren()
-    {
+    public boolean getAllowsChildren() {
         return false;
     }
 
     @Override
-    public Icon getIcon()
-    {
+    public Icon getIcon() {
         return isValid() ? cssDeclaration.getIcon(1) : null;
     }
 
     @Override
-    public String getText()
-    {
+    public String getText() {
         String text = cssDeclaration.getPropertyName() + ": " + value + (important ? " !important" : "");
         return deleted
                 ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.MODIFIED : Colors.INVALID)
                 : wrapWithHtmlColor(text, isValid() ? Colors.MODIFIED : Colors.INVALID);
     }
 
-    public boolean isValid()
-    {
+    public boolean isValid() {
         return cssDeclaration.isValid();
     }
 
-    public String getPropertyName()
-    {
+    public String getPropertyName() {
         return cssDeclaration.getPropertyName();
     }
 
@@ -87,85 +80,62 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
      * Applies this change to the corresponding source code.<br><br>
      * <b>Note:</b> Must be invoked in a {@link com.intellij.openapi.application.Application#runWriteAction write-action}
      */
-    public void applyToCode()
-    {
-        try
-        {
-            if (isValid())
-            {
-                if (deleted)
-                {
+    public void applyToCode() {
+        try {
+            if (isValid()) {
+                if (deleted) {
                     PsiElement nextSibling = cssDeclaration.getNextSibling();
-                    if (nextSibling != null && ";".equals(nextSibling.getText()))
-                    {
+                    if (nextSibling != null && ";".equals(nextSibling.getText())) {
                         nextSibling.delete(); // delete trailing semi-colon
                     }
                     cssDeclaration.delete();
-                }
-                else
-                {
-                    if (cssDeclaration.isImportant() == important)
-                    {
+                } else {
+                    if (cssDeclaration.isImportant() == important) {
                         // Priority not changed - only need to alter the value text.
                         CssElement navigationElement = getNavigationElement();
-                        if (navigationElement instanceof CssTermList)
-                        {
+                        if (navigationElement instanceof CssTermList) {
                             navigationElement.replace(CssUtils.createTermList(navigationElement.getProject(), value));
-                        }
-                        else if (navigationElement instanceof CssDeclaration)
-                        {
+                        } else if (navigationElement instanceof CssDeclaration) {
                             ((CssDeclaration) navigationElement).setValue(value);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         // Priority has changed. In this case we need to create a new declaration element and replace the old one.
                         CssDeclaration newDeclaration = CssUtils.createDeclaration(cssDeclaration.getProject(), ".foo", cssDeclaration.getPropertyName(), value, important);
                         cssDeclaration.replace(newDeclaration);
                     }
                 }
             }
-        }
-        catch (IncorrectOperationException e)
-        {
+        } catch (IncorrectOperationException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public ActionGroup getActionGroup()
-    {
+    public ActionGroup getActionGroup() {
         return isValid()
                 ? (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single")
                 : (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single.Invalid");
     }
 
-    protected CssElement getNavigationElement()
-    {
-        if (!isValid())
-        {
+    protected CssElement getNavigationElement() {
+        if (!isValid()) {
             return null;
         }
-        if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables())
-        {
+        if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables()) {
             CssTermList assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
-            if (assignment != null)
-            {
+            if (assignment != null) {
                 return assignment;
             }
         }
         return cssDeclaration;
     }
 
-    public void navigate()
-    {
+    public void navigate() {
         CssElement cssElement = getNavigationElement();
-        if (cssElement != null)
-        {
+        if (cssElement != null) {
             SelectInEditorManager selectInEditorManager = SelectInEditorManager.getInstance(cssElement.getProject());
             VirtualFile virtualFile = cssElement.getContainingFile().getVirtualFile();
-            if (virtualFile != null)
-            {
+            if (virtualFile != null) {
                 TextRange textRange = cssElement.getTextRange();
                 selectInEditorManager.selectInEditor(virtualFile, textRange.getStartOffset(), textRange.getEndOffset(), false, false);
             }
@@ -173,21 +143,17 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CssDeclarationNode that = (CssDeclarationNode) o;
 
-        if (cssDeclaration != null ? !cssDeclaration.equals(that.cssDeclaration) : that.cssDeclaration != null)
-        {
+        if (cssDeclaration != null ? !cssDeclaration.equals(that.cssDeclaration) : that.cssDeclaration != null) {
             return false;
         }
 
@@ -195,20 +161,17 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = cssDeclaration != null ? cssDeclaration.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
-    public boolean isDeleted()
-    {
+    public boolean isDeleted() {
         return deleted;
     }
-    
-    public void markDeleted()
-    {
+
+    public void markDeleted() {
         deleted = true;
     }
 }

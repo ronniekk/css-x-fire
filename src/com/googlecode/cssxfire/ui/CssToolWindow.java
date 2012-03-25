@@ -46,18 +46,16 @@ import java.util.Collection;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssToolWindow extends JPanel implements TreeModelListener, TreeViewModel
-{
+public class CssToolWindow extends JPanel implements TreeModelListener, TreeViewModel {
     private final CssChangesTreeModel treeModel;
     private final JTree tree;
     private JButton clearButton, applyButton;
     private final Project project;
 
-    public CssToolWindow(final Project project)
-    {
+    public CssToolWindow(final Project project) {
         this.project = project;
         this.treeModel = new CssChangesTreeModel(project);
-        
+
         setLayout(new BorderLayout());
 
         ActionGroup toolbarGroup = (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.ToolBar");
@@ -74,38 +72,30 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         tree.setCellRenderer(treeModel.getTreeCellRenderer());
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        tree.addMouseListener(new MouseAdapter()
-        {
+        tree.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 if ((e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1)
-                        || (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON2))
-                {
+                        || (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON2)) {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
                     navigateTo(selPath);
-                }
-                else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3)
-                {
+                } else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
                     Point point = new Point(e.getXOnScreen(), e.getYOnScreen());
                     showMenu(selPath, point);
                 }
             }
         });
-        tree.addKeyListener(new KeyAdapter()
-        {
+        tree.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e)
-            {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     TreePath path = tree.getSelectionPath();
                     navigateTo(path);
                 }
             }
         });
-        
+
         JScrollPane scrollPane = new JScrollPane(tree);
 
         incomingChangesPanel.add(scrollPane, BorderLayout.CENTER);
@@ -113,20 +103,16 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         Presentation clearAllPresentation = ActionManager.getInstance().getAction(ClearAll.ID).getTemplatePresentation();
         clearButton = new JButton(clearAllPresentation.getText(), clearAllPresentation.getIcon());
         clearButton.setEnabled(false);
-        clearButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 ActionManager.getInstance().getAction(ClearAll.ID).actionPerformed(createAnActionEvent(ClearAll.ID));
             }
         });
         Presentation applyAllPresentation = ActionManager.getInstance().getAction(ApplyAll.ID).getTemplatePresentation();
         applyButton = new JButton(applyAllPresentation.getText(), applyAllPresentation.getIcon());
         applyButton.setEnabled(false);
-        applyButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        applyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 ActionManager.getInstance().getAction(ApplyAll.ID).actionPerformed(createAnActionEvent(ApplyAll.ID));
             }
         });
@@ -147,33 +133,26 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         treeModel.addTreeModelListener(this);
     }
 
-    public CssChangesTreeModel getTreeModel()
-    {
+    public CssChangesTreeModel getTreeModel() {
         return treeModel;
     }
 
-    private void navigateTo(@Nullable TreePath path)
-    {
-        if (path != null)
-        {
+    private void navigateTo(@Nullable TreePath path) {
+        if (path != null) {
             Object source = path.getLastPathComponent();
-            if (source instanceof Navigatable)
-            {
+            if (source instanceof Navigatable) {
                 ((Navigatable) source).navigate();
             }
         }
     }
 
-    private void showMenu(@Nullable TreePath path, @NotNull Point point)
-    {
-        if (path != null)
-        {
+    private void showMenu(@Nullable TreePath path, @NotNull Point point) {
+        if (path != null) {
             tree.setSelectionPath(path);
             Object source = path.getLastPathComponent();
             ActionGroup actionGroup = source instanceof CssTreeNode ? ((CssTreeNode) source).getActionGroup() : null;
 
-            if (actionGroup != null)
-            {
+            if (actionGroup != null) {
                 ListPopup listPopup = JBPopupFactory.getInstance().createActionGroupPopup(null,
                         actionGroup,
                         createDataContext(),
@@ -185,8 +164,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         }
     }
 
-    private AnActionEvent createAnActionEvent(String actionId)
-    {
+    private AnActionEvent createAnActionEvent(String actionId) {
         return new AnActionEvent(null,
                 createDataContext(),
                 ActionPlaces.UNKNOWN,
@@ -195,40 +173,33 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
                 0);
     }
 
-    private DataContext createDataContext()
-    {
+    private DataContext createDataContext() {
         return DataManager.getInstance().getDataContext(tree);
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         boolean hasChildren = ((CssTreeNode) treeModel.getRoot()).getChildCount() > 0;
         clearButton.setEnabled(hasChildren);
         applyButton.setEnabled(hasChildren);
     }
 
-    public void clearTree()
-    {
+    public void clearTree() {
         CssTreeNode root = (CssTreeNode) treeModel.getRoot();
         root.removeAllChildren();
         treeModel.nodeStructureChanged(root);
     }
 
-    private void deleteNode(CssTreeNode node)
-    {
+    private void deleteNode(CssTreeNode node) {
         CssTreeNode parent = (CssTreeNode) node.getParent();
-        if (parent != null)
-        {
+        if (parent != null) {
             int index = parent.getIndex(node);
             parent.remove(node);
-            treeModel.nodesWereRemoved(parent, new int[] {index}, new CssTreeNode[] {node});
-            if (node instanceof CssDeclarationNode)
-            {
+            treeModel.nodesWereRemoved(parent, new int[]{index}, new CssTreeNode[]{node});
+            if (node instanceof CssDeclarationNode) {
                 // notify that file node is changed (update the number of changes in file)
                 treeModel.nodeChanged(parent.getParent());
             }
-            if (parent.getChildCount() == 0)
-            {
+            if (parent.getChildCount() == 0) {
                 deleteNode(parent);
             }
         }
@@ -238,14 +209,12 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
      * Executes a runnable in a write action. The command may be undo'ed. After
      * the command has been executed all documents in project will be saved, which will
      * trigger other actions which listen for file changes such as "Transfer files"
+     *
      * @param command the command
      */
-    private void executeCommand(final Runnable command)
-    {
-        CommandProcessor.getInstance().executeCommand(project, new Runnable()
-        {
-            public void run()
-            {
+    private void executeCommand(final Runnable command) {
+        CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+            public void run() {
                 ApplicationManager.getApplication().runWriteAction(command);
             }
         }, "Apply CSS", "CSS");
@@ -257,24 +226,18 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
     // TreeViewModel
     //
 
-    public void applyPending()
-    {
-        executeCommand(new Runnable()
-        {
-            public void run()
-            {
+    public void applyPending() {
+        executeCommand(new Runnable() {
+            public void run() {
                 CssTreeNode root = (CssTreeNode) treeModel.getRoot();
                 CssTreeNode leaf;
 
-                while ((leaf = (CssTreeNode) root.getFirstLeaf()) != null)
-                {
-                    if (leaf.isRoot())
-                    {
+                while ((leaf = (CssTreeNode) root.getFirstLeaf()) != null) {
+                    if (leaf.isRoot()) {
                         // eventually getFirstLeaf() will return the root itself
                         break;
                     }
-                    if (leaf instanceof CssDeclarationNode)
-                    {
+                    if (leaf instanceof CssDeclarationNode) {
                         CssDeclarationNode declarationNode = (CssDeclarationNode) leaf;
                         declarationNode.applyToCode();
                     }
@@ -286,43 +249,31 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         });
     }
 
-    public void applySelectedNode()
-    {
+    public void applySelectedNode() {
         TreePath selectedPath = tree.getSelectionPath();
-        if (selectedPath == null)
-        {
+        if (selectedPath == null) {
             return;
         }
         Object source = selectedPath.getLastPathComponent();
-        if (source instanceof CssFileNode || source instanceof CssSelectorNode)
-        {
+        if (source instanceof CssFileNode || source instanceof CssSelectorNode) {
             final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
-            for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source))
-            {
-                if (leaf instanceof CssDeclarationNode)
-                {
+            for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source)) {
+                if (leaf instanceof CssDeclarationNode) {
                     declarations.add((CssDeclarationNode) leaf);
                 }
             }
-            executeCommand(new Runnable()
-            {
-                public void run()
-                {
-                    for (CssDeclarationNode declarationNode : declarations)
-                    {
+            executeCommand(new Runnable() {
+                public void run() {
+                    for (CssDeclarationNode declarationNode : declarations) {
                         declarationNode.applyToCode();
                         deleteNode(declarationNode);
                     }
                 }
             });
-        }
-        else if (source instanceof CssDeclarationNode)
-        {
+        } else if (source instanceof CssDeclarationNode) {
             final CssDeclarationNode declarationNode = (CssDeclarationNode) source;
-            executeCommand(new Runnable()
-            {
-                public void run()
-                {
+            executeCommand(new Runnable() {
+                public void run() {
                     declarationNode.applyToCode();
                     deleteSelectedNode();
                 }
@@ -330,44 +281,32 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         }
     }
 
-    public void deleteSelectedNode()
-    {
+    public void deleteSelectedNode() {
         TreePath selectedPath = tree.getSelectionPath();
-        if (selectedPath == null)
-        {
+        if (selectedPath == null) {
             return;
         }
         Object source = selectedPath.getLastPathComponent();
-        if (source instanceof CssFileNode || source instanceof CssSelectorNode)
-        {
+        if (source instanceof CssFileNode || source instanceof CssSelectorNode) {
             final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
-            for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source))
-            {
-                if (leaf instanceof CssDeclarationNode)
-                {
+            for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source)) {
+                if (leaf instanceof CssDeclarationNode) {
                     declarations.add((CssDeclarationNode) leaf);
                 }
             }
-            for (CssDeclarationNode declarationNode : declarations)
-            {
+            for (CssDeclarationNode declarationNode : declarations) {
                 deleteNode(declarationNode);
             }
-        }
-        else if (source instanceof CssDeclarationNode)
-        {
+        } else if (source instanceof CssDeclarationNode) {
             deleteNode((CssDeclarationNode) source);
         }
     }
 
-    public void collapseAll()
-    {
-        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
-        {
+    public void collapseAll() {
+        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot())) {
             CssTreeNode parent = node;
-            while ((parent = (CssTreeNode) parent.getParent()) != null)
-            {
-                if (parent.isRoot())
-                {
+            while ((parent = (CssTreeNode) parent.getParent()) != null) {
+                if (parent.isRoot()) {
                     break;
                 }
                 tree.collapsePath(new TreePath(parent.getPath()));
@@ -375,33 +314,26 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         }
     }
 
-    public void expandAll()
-    {
-        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
-        {
+    public void expandAll() {
+        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot())) {
             tree.expandPath(new TreePath(((CssTreeNode) node.getParent()).getPath()));
         }
     }
 
-    public void refreshLeafs()
-    {
-        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot()))
-        {
+    public void refreshLeafs() {
+        for (CssTreeNode node : TreeUtils.iterateLeafs((CssTreeNode) treeModel.getRoot())) {
             treeModel.nodeChanged(node);
         }
     }
 
-    public boolean canSelect(int direction)
-    {
+    public boolean canSelect(int direction) {
         int leafCount = TreeUtils.countLeafs((CssTreeNode) treeModel.getRoot());
-        switch (leafCount)
-        {
+        switch (leafCount) {
             case 0:
                 return false;
             case 1:
                 TreePath selectionPath = tree.getSelectionPath();
-                if (direction < 0)
-                {
+                if (direction < 0) {
                     // When there's only one declaration node, only forward navigation is possible 
                     return false;
                 }
@@ -411,15 +343,13 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         }
     }
 
-    public void select(int direction)
-    {
+    public void select(int direction) {
         CssTreeNode root = (CssTreeNode) treeModel.getRoot();
         TreePath selectionPath = tree.getSelectionPath();
         CssTreeNode anchor = selectionPath == null ? null : (CssTreeNode) selectionPath.getLastPathComponent();
         CssDeclarationNode declarationNode = TreeUtils.seek(root, anchor, direction);
 
-        if (declarationNode != null)
-        {
+        if (declarationNode != null) {
             TreePath path = new TreePath(declarationNode.getPath());
             tree.getSelectionModel().setSelectionPath(path);
             navigateTo(path);
@@ -430,23 +360,19 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
     // TreeModelListener
     //
 
-    public void treeNodesChanged(TreeModelEvent e)
-    {
+    public void treeNodesChanged(TreeModelEvent e) {
         updateButtons();
     }
 
-    public void treeNodesInserted(TreeModelEvent e)
-    {
+    public void treeNodesInserted(TreeModelEvent e) {
         updateButtons();
     }
 
-    public void treeNodesRemoved(TreeModelEvent e)
-    {
+    public void treeNodesRemoved(TreeModelEvent e) {
         updateButtons();
     }
 
-    public void treeStructureChanged(TreeModelEvent e)
-    {
+    public void treeStructureChanged(TreeModelEvent e) {
         updateButtons();
     }
 }

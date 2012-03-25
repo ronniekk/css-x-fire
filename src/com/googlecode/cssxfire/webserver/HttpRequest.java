@@ -33,32 +33,25 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class HttpRequest implements Runnable
-{
+public class HttpRequest implements Runnable {
     private static final Logger LOG = Logger.getInstance(HttpRequest.class.getName());
 
     private static final String EMPTY_STRING = "";
     private Socket socket;
 
-    public HttpRequest(Socket socket) throws Exception
-    {
+    public HttpRequest(Socket socket) throws Exception {
         this.socket = socket;
     }
 
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             processRequest();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    private void processRequest() throws Exception
-    {
+    private void processRequest() throws Exception {
         HttpResponse response = null;
 
         //Get references to sockets input and output streams
@@ -71,11 +64,9 @@ public class HttpRequest implements Runnable
         String requestLine = br.readLine().trim();
 
         String req;
-        while ((req = br.readLine()) != null)
-        {
+        while ((req = br.readLine()) != null) {
             req = req.trim().toLowerCase();
-            if (req.length() == 0)
-            {
+            if (req.length() == 0) {
                 break;
             }
         }
@@ -83,19 +74,14 @@ public class HttpRequest implements Runnable
         String q = requestLine.toLowerCase();
         int six = q.indexOf(' ');
         int eix = q.indexOf(" http");
-        if (eix != -1)
-        {
+        if (eix != -1) {
             requestLine = requestLine.substring(six, eix).trim();
         }
 
-        if (requestLine.startsWith("/files/"))
-        {
+        if (requestLine.startsWith("/files/")) {
             response = HttpResponse.createFileResponse(requestLine.substring("/files/".length()));
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 // Parse query params
                 Map<String, String> params = getQueryMap(requestLine);
 
@@ -110,30 +96,24 @@ public class HttpRequest implements Runnable
                 boolean important = Boolean.parseBoolean(params.get("important"));
 
                 // Notify application component
-                if (property != null && value != null && selector != null)
-                {
+                if (property != null && value != null && selector != null) {
                     final FirebugChangesBean changesBean = new FirebugChangesBean(media != null ? media : EMPTY_STRING,
                             href != null ? href : EMPTY_STRING,
                             selector, property, value, deleted, important);
-                    if (LOG.isDebugEnabled())
-                    {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("Got CSS property change: " + changesBean);
                     }
                     CssXFireConnector.getInstance().processCss(changesBean);
                 }
-                if (event != null)
-                {
-                    if (LOG.isDebugEnabled())
-                    {
+                if (event != null) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("Got event: " + event);
                     }
                     CssXFireConnector.getInstance().processEvent(new FirebugEvent(event));
                 }
 
                 response = HttpResponse.createEmptyOkResponse();
-            }
-            catch (MalformedQueryException e)
-            {
+            } catch (MalformedQueryException e) {
                 response = HttpResponse.createErrorResponse(e.getMessage());
             }
         }
@@ -146,45 +126,36 @@ public class HttpRequest implements Runnable
     }
 
 
-     private static Map<String, String> getQueryMap(String query) throws MalformedQueryException
-     {
-         Map<String, String> map = new HashMap<String, String>();
-         try
-         {
-             int i = query.indexOf('?');
-             if (i == -1)
-             {
-                 return map;
-             }
-             query = query.substring(i + 1);
-             String[] params = query.split("&");
-             for (String param : params)
-             {
-                 int ix = param.indexOf('=');
-                 String name = param.substring(0, ix);
-                 name = URLDecoder.decode(name, "utf-8");
-                 String value = param.substring(ix + 1);
-                 value = URLDecoder.decode(value, "utf-8");
-                 map.put(name, value);
-             }
-             return map;
-         }
-         catch (Exception e)
-         {
-             throw new MalformedQueryException(query);
-         }
-     }
+    private static Map<String, String> getQueryMap(String query) throws MalformedQueryException {
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+            int i = query.indexOf('?');
+            if (i == -1) {
+                return map;
+            }
+            query = query.substring(i + 1);
+            String[] params = query.split("&");
+            for (String param : params) {
+                int ix = param.indexOf('=');
+                String name = param.substring(0, ix);
+                name = URLDecoder.decode(name, "utf-8");
+                String value = param.substring(ix + 1);
+                value = URLDecoder.decode(value, "utf-8");
+                map.put(name, value);
+            }
+            return map;
+        } catch (Exception e) {
+            throw new MalformedQueryException(query);
+        }
+    }
 
-    public static class MalformedQueryException extends Exception
-    {
-        private MalformedQueryException(String message)
-        {
+    public static class MalformedQueryException extends Exception {
+        private MalformedQueryException(String message) {
             super(message);
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return getClass().getSimpleName() + ": " + getMessage();
         }
     }

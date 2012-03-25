@@ -35,58 +35,49 @@ import java.awt.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssSelectorNode extends CssTreeNode implements Navigatable
-{
-    private final @NotNull String selector;
-    protected final @NotNull PsiElement cssBlock;
+public class CssSelectorNode extends CssTreeNode implements Navigatable {
+    @NotNull
+    private final String selector;
+    @NotNull
+    protected final PsiElement cssBlock;
     private static final String EMPTY_STRING = "";
 
-    public CssSelectorNode(@NotNull String selector, @NotNull PsiElement cssBlock)
-    {
+    public CssSelectorNode(@NotNull String selector, @NotNull PsiElement cssBlock) {
         this.selector = selector;
         this.cssBlock = cssBlock;
     }
 
     @NotNull
-    String getSelector()
-    {
+    String getSelector() {
         return selector;
     }
 
     @Override
-    public Icon getIcon()
-    {
-        if (selector.startsWith("."))
-        {
+    public Icon getIcon() {
+        if (selector.startsWith(".")) {
             return Icons.CSS_CLASS;
         }
-        if (selector.startsWith("#"))
-        {
+        if (selector.startsWith("#")) {
             return Icons.CSS_ID;
         }
         return Icons.CSS_HTML_TAG;
     }
 
     @Override
-    public String getText()
-    {
+    public String getText() {
         return wrapWithHtmlColor("<b>" + selector + "</b>", Color.BLACK);
     }
 
     @Override
-    public ActionGroup getActionGroup()
-    {
+    public ActionGroup getActionGroup() {
         return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Selector");
     }
 
-    public void navigate()
-    {
-        if (cssBlock.isValid())
-        {
+    public void navigate() {
+        if (cssBlock.isValid()) {
             SelectInEditorManager selectInEditorManager = SelectInEditorManager.getInstance(cssBlock.getProject());
             VirtualFile virtualFile = cssBlock.getContainingFile().getVirtualFile();
-            if (virtualFile != null)
-            {
+            if (virtualFile != null) {
                 TextRange textRange = cssBlock.getTextRange();
                 selectInEditorManager.selectInEditor(virtualFile, textRange.getStartOffset(), textRange.getEndOffset(), false, false);
             }
@@ -94,14 +85,11 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
@@ -111,14 +99,12 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return selector.hashCode();
     }
 
     @NotNull
-    public String getMedia()
-    {
+    public String getMedia() {
         CssMediumList mediumList = CssUtils.findMediumList(cssBlock);
 
         return mediumList == null ? EMPTY_STRING : mediumList.getText();

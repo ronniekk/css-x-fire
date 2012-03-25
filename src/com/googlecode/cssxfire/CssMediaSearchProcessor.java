@@ -28,45 +28,41 @@ import java.util.Set;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssMediaSearchProcessor implements TextOccurenceProcessor
-{
+public class CssMediaSearchProcessor implements TextOccurenceProcessor {
     private final Set<CssMediumList> mediaLists = new HashSet<CssMediumList>();
-    private @NotNull String media;
-    private @NotNull String word;
+    @NotNull
+    private String media;
+    @NotNull
+    private String word;
 
-    public CssMediaSearchProcessor(@NotNull String media)
-    {
+    public CssMediaSearchProcessor(@NotNull String media) {
         this.media = StringUtils.normalizeWhitespace(media);
         this.word = StringUtils.extractSearchWord(this.media);
     }
 
     /**
      * Get the word to use when using {@link com.intellij.psi.search.PsiSearchHelper} to process elements with word
+     *
      * @return the word to use in search
      */
     @NotNull
-    public String getSearchWord()
-    {
+    public String getSearchWord() {
         return word;
     }
 
 
-    public boolean execute(PsiElement element, int offsetInElement)
-    {
+    public boolean execute(PsiElement element, int offsetInElement) {
         CssMediumList mediumList = CssUtils.findMediumList(element);
-        if (mediumList != null)
-        {
+        if (mediumList != null) {
             String text = mediumList.getText();
-            if (media.equals(StringUtils.normalizeWhitespace(text)))
-            {
+            if (media.equals(StringUtils.normalizeWhitespace(text))) {
                 mediaLists.add(mediumList);
             }
         }
         return false;
     }
 
-    public Set<CssMediumList> getMediaLists()
-    {
+    public Set<CssMediumList> getMediaLists() {
         return new HashSet<CssMediumList>(mediaLists);
     }
 }

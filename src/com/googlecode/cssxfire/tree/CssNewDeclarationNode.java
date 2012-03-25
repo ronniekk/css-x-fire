@@ -27,30 +27,26 @@ import javax.swing.tree.TreeNode;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public abstract class CssNewDeclarationNode extends CssDeclarationNode
-{
-    @NotNull protected final CssElement destinationBlock;
-    @NotNull protected final String property;
+public abstract class CssNewDeclarationNode extends CssDeclarationNode {
+    @NotNull
+    protected final CssElement destinationBlock;
+    @NotNull
+    protected final String property;
 
-    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)
-    {
-        if (destinationElement instanceof CssBlock)
-        {
+    public static CssNewDeclarationNode forDestination(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted) {
+        if (destinationElement instanceof CssBlock) {
             return new CssNewDeclarationForBlockNode(cssDeclaration, (CssBlock) destinationElement, deleted);
         }
-        if (destinationElement instanceof CssMediumList)
-        {
+        if (destinationElement instanceof CssMediumList) {
             return new CssNewDeclarationForMediumNode(cssDeclaration, (CssMediumList) destinationElement, deleted);
         }
-        if (destinationElement instanceof CssRulesetList)
-        {
+        if (destinationElement instanceof CssRulesetList) {
             return new CssNewDeclarationForRulesetListNode(cssDeclaration, (CssRulesetList) destinationElement, deleted);
         }
         throw new IllegalArgumentException("Can not create CssNewDeclarationNode for destination of type " + destinationElement.getClass().getName());
     }
 
-    protected CssNewDeclarationNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted)
-    {
+    protected CssNewDeclarationNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted) {
         super(cssDeclaration, cssDeclaration.getValue().getText(), deleted, cssDeclaration.isImportant());
         this.destinationBlock = destinationElement;
         this.property = cssDeclaration.getPropertyName();
@@ -64,14 +60,12 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
     public abstract void applyToCode();
 
     @Override
-    public final boolean isValid()
-    {
+    public final boolean isValid() {
         return destinationBlock.isValid();
     }
 
     @Override
-    public final String getText()
-    {
+    public final String getText() {
         String text = cssDeclaration.getText();
         return deleted
                 ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.ADDED : Colors.INVALID)
@@ -79,25 +73,21 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
     }
 
     @Override
-    protected final CssElement getNavigationElement()
-    {
+    protected final CssElement getNavigationElement() {
         return isValid() ? destinationBlock : null;
     }
 
     @NotNull
-    protected CssSelectorNode getCssSelectorNode()
-    {
+    protected CssSelectorNode getCssSelectorNode() {
         TreeNode parentNode = getParent();
-        if (parentNode instanceof CssSelectorNode)
-        {
+        if (parentNode instanceof CssSelectorNode) {
             return (CssSelectorNode) parentNode;
         }
         throw new IllegalArgumentException("A " + getClass().getName() + " must have a parent node of type CssSelectorNode. Found: " + parentNode);
     }
 
     @Override
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -107,8 +97,7 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode
     }
 
     @Override
-    public final int hashCode()
-    {
+    public final int hashCode() {
         int result = super.hashCode();
         result = 31 * result + destinationBlock.hashCode();
         result = 31 * result + property.hashCode();

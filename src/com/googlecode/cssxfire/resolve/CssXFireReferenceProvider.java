@@ -29,32 +29,26 @@ import org.jetbrains.annotations.NotNull;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssXFireReferenceProvider extends PsiReferenceProvider
-{
+public class CssXFireReferenceProvider extends PsiReferenceProvider {
     private static final CssXFireReferenceProvider INSTANCE = new CssXFireReferenceProvider();
     private static final ProcessingContext MY_PROCESSING_CONTEXT = new ProcessingContext();
 
 
     @NotNull
-    public static PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement)
-    {
+    public static PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement) {
         return INSTANCE.getReferencesByElement(psiElement, MY_PROCESSING_CONTEXT);
     }
 
     @NotNull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext)
-    {
-        if (psiElement instanceof XmlToken)
-        {
-            if (PsiTreeUtil.getParentOfType(psiElement, CssRuleset.class) == null)
-            {
+    public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
+        if (psiElement instanceof XmlToken) {
+            if (PsiTreeUtil.getParentOfType(psiElement, CssRuleset.class) == null) {
                 return PsiReference.EMPTY_ARRAY;
             }
             PsiElement prevSibling = psiElement.getPrevSibling();
-            if (prevSibling != null && ".".equals(prevSibling.getText()))
-            {
-                return new PsiReference[] {new CssRulesetReference(psiElement)};
+            if (prevSibling != null && ".".equals(prevSibling.getText())) {
+                return new PsiReference[]{new CssRulesetReference(psiElement)};
             }
         }
         return PsiReference.EMPTY_ARRAY;

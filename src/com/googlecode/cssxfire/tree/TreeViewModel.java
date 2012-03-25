@@ -20,8 +20,7 @@ package com.googlecode.cssxfire.tree;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface TreeViewModel
-{
+public interface TreeViewModel {
     public boolean canSelect(int direction);
 
     public void select(int direction);

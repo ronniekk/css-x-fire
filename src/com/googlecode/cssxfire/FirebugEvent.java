@@ -23,19 +23,16 @@ import org.jetbrains.annotations.NotNull;
  * <p><p>Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class FirebugEvent
-{
+public class FirebugEvent {
     @NotNull
     private final String name;
 
-    public FirebugEvent(@NotNull String name)
-    {
+    public FirebugEvent(@NotNull String name) {
         this.name = name;
     }
 
     @NotNull
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 }

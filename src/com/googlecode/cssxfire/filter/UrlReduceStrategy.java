@@ -32,40 +32,32 @@ import java.util.List;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath>
-{
+public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
     private static final Logger LOG = Logger.getInstance(UrlReduceStrategy.class.getName());
 
     @NotNull
     private final String url;
 
-    public UrlReduceStrategy(@NotNull String url)
-    {
+    public UrlReduceStrategy(@NotNull String url) {
         this.url = url;
     }
 
-    public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    public void reduce(@NotNull Collection<CssDeclarationPath> candidates) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reducing " + candidates.size() + " candidates for url: " + url);
         }
-        if (candidates.isEmpty())
-        {
+        if (candidates.isEmpty()) {
             // nothing to do here
             return;
         }
 
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
-        for (CssDeclarationPath candidate : candidates)
-        {
+        for (CssDeclarationPath candidate : candidates) {
             VirtualFile file = candidate.getFileNode().getVirtualFile();
-            if (file != null && url.equals(file.getUrl()))
-            {
+            if (file != null && url.equals(file.getUrl())) {
                 // candidate file url matches routed file
                 matches.add(candidate);
-                if (LOG.isDebugEnabled())
-                {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("  Match: " + candidate);
                 }
             }

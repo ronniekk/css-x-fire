@@ -27,14 +27,11 @@ import com.intellij.openapi.project.Project;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ShowSettings extends AnAction
-{
+public class ShowSettings extends AnAction {
     @Override
-    public void actionPerformed(AnActionEvent event)
-    {
+    public void actionPerformed(AnActionEvent event) {
         Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
-        if (project == null)
-        {
+        if (project == null) {
             return;
         }
 

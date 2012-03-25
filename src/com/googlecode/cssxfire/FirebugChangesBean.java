@@ -25,8 +25,7 @@ import org.jetbrains.annotations.NotNull;
  * <p><p>Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class FirebugChangesBean
-{
+public class FirebugChangesBean {
     @NotNull
     private final String media;
     @NotNull
@@ -43,8 +42,7 @@ public class FirebugChangesBean
     private final boolean important;
 
     public FirebugChangesBean(@NotNull String media, @NotNull String url, @NotNull String selector,
-                              @NotNull String property, @NotNull String value, boolean deleted, boolean important)
-    {
+                              @NotNull String property, @NotNull String value, boolean deleted, boolean important) {
         this.media = media;
         this.path = StringUtils.extractPath(url);
         this.filename = StringUtils.extractFilename(path);
@@ -56,8 +54,7 @@ public class FirebugChangesBean
     }
 
     private FirebugChangesBean(@NotNull String media, @NotNull String path, @NotNull String filename, @NotNull String selector,
-                              @NotNull String property, @NotNull String value, boolean deleted, boolean important)
-    {
+                               @NotNull String property, @NotNull String value, boolean deleted, boolean important) {
         this.media = media;
         this.path = path;
         this.filename = filename;
@@ -71,19 +68,16 @@ public class FirebugChangesBean
     /**
      * Applies project routes (depending on project settings) and returns a copy itself
      * with possibly modified properties.
+     *
      * @param project the project
      * @return a new bean instance
      */
-    public FirebugChangesBean applyRoutes(@NotNull Project project)
-    {
-        if (ProjectSettings.getInstance(project).isUseRoutes())
-        {
+    public FirebugChangesBean applyRoutes(@NotNull Project project) {
+        if (ProjectSettings.getInstance(project).isUseRoutes()) {
             VirtualFile targetFile = RouteUtils.detectLocalFile(project, path);
-            if (targetFile != null)
-            {
+            if (targetFile != null) {
                 VirtualFile projectBaseDir = project.getBaseDir();
-                if (projectBaseDir != null)
-                {
+                if (projectBaseDir != null) {
                     // replace path and filename
                     String filename = targetFile.getName();
                     String path = targetFile.getUrl().substring(projectBaseDir.getUrl().length());
@@ -95,54 +89,45 @@ public class FirebugChangesBean
     }
 
     @NotNull
-    public String getMedia()
-    {
+    public String getMedia() {
         return media;
     }
 
     @NotNull
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
     @NotNull
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
     @NotNull
-    public String getSelector()
-    {
+    public String getSelector() {
         return selector;
     }
 
     @NotNull
-    public String getProperty()
-    {
+    public String getProperty() {
         return property;
     }
 
     @NotNull
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public boolean isDeleted()
-    {
+    public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isImportant()
-    {
+    public boolean isImportant() {
         return important;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "{media=" + media + ", path=" + path + ", filename=" + filename + ", selector=" + selector
                 + ", property=" + property + ", value=" + value + ", important=" + important + ", deleted=" + deleted + "}";
     }

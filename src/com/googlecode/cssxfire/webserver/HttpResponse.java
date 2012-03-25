@@ -22,53 +22,45 @@ import java.io.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class HttpResponse
-{
+public class HttpResponse {
     private static final String CRLF = "\r\n";
     private static final String CONTENT_TYPE_TEXT_PLAIN = "Content-Type: text/plain; charset=utf-8";
-    private static final byte[] RESPONSE_EMPTY = new  byte[0];
+    private static final byte[] RESPONSE_EMPTY = new byte[0];
     private static final String STATUS_200_OK = "HTTP/1.0 200 OK";
 
-    public static HttpResponse createEmptyOkResponse()
-    {
+    public static HttpResponse createEmptyOkResponse() {
         return new HttpResponse();
     }
 
-    public static HttpResponse createFileResponse(String filename)
-    {
+    public static HttpResponse createFileResponse(String filename) {
         InputStream is = HttpResponse.class.getResourceAsStream("/com/googlecode/cssxfire/www/" + filename);
-        if (is != null)
-        {
+        if (is != null) {
             return new FileResponse(filename, is);
         }
 
         return new Response404(filename);
     }
 
-    public static HttpResponse createErrorResponse(String errorMessage)
-    {
+    public static HttpResponse createErrorResponse(String errorMessage) {
         return new Response500(errorMessage);
     }
 
-    private HttpResponse() {}
+    private HttpResponse() {
+    }
 
-    protected String getStatusLine()
-    {
+    protected String getStatusLine() {
         return STATUS_200_OK;
     }
 
-    protected String getContentTypeLine()
-    {
+    protected String getContentTypeLine() {
         return CONTENT_TYPE_TEXT_PLAIN;
     }
 
-    protected InputStream getResponseStream()
-    {
+    protected InputStream getResponseStream() {
         return new ByteArrayInputStream(RESPONSE_EMPTY);
     }
 
-    public void sendResponse(OutputStream socketOutputStream) throws IOException
-    {
+    public void sendResponse(OutputStream socketOutputStream) throws IOException {
         DataOutputStream os = new DataOutputStream(socketOutputStream);
 
         // Send the status line.
@@ -88,55 +80,44 @@ public class HttpResponse
         int bytes;
 
         // Copy requested file into the socket's output stream.
-        while ((bytes = is.read(buffer)) != -1)
-        {
+        while ((bytes = is.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
         }
     }
 
-    private static class FileResponse extends HttpResponse
-    {
+    private static class FileResponse extends HttpResponse {
         private String filename;
         private InputStream is;
 
-        public FileResponse(String filename, InputStream is)
-        {
+        public FileResponse(String filename, InputStream is) {
             this.filename = filename;
             this.is = is;
         }
 
         @Override
-        protected InputStream getResponseStream()
-        {
+        protected InputStream getResponseStream() {
             return is;
         }
 
         @Override
-        protected String getContentTypeLine()
-        {
+        protected String getContentTypeLine() {
             // a massive list of content types...
-            if (filename.endsWith(".xpi"))
-            {
+            if (filename.endsWith(".xpi")) {
                 return "Content-Type: application/x-xpinstall";
             }
-            if (filename.endsWith(".png"))
-            {
+            if (filename.endsWith(".png")) {
                 return "Content-Type: image/png";
             }
-            if (filename.endsWith(".html"))
-            {
+            if (filename.endsWith(".html")) {
                 return "Content-Type: text/html; charset=utf-8";
             }
-            if (filename.endsWith(".js"))
-            {
+            if (filename.endsWith(".js")) {
                 return "Content-Type: application/x-javascript";
             }
-            if (filename.endsWith(".css"))
-            {
+            if (filename.endsWith(".css")) {
                 return "Content-Type: text/plain; charset=utf-8";
             }
-            if (filename.endsWith(".rdf"))
-            {
+            if (filename.endsWith(".rdf")) {
                 return "Content-Type: text/xml; charset=utf-8";
             }
 
@@ -144,34 +125,28 @@ public class HttpResponse
         }
     }
 
-    private static class Response404 extends HttpResponse
-    {
+    private static class Response404 extends HttpResponse {
         private String filename;
 
-        public Response404(String filename)
-        {
+        public Response404(String filename) {
             this.filename = filename;
         }
 
         @Override
-        protected String getStatusLine()
-        {
+        protected String getStatusLine() {
             return "HTTP/1.0 404 File not found: " + filename;
         }
     }
 
-    private static class Response500 extends HttpResponse
-    {
+    private static class Response500 extends HttpResponse {
         private String message;
 
-        public Response500(String message)
-        {
+        public Response500(String message) {
             this.message = message;
         }
 
         @Override
-        protected String getStatusLine()
-        {
+        protected String getStatusLine() {
             return "HTTP/1.0 500 Internal server error: " + message;
         }
     }

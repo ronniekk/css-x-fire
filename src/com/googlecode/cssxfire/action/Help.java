@@ -24,11 +24,9 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class Help extends AnAction
-{
+public class Help extends AnAction {
     @Override
-    public void actionPerformed(AnActionEvent anActionEvent)
-    {
+    public void actionPerformed(AnActionEvent anActionEvent) {
         BrowserUtil.launchBrowser("http://localhost:6776/files/about.html");
     }
 }

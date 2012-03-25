@@ -25,23 +25,19 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class RoutePerFileMappings
-{
+public class RoutePerFileMappings {
     private Map<VirtualFile, String> myMappings = new HashMap<VirtualFile, String>();
 
-    public Map<VirtualFile, String> getMappings()
-    {
+    public Map<VirtualFile, String> getMappings() {
         return new HashMap<VirtualFile, String>(myMappings);
     }
 
-    public void setMappings(Map<VirtualFile, String> mappings)
-    {
+    public void setMappings(Map<VirtualFile, String> mappings) {
         myMappings.clear();
         myMappings.putAll(mappings);
     }
 
-    public String getMapping(VirtualFile file)
-    {
+    public String getMapping(VirtualFile file) {
         return myMappings.get(file);
     }
 }

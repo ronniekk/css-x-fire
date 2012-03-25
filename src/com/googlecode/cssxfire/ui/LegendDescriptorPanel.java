@@ -25,8 +25,7 @@ import java.util.Collection;
 /**
  * Shamelessly copied from {@link com.intellij.openapi.diff.ex.DiffStatusBar} since it does not belong to the open-api.
  */
-public class LegendDescriptorPanel extends JPanel
-{
+public class LegendDescriptorPanel extends JPanel {
     private static final java.util.List<MyLegendTypeDescriptor> MY_TYPES =
             Arrays.asList(new MyLegendTypeDescriptor("Modified", Colors.MODIFIED_LEGEND),
                     new MyLegendTypeDescriptor("Added", Colors.ADDED_LEGEND),
@@ -37,21 +36,16 @@ public class LegendDescriptorPanel extends JPanel
     private final JLabel myTextLabel = new JLabel("");
     private static final int COMP_HEIGHT = 30;
 
-    public LegendDescriptorPanel()
-    {
-        for (MyLegendTypeDescriptor type : MY_TYPES)
-        {
+    public LegendDescriptorPanel() {
+        for (MyLegendTypeDescriptor type : MY_TYPES) {
             addComponent(type);
         }
         initGui();
     }
 
-    private void addComponent(final MyLegendTypeDescriptor diffType)
-    {
-        JComponent component = new JPanel()
-        {
-            public void paint(Graphics g)
-            {
+    private void addComponent(final MyLegendTypeDescriptor diffType) {
+        JComponent component = new JPanel() {
+            public void paint(Graphics g) {
                 setBackground(UIManager.getColor("Panel.background"));
                 super.paint(g);
                 FontMetrics metrics = getFontMetrics(getFont());
@@ -60,8 +54,7 @@ public class LegendDescriptorPanel extends JPanel
                 g.fill3DRect(10, (getHeight() - 10) / 2, 35, 10, true);
 
                 Font font = g.getFont();
-                if (font.getStyle() != Font.PLAIN)
-                {
+                if (font.getStyle() != Font.PLAIN) {
                     font = font.deriveFont(Font.PLAIN);
                 }
                 g.setFont(font);
@@ -71,47 +64,39 @@ public class LegendDescriptorPanel extends JPanel
             }
 
             @Override
-            public Dimension getPreferredSize()
-            {
+            public Dimension getPreferredSize() {
                 FontMetrics metrics = getFontMetrics(getFont());
                 return new Dimension((int) (70 + metrics.getStringBounds(diffType.getDisplayName(), getGraphics()).getWidth()), COMP_HEIGHT);
             }
 
             @Override
-            public Dimension getMinimumSize()
-            {
+            public Dimension getMinimumSize() {
                 return getPreferredSize();
             }
         };
         myLabels.add(component);
     }
 
-    public Dimension getMinimumSize()
-    {
+    public Dimension getMinimumSize() {
         Dimension p = super.getPreferredSize();
         Dimension m = super.getMinimumSize();
         return new Dimension(m.width, p.height);
     }
 
-    public Dimension getMaximumSize()
-    {
+    public Dimension getMaximumSize() {
         Dimension p = super.getPreferredSize();
         Dimension m = super.getMaximumSize();
         return new Dimension(m.width, p.height);
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) {
         myTextLabel.setText(text);
     }
 
-    private void initGui()
-    {
-        JComponent filler = new JComponent()
-        {
+    private void initGui() {
+        JComponent filler = new JComponent() {
             @Override
-            public Dimension getPreferredSize()
-            {
+            public Dimension getPreferredSize() {
                 return myTextLabel.getPreferredSize();
             }
         };
@@ -121,8 +106,7 @@ public class LegendDescriptorPanel extends JPanel
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         JPanel panel = new JPanel(new GridLayout(1, myLabels.size(), 0, 0));
-        for (final JComponent myLabel : myLabels)
-        {
+        for (final JComponent myLabel : myLabels) {
             panel.add(myLabel);
         }
         panel.setMaximumSize(panel.getPreferredSize());
@@ -133,24 +117,20 @@ public class LegendDescriptorPanel extends JPanel
         add(filler, BorderLayout.EAST);
     }
 
-    private static class MyLegendTypeDescriptor
-    {
+    private static class MyLegendTypeDescriptor {
         private final String displayName;
         private final Color legendColor;
 
-        private MyLegendTypeDescriptor(String displayName, Color legendColor)
-        {
+        private MyLegendTypeDescriptor(String displayName, Color legendColor) {
             this.displayName = displayName;
             this.legendColor = legendColor;
         }
 
-        public String getDisplayName()
-        {
+        public String getDisplayName() {
             return displayName;
         }
 
-        public Color getLegendColor()
-        {
+        public Color getLegendColor() {
             return legendColor;
         }
     }

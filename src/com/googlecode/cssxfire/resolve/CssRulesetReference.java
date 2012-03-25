@@ -36,75 +36,64 @@ import java.util.List;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssRulesetReference extends PsiPolyVariantCachingReference
-{
+public class CssRulesetReference extends PsiPolyVariantCachingReference {
     private static final ResolveResult[] EMPTY_RESOLVE_RESULTS = new ResolveResult[0];
-    /** Avoid completion on mixins for now */
+    /**
+     * Avoid completion on mixins for now
+     */
     private static final boolean COMPLETION_ENABLED = false;
 
     private final PsiElement place;
     private static final LookupElement[] EMPTY_VARIANTS = new LookupElement[0];
 
-    public CssRulesetReference(PsiElement place)
-    {
+    public CssRulesetReference(PsiElement place) {
         this.place = place;
     }
 
-    protected String getName()
-    {
+    protected String getName() {
         return getElement().getText();
     }
 
     @NotNull
     @Override
-    protected ResolveResult[] resolveInner(boolean incompleteCode)
-    {
+    protected ResolveResult[] resolveInner(boolean incompleteCode) {
         CssRulesetProcessor processor = new CssRulesetProcessor(getName());
         processTopLevelRulesets(processor);
         CssRuleset[] rulesets = processor.getCandidates();
-        if (rulesets.length == 0)
-        {
+        if (rulesets.length == 0) {
             return EMPTY_RESOLVE_RESULTS;
         }
         List<ResolveResult> results = new ArrayList<ResolveResult>();
-        for (CssRuleset ruleset : rulesets)
-        {
+        for (CssRuleset ruleset : rulesets) {
             results.add(new PsiElementResolveResult(ruleset));
         }
         return results.toArray(new ResolveResult[results.size()]);
     }
 
-    public PsiElement getElement()
-    {
+    public PsiElement getElement() {
         return place;
     }
 
-    public TextRange getRangeInElement()
-    {
+    public TextRange getRangeInElement() {
         return new TextRange(0, getName().length());
     }
 
     @NotNull
-    public String getCanonicalText()
-    {
+    public String getCanonicalText() {
         return getElement().getText();
     }
 
-    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
-    {
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
         return null;
     }
 
-    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException
-    {
+    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
         return null;
     }
 
     @NotNull
-    public Object[] getVariants()
-    {
-        if (COMPLETION_ENABLED)
-        {
+    public Object[] getVariants() {
+        if (COMPLETION_ENABLED) {
             CssRulesetProcessor processor = new CssRulesetProcessor(null);
             processTopLevelRulesets(processor);
             return toLookupElements(processor.getCandidates());
@@ -112,11 +101,9 @@ public class CssRulesetReference extends PsiPolyVariantCachingReference
         return EMPTY_VARIANTS;
     }
 
-    private LookupElement[] toLookupElements(CssRuleset[] candidates)
-    {
+    private LookupElement[] toLookupElements(CssRuleset[] candidates) {
         LookupElement[] results = new LookupElement[candidates.length];
-        for (int i = 0; i < candidates.length; i++)
-        {
+        for (int i = 0; i < candidates.length; i++) {
             String name = candidates[i].getSelectorList().getText();
             results[i] = LookupElementBuilder.create(candidates[i], name.substring(1)).setPresentableText(name);
         }
@@ -125,26 +112,20 @@ public class CssRulesetReference extends PsiPolyVariantCachingReference
 
     /**
      * Process all top-level rulesets with given processor
+     *
      * @param processor the processor
      */
-    private void processTopLevelRulesets(PsiScopeProcessor processor)
-    {
+    private void processTopLevelRulesets(PsiScopeProcessor processor) {
         PsiFile file = getElement().getContainingFile();
         CssStylesheet[] styleSheets = PsiTreeUtil.getChildrenOfType(file, CssStylesheet.class);
-        if (styleSheets != null)
-        {
-            for (CssStylesheet styleSheet : styleSheets)
-            {
+        if (styleSheets != null) {
+            for (CssStylesheet styleSheet : styleSheets) {
                 CssRulesetList rulesetList = PsiTreeUtil.getChildOfType(styleSheet, CssRulesetList.class);
-                if (rulesetList != null)
-                {
+                if (rulesetList != null) {
                     CssRuleset[] rulesets = PsiTreeUtil.getChildrenOfType(rulesetList, CssRuleset.class);
-                    if (rulesets != null)
-                    {
-                        for (CssRuleset ruleset : rulesets)
-                        {
-                            if (!processor.execute(ruleset, ResolveState.initial()))
-                            {
+                    if (rulesets != null) {
+                        for (CssRuleset ruleset : rulesets) {
+                            if (!processor.execute(ruleset, ResolveState.initial())) {
                                 return;
                             }
                         }

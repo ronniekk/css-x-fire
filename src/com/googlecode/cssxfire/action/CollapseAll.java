@@ -23,14 +23,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CollapseAll extends AbstractIncomingChangesAction
-{
+public class CollapseAll extends AbstractIncomingChangesAction {
     @Override
-    public void actionPerformed(AnActionEvent anActionEvent)
-    {
+    public void actionPerformed(AnActionEvent anActionEvent) {
         IncomingChangesComponent changesComponent = getIncomingChangesComponent(anActionEvent);
-        if (changesComponent != null)
-        {
+        if (changesComponent != null) {
             changesComponent.getTreeViewModel().collapseAll();
         }
     }

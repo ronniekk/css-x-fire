@@ -28,63 +28,49 @@ import java.net.URL;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class StringUtils
-{
+public class StringUtils {
     private static final Logger LOG = Logger.getInstance(StringUtils.class.getName());
 
     @NotNull
-    public static String extractPath(@NotNull String url)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    public static String extractPath(@NotNull String url) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("extractPath() in = " + url);
         }
         String path;
-        try
-        {
+        try {
             path = new URL(url).getPath();
             return path;
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             LOG.warn("WARN: " + e);
             path = trimEnd(trimEnd(url, "?"), "#");
         }
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("extractPath() out = " + path);
         }
         return path;
     }
 
     @NotNull
-    public static String extractFilename(@NotNull String path)
-    {
+    public static String extractFilename(@NotNull String path) {
         return path.substring(path.lastIndexOf('/') + 1);
     }
 
-    public static boolean equalsNormalizeWhitespace(@Nullable String s1, @Nullable String s2)
-    {
-        if (s1 == null && s2 == null)
-        {
+    public static boolean equalsNormalizeWhitespace(@Nullable String s1, @Nullable String s2) {
+        if (s1 == null && s2 == null) {
             return true;
         }
-        if (s1 == null || s2 == null)
-        {
+        if (s1 == null || s2 == null) {
             return false;
         }
         return normalizeWhitespace(s1).equals(normalizeWhitespace(s2));
     }
 
     @NotNull
-    public static String extractSearchWord(@NotNull String s)
-    {
+    public static String extractSearchWord(@NotNull String s) {
         s = s.trim();
-        for (int i = s.length() - 1; i > 0; i--)
-        {
+        for (int i = s.length() - 1; i > 0; i--) {
             char c = s.charAt(i);
-            if (c == ':' || c == ',' || Character.isWhitespace(c))
-            {
+            if (c == ':' || c == ',' || Character.isWhitespace(c)) {
                 return s.substring(i + 1);
             }
         }
@@ -92,23 +78,17 @@ public class StringUtils
     }
 
     @NotNull
-    public static String normalizeWhitespace(@NotNull String s)
-    {
+    public static String normalizeWhitespace(@NotNull String s) {
         CharArrayWriter writer = new CharArrayWriter(s.length());
         char lastWritten = 'a';
-        for (char c : s.trim().toCharArray())
-        {
-            if (Character.isWhitespace(c))
-            {
-                if (Character.isWhitespace(lastWritten) || lastWritten == ',')
-                {
+        for (char c : s.trim().toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                if (Character.isWhitespace(lastWritten) || lastWritten == ',') {
                     continue;
                 }
                 lastWritten = ' ';
                 writer.append(lastWritten);
-            }
-            else
-            {
+            } else {
                 lastWritten = c;
                 writer.append(lastWritten);
             }
@@ -116,18 +96,15 @@ public class StringUtils
         return writer.toString();
     }
 
-    public static String trimEnd(String input, String delim)
-    {
+    public static String trimEnd(String input, String delim) {
         int ix = input.indexOf(delim);
-        if (ix == -1)
-        {
+        if (ix == -1) {
             return input;
         }
         return input.substring(0, ix);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         System.out.println(normalizeWhitespace(" "));
         System.out.println(normalizeWhitespace("a,a:link"));
         System.out.println(normalizeWhitespace("  a,a:link"));

@@ -32,36 +32,29 @@ import java.util.List;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath>
-{
+public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
     private static final Logger LOG = Logger.getInstance(MediaReduceStrategy.class.getName());
 
     @NotNull
     private String media;
 
-    public MediaReduceStrategy(@NotNull String media)
-    {
+    public MediaReduceStrategy(@NotNull String media) {
         this.media = media;
     }
 
-    public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    public void reduce(@NotNull Collection<CssDeclarationPath> candidates) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reducing " + candidates.size() + " candidates for media: " + media);
         }
-        if (candidates.isEmpty())
-        {
+        if (candidates.isEmpty()) {
             // nothing to do here
             return;
         }
 
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
-        for (CssDeclarationPath candidate : candidates)
-        {
+        for (CssDeclarationPath candidate : candidates) {
             String candidateMedia = candidate.getSelectorNode().getMedia();
-            if (StringUtils.equalsNormalizeWhitespace(media, candidateMedia))
-            {
+            if (StringUtils.equalsNormalizeWhitespace(media, candidateMedia)) {
                 // media query matches candidate selector
                 matches.add(candidate);
             }

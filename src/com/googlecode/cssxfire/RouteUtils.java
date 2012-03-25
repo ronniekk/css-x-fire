@@ -28,26 +28,24 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class RouteUtils
-{
+public class RouteUtils {
     private static final Logger LOG = Logger.getInstance(RouteUtils.class.getName());
-    private static final String[] ROOT_MAPPING = new String[] {""};
+    private static final String[] ROOT_MAPPING = new String[]{""};
 
     /**
      * Finds the local file for a given route, if any. This method does not perform any I/O
      * operations but works only with the paths of the files.
-     * @param project the project
+     *
+     * @param project  the project
      * @param filePath the remote file path, e.g. the string returnd from {@link java.net.URL#getPath()}
      * @return the mapped local file in given project, or <tt>null</tt> if no mapping can be detected
      */
     @Nullable
-    public static VirtualFile detectLocalFile(@NotNull final Project project, @NotNull final String filePath)
-    {
+    public static VirtualFile detectLocalFile(@NotNull final Project project, @NotNull final String filePath) {
         final RoutePerFileMappings routes = ProjectSettings.getInstance(project).getRoutes();
         String[] parts = filePath.split("/");
         Map<VirtualFile, String> mappings = routes.getMappings();
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Detect local file, path: " + filePath + " routes: " + mappings);
         }
 
@@ -55,28 +53,22 @@ public class RouteUtils
         VirtualFile bestMatch = null;
         String bestRoute = null;
 
-        for (Map.Entry<VirtualFile, String> entry : mappings.entrySet())
-        {
+        for (Map.Entry<VirtualFile, String> entry : mappings.entrySet()) {
             VirtualFile file = entry.getKey();
             String route = entry.getValue();
-            if (filePath.equals(route))
-            {
+            if (filePath.equals(route)) {
                 // full match
-                if (LOG.isDebugEnabled())
-                {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Full match, route: " + route + ", file: " + file);
                 }
                 return file;
             }
-            if (!file.isDirectory())
-            {
+            if (!file.isDirectory()) {
                 continue;
             }
             String[] routeParts = "/".equals(route) ? ROOT_MAPPING : route.split("/"); // fix for String.split() inconsistency
-            if (routeParts.length <= parts.length && routeParts.length > longestMatch.length)
-            {
-                if (startsWith(parts, routeParts))
-                {
+            if (routeParts.length <= parts.length && routeParts.length > longestMatch.length) {
+                if (startsWith(parts, routeParts)) {
                     longestMatch = routeParts;
                     bestMatch = file;
                     bestRoute = route;
@@ -84,32 +76,26 @@ public class RouteUtils
             }
         }
 
-        if (longestMatch.length == 0)
-        {
+        if (longestMatch.length == 0) {
             // no route matched
             LOG.debug("No match");
             return null;
         }
-        
+
         //noinspection ConstantConditions
         VirtualFile virtualFile = bestMatch.findFileByRelativePath(filePath.substring(bestRoute.length()));
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Partial match, route: " + bestRoute + ", best match: " + bestMatch + ", local file: " + virtualFile);
         }
         return virtualFile;
     }
 
-    private static boolean startsWith(@NotNull String[] array, @NotNull String[] start)
-    {
-        if (start.length > array.length)
-        {
+    private static boolean startsWith(@NotNull String[] array, @NotNull String[] start) {
+        if (start.length > array.length) {
             return false;
         }
-        for (int i = 0; i < start.length; i++)
-        {
-            if (!array[i].equals(start[i]))
-            {
+        for (int i = 0; i < start.length; i++) {
+            if (!array[i].equals(start[i])) {
                 return false;
             }
         }

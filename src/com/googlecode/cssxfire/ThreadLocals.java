@@ -20,38 +20,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Re-usable objects such as lists and string buffers. Avoids unnecessary object creation. 
+ * Re-usable objects such as lists and string buffers. Avoids unnecessary object creation.
  */
-public class ThreadLocals
-{
-    public static final ThreadLocal<List<String>> stringList = new ThreadLocal<List<String>>()
-    {
+public class ThreadLocals {
+    public static final ThreadLocal<List<String>> stringList = new ThreadLocal<List<String>>() {
         @Override
-        protected List<String> initialValue()
-        {
+        protected List<String> initialValue() {
             return new ArrayList<String>();
         }
 
         @Override
-        public List<String> get()
-        {
+        public List<String> get() {
             List<String> list = super.get();
             list.clear();
             return list;
         }
     };
 
-    public static final ThreadLocal<StringBuilder> stringBuilder = new ThreadLocal<StringBuilder>()
-    {
+    public static final ThreadLocal<StringBuilder> stringBuilder = new ThreadLocal<StringBuilder>() {
         @Override
-        protected StringBuilder initialValue()
-        {
+        protected StringBuilder initialValue() {
             return new StringBuilder();
         }
 
         @Override
-        public StringBuilder get()
-        {
+        public StringBuilder get() {
             StringBuilder builder = super.get();
             builder.setLength(0);
             return builder;

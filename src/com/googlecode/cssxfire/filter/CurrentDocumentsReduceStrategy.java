@@ -34,39 +34,31 @@ import java.util.List;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CurrentDocumentsReduceStrategy implements ReduceStrategy<CssDeclarationPath>
-{
+public class CurrentDocumentsReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
     private static final Logger LOG = Logger.getInstance(CurrentDocumentsReduceStrategy.class.getName());
 
     @NotNull
     private final Project project;
 
-    public CurrentDocumentsReduceStrategy(@NotNull Project project)
-    {
+    public CurrentDocumentsReduceStrategy(@NotNull Project project) {
         this.project = project;
     }
 
-    public void reduce(@NotNull Collection<CssDeclarationPath> candidates)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    public void reduce(@NotNull Collection<CssDeclarationPath> candidates) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Reducing " + candidates.size() + " candidates for currently opened documents");
         }
-        if (candidates.isEmpty())
-        {
+        if (candidates.isEmpty()) {
             // nothing to do here
             return;
         }
 
         VirtualFile[] openFiles = FileEditorManager.getInstance(project).getOpenFiles();
         List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
-        for (CssDeclarationPath candidate : candidates)
-        {
+        for (CssDeclarationPath candidate : candidates) {
             VirtualFile candidateFile = candidate.getFileNode().getVirtualFile();
-            for (VirtualFile openFile : openFiles)
-            {
-                if (candidateFile == openFile)
-                {
+            for (VirtualFile openFile : openFiles) {
+                if (candidateFile == openFile) {
                     // this candidate is is a currently opened file
                     matches.add(candidate);
                 }

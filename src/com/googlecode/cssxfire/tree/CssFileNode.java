@@ -30,76 +30,62 @@ import javax.swing.tree.TreeNode;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class CssFileNode extends CssTreeNode implements Navigatable
-{
+public class CssFileNode extends CssTreeNode implements Navigatable {
     private final PsiFile psiFile;
 
-    public CssFileNode(PsiFile psiFile)
-    {
+    public CssFileNode(PsiFile psiFile) {
         this.psiFile = psiFile;
     }
 
-    public String getFilename()
-    {
+    public String getFilename() {
         return psiFile.getName();
     }
 
     @Nullable
-    public VirtualFile getVirtualFile()
-    {
+    public VirtualFile getVirtualFile() {
         return psiFile.getVirtualFile();
     }
 
     @Override
-    public Icon getIcon()
-    {
+    public Icon getIcon() {
         ItemPresentation presentation = psiFile.getPresentation();
         return presentation != null ? presentation.getIcon(true) : psiFile.getIcon(1);
     }
 
     @Override
-    public String getText()
-    {
+    public String getText() {
         VirtualFile virtualFile = psiFile.getVirtualFile();
         String path = virtualFile != null ? virtualFile.getPresentableUrl() : psiFile.getName();
         return path + " (" + TreeUtils.countLeafs(this) + ")";
     }
 
     @Override
-    public ActionGroup getActionGroup()
-    {
+    public ActionGroup getActionGroup() {
         return (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.File");
     }
 
-    public void navigate()
-    {
+    public void navigate() {
         // this check shouldn't be needed but better safe than sorry...
-        if (getChildCount() > 0)
-        {
+        if (getChildCount() > 0) {
             TreeNode firstChild = getChildAt(0);
-            if (firstChild instanceof Navigatable)
-            {
+            if (firstChild instanceof Navigatable) {
                 ((Navigatable) firstChild).navigate();
             }
         }
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CssFileNode fileNode = (CssFileNode) o;
 
-        if (psiFile != null ? !psiFile.equals(fileNode.psiFile) : fileNode.psiFile != null)
-        {
+        if (psiFile != null ? !psiFile.equals(fileNode.psiFile) : fileNode.psiFile != null) {
             return false;
         }
 
@@ -107,8 +93,7 @@ public class CssFileNode extends CssTreeNode implements Navigatable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return psiFile != null ? psiFile.hashCode() : 0;
     }
 }

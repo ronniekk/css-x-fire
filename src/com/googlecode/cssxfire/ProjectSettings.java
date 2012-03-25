@@ -35,14 +35,13 @@ import java.util.List;
  * User: Ronnie
  */
 @State(
-    name = "CssXFireSettings",
-    storages = {
-            @Storage(id = "default", file = "$PROJECT_FILE$"),
-            @Storage(id = "CSS-X-Fire", file = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
-    }
+        name = "CssXFireSettings",
+        storages = {
+                @Storage(id = "default", file = "$PROJECT_FILE$"),
+                @Storage(id = "CSS-X-Fire", file = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
+        }
 )
-public class ProjectSettings implements ProjectComponent, PersistentStateComponent<Element>
-{
+public class ProjectSettings implements ProjectComponent, PersistentStateComponent<Element> {
     private RoutePerFileMappings routes = new RoutePerFileMappings();
     private boolean autoClear;
     private boolean useRoutes;
@@ -53,135 +52,108 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
     private boolean resolveVariables = true;
     private boolean resolveMixins = true;
 
-    private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>()
-    {
-        public int compare(final VirtualFile o1, final VirtualFile o2)
-        {
-            if (o1 == null || o2 == null)
-            {
+    private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>() {
+        public int compare(final VirtualFile o1, final VirtualFile o2) {
+            if (o1 == null || o2 == null) {
                 return o1 == null ? o2 == null ? 0 : 1 : -1;
             }
             return o1.getPath().compareTo(o2.getPath());
         }
     };
 
-    public static ProjectSettings getInstance(final Project project)
-    {
+    public static ProjectSettings getInstance(final Project project) {
         return project.getComponent(ProjectSettings.class);
     }
 
-    public RoutePerFileMappings getRoutes()
-    {
+    public RoutePerFileMappings getRoutes() {
         return routes;
     }
 
-    public boolean isAutoExpand()
-    {
+    public boolean isAutoExpand() {
         return autoExpand;
     }
 
-    public void setAutoExpand(boolean autoExpand)
-    {
+    public void setAutoExpand(boolean autoExpand) {
         this.autoExpand = autoExpand;
     }
 
-    public boolean isAutoClear()
-    {
+    public boolean isAutoClear() {
         return autoClear;
     }
 
-    public void setAutoClear(boolean autoClear)
-    {
+    public void setAutoClear(boolean autoClear) {
         this.autoClear = autoClear;
     }
 
-    public boolean isUseRoutes()
-    {
+    public boolean isUseRoutes() {
         return useRoutes;
     }
 
-    public void setUseRoutes(boolean useRoutes)
-    {
+    public void setUseRoutes(boolean useRoutes) {
         this.useRoutes = useRoutes;
     }
 
-    public boolean isMediaReduce()
-    {
+    public boolean isMediaReduce() {
         return mediaReduce;
     }
 
-    public void setMediaReduce(boolean mediaReduce)
-    {
+    public void setMediaReduce(boolean mediaReduce) {
         this.mediaReduce = mediaReduce;
     }
 
-    public boolean isFileReduce()
-    {
+    public boolean isFileReduce() {
         return fileReduce;
     }
 
-    public void setFileReduce(boolean fileReduce)
-    {
+    public void setFileReduce(boolean fileReduce) {
         this.fileReduce = fileReduce;
     }
 
-    public boolean isCurrentDocumentsReduce()
-    {
+    public boolean isCurrentDocumentsReduce() {
         return currentDocumentsReduce;
     }
 
-    public void setCurrentDocumentsReduce(boolean currentDocumentsReduce)
-    {
+    public void setCurrentDocumentsReduce(boolean currentDocumentsReduce) {
         this.currentDocumentsReduce = currentDocumentsReduce;
     }
 
-    public boolean isResolveVariables()
-    {
+    public boolean isResolveVariables() {
         return resolveVariables;
     }
 
-    public void setResolveVariables(boolean resolveVariables) 
-    {
+    public void setResolveVariables(boolean resolveVariables) {
         this.resolveVariables = resolveVariables;
     }
 
-    public boolean isResolveMixins()
-    {
+    public boolean isResolveMixins() {
         return resolveMixins;
     }
 
-    public void setResolveMixins(boolean resolveMixins)
-    {
+    public void setResolveMixins(boolean resolveMixins) {
         this.resolveMixins = resolveMixins;
     }
 
     @NotNull
-    public String getComponentName()
-    {
+    public String getComponentName() {
         return getClass().getName();
     }
 
-    public void initComponent()
-    {
+    public void initComponent() {
     }
 
-    public void disposeComponent()
-    {
+    public void disposeComponent() {
     }
 
-    public Element getState()
-    {
+    public Element getState() {
         Element root = new Element("root");
         Element general = new Element("general");
         Element strategy = new Element("strategy");
         Element routes = new Element("routes");
         List<VirtualFile> files = new ArrayList<VirtualFile>(this.routes.getMappings().keySet());
         ContainerUtil.quickSort(files, FILE_COMPARATOR);
-        for (VirtualFile file : files)
-        {
+        for (VirtualFile file : files) {
             String route = this.routes.getMappings().get(file);
-            if (!StringUtil.isEmptyOrSpaces(route) && file != null)
-            {
+            if (!StringUtil.isEmptyOrSpaces(route) && file != null) {
                 Element child = new Element("file");
                 child.setAttribute("url", file.getUrl());
                 child.setAttribute("route", route.trim());
@@ -202,24 +174,19 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         return root;
     }
 
-    public void loadState(Element root)
-    {
+    public void loadState(Element root) {
         HashMap<VirtualFile, String> routeMappings = new HashMap<VirtualFile, String>();
         Element routes = root.getChild("routes");
-        if (routes != null)
-        {
+        if (routes != null) {
             List<Element> files = routes.getChildren("file");
-            for (Element fileElement : files)
-            {
+            for (Element fileElement : files) {
                 String url = fileElement.getAttributeValue("url");
                 String route = fileElement.getAttributeValue("route");
-                if (route == null)
-                {
+                if (route == null) {
                     continue;
                 }
                 VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(url);
-                if (file != null)
-                {
+                if (file != null) {
                     routeMappings.put(file, route);
                 }
             }
@@ -238,11 +205,9 @@ public class ProjectSettings implements ProjectComponent, PersistentStateCompone
         this.useRoutes = strategy != null && Boolean.parseBoolean(strategy.getAttributeValue("useRoutes"));
     }
 
-    public void projectOpened()
-    {
+    public void projectOpened() {
     }
 
-    public void projectClosed()
-    {
+    public void projectClosed() {
     }
 }

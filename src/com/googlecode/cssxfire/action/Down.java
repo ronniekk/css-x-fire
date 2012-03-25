@@ -20,11 +20,9 @@ package com.googlecode.cssxfire.action;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class Down extends Navigate
-{
+public class Down extends Navigate {
     @Override
-    protected int getDirection()
-    {
+    protected int getDirection() {
         return 1;
     }
 }

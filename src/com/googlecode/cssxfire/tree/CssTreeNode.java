@@ -28,16 +28,14 @@ import java.awt.*;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public abstract class CssTreeNode extends DefaultMutableTreeNode
-{
+public abstract class CssTreeNode extends DefaultMutableTreeNode {
     @Nullable
     public abstract Icon getIcon();
 
     public abstract String getText();
 
     @Override
-    public boolean getAllowsChildren()
-    {
+    public boolean getAllowsChildren() {
         return true;
     }
 
@@ -45,19 +43,16 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode
     public abstract ActionGroup getActionGroup();
 
     @NotNull
-    private String wrapWithHtml(String text)
-    {
+    private String wrapWithHtml(String text) {
         return "<html>" + text + "</html>";
     }
 
     @NotNull
-    protected String wrapWithHtmlColor(String text, Color color)
-    {
+    protected String wrapWithHtmlColor(String text, Color color) {
         return wrapWithHtml("<font color=\"#" + toHtml(color) + "\">" + text + "</font>");
     }
 
-    private static String toHtml(Color color)
-    {
+    private static String toHtml(Color color) {
         StringBuilder sb = new StringBuilder();
         sb.append(padWithZeros(Integer.toHexString(color.getRed())));
         sb.append(padWithZeros(Integer.toHexString(color.getGreen())));
@@ -65,10 +60,8 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode
         return sb.toString();
     }
 
-    private static String padWithZeros(String s)
-    {
-        while (s.length() < 2)
-        {
+    private static String padWithZeros(String s) {
+        while (s.length() < 2) {
             s = "0" + s;
         }
         return s;

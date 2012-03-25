@@ -20,7 +20,6 @@ package com.googlecode.cssxfire.tree;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface Navigatable
-{
+public interface Navigatable {
     public void navigate();
 }

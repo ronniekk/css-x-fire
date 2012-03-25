@@ -37,11 +37,10 @@ import java.util.Collection;
  * User: Ronnie
  */
 @State(
-    name = "CssXFireConnector",
-    storages = {@Storage(id = "CSS-X-Fire", file = "$OPTIONS$/CSS-X-Fire.xml")}
+        name = "CssXFireConnector",
+        storages = {@Storage(id = "CSS-X-Fire", file = "$OPTIONS$/CSS-X-Fire.xml")}
 )
-public class CssXFireConnector implements ApplicationComponent, PersistentStateComponent<AppMeta>
-{
+public class CssXFireConnector implements ApplicationComponent, PersistentStateComponent<AppMeta> {
     private static final Logger LOG = Logger.getInstance(CssXFireConnector.class.getName());
 
     private AppMeta appMeta = new AppMeta();
@@ -49,108 +48,82 @@ public class CssXFireConnector implements ApplicationComponent, PersistentStateC
     private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<IncomingChangesComponent>();
     private boolean initialized = false;
 
-    public static CssXFireConnector getInstance()
-    {
+    public static CssXFireConnector getInstance() {
         return ApplicationManager.getApplication().getComponent(CssXFireConnector.class);
     }
 
-    public boolean isInitialized()
-    {
+    public boolean isInitialized() {
         return initialized;
     }
 
-    public CssXFireConnector()
-    {
+    public CssXFireConnector() {
     }
 
-    public void initComponent()
-    {
+    public void initComponent() {
         // start web server
-         try
-         {
-             webServer = new SimpleWebServer();
-             new Thread(webServer).start();
-             initialized = true;
-         }
-         catch (BindException e)
-         {
-             LOG.error("Unable to start web server - address in use: ", e);
-             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
-         }
-         catch (IOException e)
-         {
-             LOG.error("Unable to start web server: ", e);
-             Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
-         }
+        try {
+            webServer = new SimpleWebServer();
+            new Thread(webServer).start();
+            initialized = true;
+        } catch (BindException e) {
+            LOG.error("Unable to start web server - address in use: ", e);
+            Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - address is in use.\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
+        } catch (IOException e) {
+            LOG.error("Unable to start web server: ", e);
+            Messages.showErrorDialog("Unable to start SimpleWebServer on localhost:6776 - " + e.getMessage() + "\n\nCSS-X-Fire will be disabled until restart of " + ApplicationNamesInfo.getInstance().getFullProductName(), "CSS-X-Fire error");
+        }
     }
 
-    public void disposeComponent()
-    {
+    public void disposeComponent() {
         // tear down web server
-        if (webServer != null)
-        {
-            try
-            {
+        if (webServer != null) {
+            try {
                 webServer.stop();
                 LOG.debug("Web server stopped");
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 LOG.error(e);
             }
         }
         webServer = null;
     }
 
-    public AppMeta getState()
-    {
+    public AppMeta getState() {
         return appMeta;
     }
 
-    public void loadState(AppMeta appMeta)
-    {
+    public void loadState(AppMeta appMeta) {
         this.appMeta = appMeta;
     }
 
     @NotNull
-    public String getComponentName()
-    {
+    public String getComponentName() {
         return getClass().getSimpleName();
     }
 
-    public void addProjectComponent(@NotNull IncomingChangesComponent incomingChangesComponent)
-    {
+    public void addProjectComponent(@NotNull IncomingChangesComponent incomingChangesComponent) {
         incomingChangesComponents.add(incomingChangesComponent);
     }
 
-    public void removeProjectComponent(@NotNull IncomingChangesComponent incomingChangesComponent)
-    {
+    public void removeProjectComponent(@NotNull IncomingChangesComponent incomingChangesComponent) {
         incomingChangesComponents.remove(incomingChangesComponent);
     }
 
-    public void processEvent(final FirebugEvent event)
-    {
+    public void processEvent(final FirebugEvent event) {
         // Dispatch the incoming event to every open project
-        for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents)
-        {
-            ApplicationManager.getApplication().invokeLater(new Runnable()
-            {
-                public void run()
-                {
+        for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents) {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                public void run() {
                     incomingChangesComponent.handleEvent(event);
                 }
             });
         }
     }
-    public void processCss(final FirebugChangesBean changesBean)
-    {
+
+    public void processCss(final FirebugChangesBean changesBean) {
         // Dispatch the incoming change to every open project
-        for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents)
-        {
-            ApplicationManager.getApplication().invokeLater(new Runnable()
-            {
-                public void run()
-                {
+        for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents) {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                public void run() {
                     incomingChangesComponent.processRule(changesBean);
                 }
             });
