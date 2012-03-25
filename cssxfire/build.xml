@@ -3,7 +3,7 @@
         Build file for CSS-X-Fire FireFox plugin
     </description>
 
-    <property name="destfile" value="${basedir}/../resources/com/googlecode/cssxfire/www/cssxfire.xpi" />
+    <property name="destfile" value="${basedir}/../resources/com/github/cssxfire/www/cssxfire.xpi" />
 
     <target name="init">
         <delete file="${destfile}" />

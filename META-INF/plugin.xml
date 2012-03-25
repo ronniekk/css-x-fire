@@ -6,7 +6,7 @@
         <p>Style with pleasure!</p>
     ]]></description>
     <version>1.26</version>
-    <vendor url="http://code.google.com/p/css-x-fire/" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
+    <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.26
             <li>Variables support.</li>
@@ -121,99 +121,99 @@
 
     <application-components>
         <component>
-            <implementation-class>com.googlecode.cssxfire.CssXFireConnector</implementation-class>
+            <implementation-class>com.github.cssxfire.CssXFireConnector</implementation-class>
         </component>
     </application-components>
 
     <project-components>
         <component>
-            <implementation-class>com.googlecode.cssxfire.IncomingChangesComponent</implementation-class>
+            <implementation-class>com.github.cssxfire.IncomingChangesComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>com.googlecode.cssxfire.ProjectSettings</implementation-class>
+            <implementation-class>com.github.cssxfire.ProjectSettings</implementation-class>
         </component>
         <component>
-            <implementation-class>com.googlecode.cssxfire.SearchProcessorCache</implementation-class>
+            <implementation-class>com.github.cssxfire.SearchProcessorCache</implementation-class>
         </component>
     </project-components>
 
     <actions>
 
-        <action id="com.googlecode.cssxfire.action.ApplyAll"
-                class="com.googlecode.cssxfire.action.ApplyAll"
+        <action id="com.github.cssxfire.action.ApplyAll"
+                class="com.github.cssxfire.action.ApplyAll"
                 text="Apply all changes"
                 description="Applies all pending changes"
-                icon="/com/googlecode/cssxfire/images/commit.png"/>
-        <action id="com.googlecode.cssxfire.action.ClearAll"
-                class="com.googlecode.cssxfire.action.ClearAll"
+                icon="/com/github/cssxfire/images/commit.png"/>
+        <action id="com.github.cssxfire.action.ClearAll"
+                class="com.github.cssxfire.action.ClearAll"
                 text="Clear list"
                 description="Clears all pending changes"
-                icon="/com/googlecode/cssxfire/images/gc.png"/>
+                icon="/com/github/cssxfire/images/gc.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSingle"
-                class="com.googlecode.cssxfire.action.DeleteNode"
+                class="com.github.cssxfire.action.DeleteNode"
                 text="Remove selected change"
                 description="Removes the selected change from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySingle"
-                class="com.googlecode.cssxfire.action.ApplyNode"
+                class="com.github.cssxfire.action.ApplyNode"
                 text="Apply selected change"
                 description="Applies the selected change from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSelector"
-                class="com.googlecode.cssxfire.action.DeleteNode"
+                class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in selector"
                 description="Removes all changes from selected CSS selector from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySelector"
-                class="com.googlecode.cssxfire.action.ApplyNode"
+                class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in selector"
                 description="Applies all changes from selected CSS selector from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteFile"
-                class="com.googlecode.cssxfire.action.DeleteNode"
+                class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in file"
                 description="Removes all changes from selected file from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png"/>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyFile"
-                class="com.googlecode.cssxfire.action.ApplyNode"
+                class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in file"
                 description="Applies all changes from selected file from the incoming changelist"
-                icon="/com/googlecode/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png"/>
         <action id="IncomingChanges.ToolBar.Up"
-                class="com.googlecode.cssxfire.action.Up"
+                class="com.github.cssxfire.action.Up"
                 text="Previous change"
                 description="Navigate to the previous occurence"
-                icon="/com/googlecode/cssxfire/images/up.png"/>
+                icon="/com/github/cssxfire/images/up.png"/>
         <action id="IncomingChanges.ToolBar.Down"
-                class="com.googlecode.cssxfire.action.Down"
+                class="com.github.cssxfire.action.Down"
                 text="Next change"
                 description="Navigate to the next occurence"
-                icon="/com/googlecode/cssxfire/images/down.png"/>
+                icon="/com/github/cssxfire/images/down.png"/>
         <action id="IncomingChanges.ToolBar.Help"
-                class="com.googlecode.cssxfire.action.Help"
+                class="com.github.cssxfire.action.Help"
                 text="Help"
                 description="Show the CSS-X-Fire help page"
-                icon="/com/googlecode/cssxfire/images/help.png"/>
+                icon="/com/github/cssxfire/images/help.png"/>
         <action id="IncomingChanges.ToolBar.AutoExpand"
-                class="com.googlecode.cssxfire.action.AutoExpand"
+                class="com.github.cssxfire.action.AutoExpand"
                 text="Auto Expand"
                 description="Expand entire tree on every incoming change."
-                icon="/com/googlecode/cssxfire/images/autoexpand.png"/>
+                icon="/com/github/cssxfire/images/autoexpand.png"/>
         <action id="IncomingChanges.ToolBar.ExpandAll"
-                class="com.googlecode.cssxfire.action.ExpandAll"
+                class="com.github.cssxfire.action.ExpandAll"
                 text="Expand All"
                 description="Expand all elements in the tool window."
-                icon="/com/googlecode/cssxfire/images/expandall.png"/>
+                icon="/com/github/cssxfire/images/expandall.png"/>
         <action id="IncomingChanges.ToolBar.CollapseAll"
-                class="com.googlecode.cssxfire.action.CollapseAll"
+                class="com.github.cssxfire.action.CollapseAll"
                 text="Collapse All"
                 description="Collapse all elements in the tool window"
-                icon="/com/googlecode/cssxfire/images/collapseall.png"/>
+                icon="/com/github/cssxfire/images/collapseall.png"/>
         <action id="IncomingChanges.ToolBar.ShowSettings"
-                class="com.googlecode.cssxfire.action.ShowSettings"
+                class="com.github.cssxfire.action.ShowSettings"
                 text="Show Settings"
                 description="Edit CSS-X-Fire Settings"
-                icon="/com/googlecode/cssxfire/images/applicationSettings.png"/>
+                icon="/com/github/cssxfire/images/applicationSettings.png"/>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
@@ -250,6 +250,6 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable id="com.googlecode.cssxfire.ProjectSettingsConfigurable" implementation="com.googlecode.cssxfire.ProjectSettingsConfigurable"/>
+        <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" implementation="com.github.cssxfire.ProjectSettingsConfigurable"/>
     </extensions>
 </idea-plugin>
