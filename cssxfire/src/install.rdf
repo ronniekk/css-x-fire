@@ -7,7 +7,7 @@
         <em:version>1.26</em:version>
         <em:creator>Ronnie Kolehmainen</em:creator>
         <em:description>Connects Firebug CSS editor with IntelliJ IDEA</em:description>
-        <em:homepageURL>http://code.google.com/p/css-x-fire/</em:homepageURL>
+        <em:homepageURL>https://github.com/ronniekk/css-x-fire</em:homepageURL>
         <em:updateURL>http://localhost:6776/files/xpiupdate.rdf</em:updateURL>
         <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDr+dkt+L+zxr+yWv/9vvyjiPBb/xBaokf/MELWjYyTfoQosPm9Wj0ByfxLEglzfXZBadF7AwBwCboRB1b3Mm1Sd7/9I9XYzJrZ2LHDQcwSPHj6iEyYy27rnjU7+wIT+m+n0D6DwdzrHFHDUNtZBPE2vjQAqy6B9u+3zZHvqaPoPQIDAQAB</em:updateKey>
 
