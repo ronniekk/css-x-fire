@@ -64,6 +64,11 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode {
     }
 
     @Override
+    public String getName() {
+        return property;
+    }
+
+    @Override
     public final String getText() {
         String text = cssDeclaration.getText();
         return deleted

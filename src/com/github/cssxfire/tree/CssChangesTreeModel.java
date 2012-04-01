@@ -116,12 +116,35 @@ public class CssChangesTreeModel extends DefaultTreeModel {
      * @param child  the new child
      */
     private void addChildAndFireEvent(CssTreeNode parent, CssTreeNode child) {
-        parent.add(child);
+        insert(parent, child);
         nodesWereInserted(parent, new int[]{parent.getIndex(child)});
         if (child instanceof CssDeclarationNode) {
             // notify that file node is changed (update the number of changes in file)
             nodeChanged(parent.getParent());
         }
+    }
+
+    /**
+     * Adds <tt>child</tt> to <tt>parent</tt>. The insertion index is determined by lexicographically comparing the
+     * text (name) of the siblings.
+     * @param parent the parent node
+     * @param child the new child node
+     */
+    private void insert(CssTreeNode parent, CssTreeNode child) {
+        int numChildren = parent.getChildCount();
+        if (numChildren == 0) {
+            parent.add(child);
+            return;
+        }
+        final String name = child.getName();
+        for (int i = 0; i < numChildren; i++) {
+            CssTreeNode node = (CssTreeNode) parent.getChildAt(i);
+            if (node.getName().compareTo(name) > 0) {
+                parent.insert(child, i);
+                return;
+            }
+        }
+        parent.add(child);
     }
 
     private boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node) {

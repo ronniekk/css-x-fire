@@ -32,7 +32,17 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode {
     @Nullable
     public abstract Icon getIcon();
 
+    /**
+     * Get the text to display in the tree view
+     * @return the text
+     */
     public abstract String getText();
+
+    /**
+     * Get the name of the node (used for sorting the tree).
+     * @return the name to compare
+     */
+    public abstract String getName();
 
     @Override
     public boolean getAllowsChildren() {

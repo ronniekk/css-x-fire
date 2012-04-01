@@ -53,8 +53,13 @@ public class CssFileNode extends CssTreeNode implements Navigatable {
     }
 
     @Override
+    public String getName() {
+        return getFilename();
+    }
+
+    @Override
     public String getText() {
-        return psiFile.getName() + " (" + TreeUtils.countLeafs(this) + ")";
+        return getName() + " (" + TreeUtils.countLeafs(this) + ")";
     }
 
     @Override

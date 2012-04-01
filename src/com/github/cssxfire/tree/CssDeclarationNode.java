@@ -60,8 +60,13 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
     }
 
     @Override
+    public String getName() {
+        return cssDeclaration.getPropertyName();
+    }
+
+    @Override
     public String getText() {
-        String text = cssDeclaration.getPropertyName() + ": " + value + (important ? " !important" : "");
+        String text = getName() + ": " + value + (important ? " !important" : "");
         return deleted
                 ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.MODIFIED : Colors.INVALID)
                 : wrapWithHtmlColor(text, isValid() ? Colors.MODIFIED : Colors.INVALID);

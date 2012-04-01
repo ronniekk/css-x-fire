@@ -49,9 +49,14 @@ public class CssRootNode extends CssTreeNode {
     }
 
     @Override
-    public String getText() {
+    public String getName() {
         VirtualFile baseDir = project.getBaseDir();
         return baseDir != null ? project.getName() + " (" + baseDir.getPresentableUrl() + ")" : project.getName();
+    }
+
+    @Override
+    public String getText() {
+        return getName();
     }
 
     @Override
