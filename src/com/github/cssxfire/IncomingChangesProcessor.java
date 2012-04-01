@@ -130,9 +130,11 @@ public class IncomingChangesProcessor {
     private CssDeclarationPath createPath(CssDeclaration declaration, CssBlock block) {
         CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, changesBean.getValue(), changesBean.isDeleted(), changesBean.isImportant());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), block);
-        CssFileNode fileNode = new CssFileNode(declaration.getContainingFile().getOriginalFile());
+        PsiFile file = declaration.getContainingFile().getOriginalFile();
+        CssFileNode fileNode = new CssFileNode(file);
+        CssDirectoryNode directoryNode = new CssDirectoryNode(file.getParent());
 
-        return new CssDeclarationPath(fileNode, selectorNode, declarationNode);
+        return new CssDeclarationPath(directoryNode, fileNode, selectorNode, declarationNode);
     }
 
     /**
@@ -147,8 +149,9 @@ public class IncomingChangesProcessor {
         CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
         CssFileNode fileNode = new CssFileNode(file);
+        CssDirectoryNode directoryNode = new CssDirectoryNode(file.getParent());
 
-        return new CssDeclarationPath(fileNode, selectorNode, declarationNode);
+        return new CssDeclarationPath(directoryNode, fileNode, selectorNode, declarationNode);
     }
 
     /**

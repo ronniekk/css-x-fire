@@ -54,9 +54,7 @@ public class CssFileNode extends CssTreeNode implements Navigatable {
 
     @Override
     public String getText() {
-        VirtualFile virtualFile = psiFile.getVirtualFile();
-        String path = virtualFile != null ? virtualFile.getPresentableUrl() : psiFile.getName();
-        return path + " (" + TreeUtils.countLeafs(this) + ")";
+        return psiFile.getName() + " (" + TreeUtils.countLeafs(this) + ")";
     }
 
     @Override

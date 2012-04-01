@@ -181,6 +181,16 @@
                 text="Apply all changes in file"
                 description="Applies all changes from selected file from the incoming changelist"
                 icon="/com/github/cssxfire/images/commit.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.DeleteDirectory"
+                class="com.github.cssxfire.action.DeleteNode"
+                text="Remove all changes in directory"
+                description="Removes all changes from selected directory from the incoming changelist"
+                icon="/com/github/cssxfire/images/delete.png"/>
+        <action id="IncomingChanges.DeclarationNodePopup.ApplyDirectory"
+                class="com.github.cssxfire.action.ApplyNode"
+                text="Apply all changes in directory"
+                description="Applies all changes from selected directory from the incoming changelist"
+                icon="/com/github/cssxfire/images/commit.png"/>
         <action id="IncomingChanges.ToolBar.Up"
                 class="com.github.cssxfire.action.Up"
                 text="Previous change"
@@ -234,6 +244,11 @@
         <group id="IncomingChanges.DeclarationNodePopup.File" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Apply.File" ref="IncomingChanges.DeclarationNodePopup.ApplyFile"/>
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.File" ref="IncomingChanges.DeclarationNodePopup.DeleteFile"/>
+        </group>
+
+        <group id="IncomingChanges.DeclarationNodePopup.Directory" text="" popup="true">
+            <reference id="IncomingChanges.DeclarationNodePopup.Apply.Directory" ref="IncomingChanges.DeclarationNodePopup.ApplyDirectory"/>
+            <reference id="IncomingChanges.DeclarationNodePopup.Delete.Directory" ref="IncomingChanges.DeclarationNodePopup.DeleteDirectory"/>
         </group>
 
         <group id="IncomingChanges.ToolBar" text="" popup="false">

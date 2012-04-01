@@ -255,7 +255,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
             return;
         }
         Object source = selectedPath.getLastPathComponent();
-        if (source instanceof CssFileNode || source instanceof CssSelectorNode) {
+        if (source instanceof CssDirectoryNode || source instanceof CssFileNode || source instanceof CssSelectorNode) {
             final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
             for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source)) {
                 if (leaf instanceof CssDeclarationNode) {
@@ -287,7 +287,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
             return;
         }
         Object source = selectedPath.getLastPathComponent();
-        if (source instanceof CssFileNode || source instanceof CssSelectorNode) {
+        if (source instanceof CssDirectoryNode || source instanceof CssFileNode || source instanceof CssSelectorNode) {
             final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
             for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode) source)) {
                 if (leaf instanceof CssDeclarationNode) {

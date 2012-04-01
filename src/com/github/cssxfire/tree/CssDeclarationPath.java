@@ -21,37 +21,37 @@ package com.github.cssxfire.tree;
  * User: Ronnie
  */
 public class CssDeclarationPath {
-    private CssFileNode fileNode;
-    private CssSelectorNode selectorNode;
-    private CssDeclarationNode declarationNode;
+    private final CssTreeNode[] treeNodes;
 
-    public CssDeclarationPath(CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode) {
-        this.fileNode = fileNode;
-        this.selectorNode = selectorNode;
-        this.declarationNode = declarationNode;
+    public CssDeclarationPath(CssDirectoryNode directoryNode, CssFileNode fileNode, CssSelectorNode selectorNode, CssDeclarationNode declarationNode) {
+        this.treeNodes = new CssTreeNode[] {directoryNode, fileNode, selectorNode, declarationNode};
     }
 
     public CssTreeNode[] getPathFromRoot() {
-        return new CssTreeNode[]{fileNode, selectorNode, declarationNode};
+        return treeNodes;
+    }
+
+    public CssDirectoryNode getDirectoryNode() {
+        return (CssDirectoryNode) treeNodes[0];
     }
 
     public CssFileNode getFileNode() {
-        return fileNode;
+        return (CssFileNode) treeNodes[1];
     }
 
     public CssSelectorNode getSelectorNode() {
-        return selectorNode;
+        return (CssSelectorNode) treeNodes[2];
     }
 
     public CssDeclarationNode getDeclarationNode() {
-        return declarationNode;
+        return (CssDeclarationNode) treeNodes[3];
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + " ['" + fileNode.getVirtualFile()
-                + "', '" + selectorNode.getSelector()
-                + "', '" + declarationNode.getPropertyName() + "']";
+                + " ['" + getFileNode().getVirtualFile()
+                + "', '" + getSelectorNode().getSelector()
+                + "', '" + getDeclarationNode().getPropertyName() + "']";
     }
 }
