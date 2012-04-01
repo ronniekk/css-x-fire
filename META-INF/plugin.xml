@@ -9,6 +9,7 @@
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.27
+            <li><a href="https://github.com/ronniekk/css-x-fire/issues/2">Issue 2</a> Added folders with popup actions in tree view.</li>
         </ul>
         <ul>1.26
             <li>Variables support.</li>
