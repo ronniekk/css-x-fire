@@ -16,8 +16,7 @@
 
 package com.github.cssxfire;
 
-import com.github.cssxfire.resolve.CssRulesetReference;
-import com.github.cssxfire.resolve.CssXFireReferenceProvider;
+import com.github.cssxfire.resolve.GotoDeclarationResolver;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
@@ -27,7 +26,9 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.PsiSearchHelper;
@@ -37,8 +38,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -120,65 +119,29 @@ public class CssUtils {
         return true;
     }
 
-    /**
-     * Recursion guard
-     */
-    private static ThreadLocal<Set<PsiElement>> processed = new ThreadLocal<Set<PsiElement>>() {
-        @Override
-        protected Set<PsiElement> initialValue() {
-            return new HashSet<PsiElement>();
-        }
-    };
-
     @Nullable
-    public static CssTermList resolveVariableAssignment(@NotNull CssDeclaration cssDeclaration) {
+    public static PsiElement resolveVariableAssignment(@NotNull CssDeclaration cssDeclaration) {
         CssTermList termList = PsiTreeUtil.getChildOfType(cssDeclaration, CssTermList.class);
-        try {
-            CssTermList result = null;
-            while (termList != null) {
-                if (!processed.get().add(termList)) {
-                    return null; // infinite recursion detected
-                }
-                CssTerm[] terms = PsiTreeUtil.getChildrenOfType(termList, CssTerm.class);
-                if (terms == null || terms.length != 1) {
-                    return null; // not an explicit variable reference
-                }
-                termList = resolveTermList(termList);
-                if (termList == null) {
-                    return result;
-                }
-                result = termList;
-            }
-            return result;
-        } finally {
-            processed.get().clear();
+        if (termList == null) {
+            return null;
         }
-    }
+        CssTerm[] terms = PsiTreeUtil.getChildrenOfType(termList, CssTerm.class);
+        if (terms == null || terms.length != 1) {
+            return null; // not an explicit variable reference
+        }
 
-    @Nullable
-    private static CssTermList resolveTermList(@NotNull CssTermList termList) {
-        final Ref<CssTermList> result = new Ref<CssTermList>(null);
-        PsiTreeUtil.processElements(termList, new PsiElementProcessor() {
-            public boolean execute(@NotNull PsiElement psiElement) {
-                if (psiElement instanceof CssTerm) {
-                    return true; // CssIdentifierReference - skip
-                }
-                for (PsiReference reference : psiElement.getReferences()) {
-                    PsiElement referenced = reference.resolve();
-                    if (referenced != null) {
-                        for (PsiElement child : referenced.getChildren()) {
-                            if (child instanceof CssTermList) {
-                                result.set((CssTermList) child);
-                                return false;
-                            }
-                        }
-                    }
+        final Ref<PsiElement> resolved = new Ref<PsiElement>(null);
+        PsiTreeUtil.processElements(terms[0], new PsiElementProcessor() {
+            public boolean execute(@NotNull PsiElement element) {
+                PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
+                if (targets != null && targets.length == 1) {
+                    resolved.set(targets[0]);
+                    return false;
                 }
                 return true;
             }
         });
-
-        return result.get();
+        return resolved.get();
     }
 
     public static boolean processCssDeclarations(@Nullable CssBlock block, final PsiElementProcessor<CssDeclaration> declarationProcessor) {
@@ -196,21 +159,12 @@ public class CssUtils {
         if (isDynamicCssLanguage(block) && ProjectSettings.getInstance(block.getProject()).isResolveMixins()) {
             return PsiTreeUtil.processElements(block, new PsiElementProcessor() {
                 public boolean execute(@NotNull PsiElement element) {
-                    PsiReference[] references = getFromElementAndMyProviders(element);
-                    for (PsiReference reference : references) {
-                        if (reference instanceof CssRulesetReference) {
-                            PsiElement resolved = reference.resolve();
-                            if (resolved instanceof CssRuleset) {
-                                if (!processCssDeclarations(((CssRuleset) resolved).getBlock(), declarationProcessor)) {
-                                    return false;
-                                }
-                            }
-                        } else if (reference != null && "org.jetbrains.plugins.scss.references.SCSSMixinReference".equals(reference.getClass().getName())) {
-                            PsiElement resolved = reference.resolve();
-                            if (resolved != null) {
-                                if (!processCssDeclarations(PsiTreeUtil.getChildOfType(resolved, CssBlock.class), declarationProcessor)) {
-                                    return false;
-                                }
+                    PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
+                    if (targets != null && targets.length == 1) {
+                        PsiElement resolved = targets[0];
+                        if (resolved instanceof CssRuleset) {
+                            if (!processCssDeclarations(((CssRuleset) resolved).getBlock(), declarationProcessor)) {
+                                return false;
                             }
                         }
                     }
@@ -219,23 +173,6 @@ public class CssUtils {
             });
         }
         return true;
-    }
-
-    private static PsiReference[] getFromElementAndMyProviders(@NotNull PsiElement element) {
-        PsiReference[] original = element.getReferences();
-        PsiReference[] extras = CssXFireReferenceProvider.getReferencesByElement(element);
-        if (original.length == 0) {
-            return extras;
-        }
-        if (extras.length == 0) {
-            return original;
-        }
-
-        PsiReference[] all = new PsiReference[original.length + extras.length];
-        System.arraycopy(original, 0, all, 0, original.length);
-        System.arraycopy(extras, 0, all, original.length, extras.length);
-
-        return all;
     }
 
     /**

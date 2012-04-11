@@ -27,7 +27,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.psi.css.CssElement;
+import com.intellij.psi.css.CssTerm;
 import com.intellij.psi.css.CssTermList;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
 import javax.swing.*;
@@ -126,9 +128,12 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
             return null;
         }
         if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables()) {
-            CssTermList assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
+            PsiElement assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
             if (assignment != null) {
-                return assignment;
+                CssElement terms = PsiTreeUtil.getChildOfAnyType(assignment, CssTermList.class, CssTerm.class);
+                if (terms != null) {
+                    return terms;
+                }
             }
         }
         return cssDeclaration;

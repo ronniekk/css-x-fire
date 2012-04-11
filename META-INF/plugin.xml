@@ -269,5 +269,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" implementation="com.github.cssxfire.ProjectSettingsConfigurable"/>
+        <gotoDeclarationHandler id="com.github.cssxfire.resolve.GotoDeclarationProvider" implementation="com.github.cssxfire.resolve.GotoDeclarationResolver"/>
     </extensions>
 </idea-plugin>
