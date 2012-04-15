@@ -99,7 +99,9 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
                     if (cssDeclaration.isImportant() == important) {
                         // Priority not changed - only need to alter the value text.
                         CssElement navigationElement = getNavigationElement();
-                        if (navigationElement instanceof CssTermList) {
+                        if (navigationElement instanceof CssTerm) {
+                            navigationElement.replace(CssUtils.createTerm(navigationElement.getProject(), value));
+                        } else if (navigationElement instanceof CssTermList) {
                             navigationElement.replace(CssUtils.createTermList(navigationElement.getProject(), value));
                         } else if (navigationElement instanceof CssDeclaration) {
                             ((CssDeclaration) navigationElement).setValue(value);

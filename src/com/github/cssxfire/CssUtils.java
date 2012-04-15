@@ -66,6 +66,10 @@ public class CssUtils {
         return findFirstChildOfType(dummyFile, CssRuleset.class);
     }
 
+    public static CssTerm createTerm(Project project, String value) {
+        return findFirstChildOfType(createTermList(project, value), CssTerm.class);
+    }
+
     public static CssTermList createTermList(Project project, String value) {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
         PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, ".foo { color: " + value + " }");
