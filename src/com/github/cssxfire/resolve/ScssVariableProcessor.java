@@ -17,7 +17,6 @@
 package com.github.cssxfire.resolve;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +25,8 @@ import org.jetbrains.plugins.scss.psi.SCSSMixinDeclarationImpl;
 import org.jetbrains.plugins.scss.psi.SCSSVariableDeclarationImpl;
 
 /**
+ * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
+ * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
@@ -75,10 +76,6 @@ public class ScssVariableProcessor extends CssResolveProcessor {
             SCSSVariableDeclarationImpl scssVariableDeclaration = (SCSSVariableDeclarationImpl) element;
             PsiElement namedElement = scssVariableDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
-                if (PsiTreeUtil.findChildOfType(scssVariableDeclaration.getParent(), PsiErrorElement.class) != null) {
-                    // Error in PSI tree - skip
-                    return true;
-                }
                 result.set(element);
                 return false;
             }

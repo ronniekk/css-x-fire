@@ -17,12 +17,12 @@
 package com.github.cssxfire.resolve;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.scss.psi.SCSSMixinDeclarationImpl;
 
 /**
+ * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(com.intellij.psi.PsiElement, String)}
+ * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
@@ -42,10 +42,6 @@ public class ScssMixinProcessor extends CssResolveProcessor {
             SCSSMixinDeclarationImpl scssMixinDeclaration = (SCSSMixinDeclarationImpl) element.getParent();
             PsiElement namedElement = scssMixinDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
-                if (PsiTreeUtil.findChildOfType(scssMixinDeclaration, PsiErrorElement.class) != null) {
-                    // Error in PSI tree - skip
-                    return true;
-                }
                 result.set(scssMixinDeclaration);
                 return false;
             }

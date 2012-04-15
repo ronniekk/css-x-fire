@@ -41,8 +41,7 @@ import java.util.HashSet;
  *         <li>Process all files imported by current file, and their imports until there are no more imports.</li>
  *         <li>Search for files that are importing current file and repeat from step 1 (with <i>current</i> file being the <i>importing file</i>).</li>
  *     </ol>
- *     As soon as the declaration is found the processing is stopped, unless the declaration is an assignment of another reference. In this
- *     case the entire process is started all over for the new reference.
+ *     As soon as the declaration is found the processing is stopped.
  * </p>
  * <p>
  * Created by IntelliJ IDEA.
@@ -51,7 +50,7 @@ import java.util.HashSet;
  */
 public class CssResolveUtils {
     private static final Key<Collection<String>> PROCESSED_PATHS = new Key<Collection<String>>("PROCESSED_PATHS");
-    
+
     @Nullable
     public static PsiElement resolveVariable(@NotNull PsiElement base, @NotNull String name) {
         CssResolveProcessor processor = CssPluginsFacade.getVariableProcessor(base, name);

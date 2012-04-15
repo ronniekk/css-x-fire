@@ -17,7 +17,6 @@
 package com.github.cssxfire.resolve;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -26,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.less.psi.LESSVariableDeclarationImpl;
 
 /**
+ * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
+ * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
@@ -75,10 +76,6 @@ public class LessVariableProcessor extends CssResolveProcessor {
             LESSVariableDeclarationImpl lessVariableDeclaration = (LESSVariableDeclarationImpl) element;
             PsiElement namedElement = lessVariableDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
-                if (PsiTreeUtil.findChildOfType(lessVariableDeclaration.getParent(), PsiErrorElement.class) != null) {
-                    // Error in PSI tree - skip
-                    return true;
-                }
                 result.set(element);
                 return false;
             }

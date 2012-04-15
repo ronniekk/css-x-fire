@@ -17,13 +17,13 @@
 package com.github.cssxfire.resolve;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.css.CssSelectorList;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(com.intellij.psi.PsiElement, String)}
+ * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
@@ -45,10 +45,6 @@ public class LessMixinProcessor extends CssResolveProcessor {
             if (selectorList.getSelectors().length == 1) {
                 String text = selectorList.getText();
                 if (text != null && text.equals(name)) {
-                    if (PsiTreeUtil.findChildOfType(ruleset, PsiErrorElement.class) != null) {
-                        // Error in PSI tree - skip
-                        return true;
-                    }
                     result.set(ruleset);
                     return false;
                 }
