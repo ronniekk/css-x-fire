@@ -122,6 +122,8 @@
     <idea-version since-build="111.1"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
+    <depends optional="true">org.jetbrains.plugins.less</depends>
+    <depends optional="true">org.jetbrains.plugins.sass</depends>
 
     <application-components>
         <component>
