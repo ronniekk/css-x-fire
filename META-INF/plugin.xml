@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.27
             <li><a href="https://github.com/ronniekk/css-x-fire/issues/2">Issue 2</a> Added folders with popup actions in tree view.</li>
+            <li><a href="https://github.com/ronniekk/css-x-fire/issues/1">Issue 1</a> Resolve mixins and variables defined in other files.</li>
         </ul>
         <ul>1.26
             <li>Variables support.</li>
