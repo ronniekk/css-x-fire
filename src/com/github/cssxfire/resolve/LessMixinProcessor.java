@@ -45,6 +45,10 @@ public class LessMixinProcessor extends CssResolveProcessor {
             if (selectorList.getSelectors().length == 1) {
                 String text = selectorList.getText();
                 if (text != null && text.equals(name)) {
+                    if (CssResolveUtils.containsErrors(ruleset)) {
+                        // Error in PSI tree - skip
+                        return true;
+                    }
                     result.set(ruleset);
                     return false;
                 }

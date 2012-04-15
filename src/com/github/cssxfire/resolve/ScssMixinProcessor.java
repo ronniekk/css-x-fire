@@ -42,6 +42,10 @@ public class ScssMixinProcessor extends CssResolveProcessor {
             SCSSMixinDeclarationImpl scssMixinDeclaration = (SCSSMixinDeclarationImpl) element.getParent();
             PsiElement namedElement = scssMixinDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
+                if (CssResolveUtils.containsErrors(scssMixinDeclaration)) {
+                    // Error in PSI tree - skip
+                    return true;
+                }
                 result.set(scssMixinDeclaration);
                 return false;
             }

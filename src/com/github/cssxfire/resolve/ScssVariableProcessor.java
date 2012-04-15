@@ -76,6 +76,10 @@ public class ScssVariableProcessor extends CssResolveProcessor {
             SCSSVariableDeclarationImpl scssVariableDeclaration = (SCSSVariableDeclarationImpl) element;
             PsiElement namedElement = scssVariableDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
+                if (CssResolveUtils.containsErrors(scssVariableDeclaration.getParent())) {
+                    // Error in PSI tree - skip
+                    return true;
+                }
                 result.set(element);
                 return false;
             }

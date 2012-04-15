@@ -20,6 +20,7 @@ import com.github.cssxfire.CssUtils;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.css.CssImport;
@@ -51,6 +52,18 @@ import java.util.HashSet;
  */
 public class CssResolveUtils {
     private static final Key<Collection<String>> PROCESSED_PATHS = new Key<Collection<String>>("PROCESSED_PATHS");
+
+    /**
+     * Checks if the PSI tree in given root contains a PsiErrorElement.
+     * @param root the PSI tree to check
+     * @return <tt>true</tt> if there is at least one error element in the given tree
+     */
+    public static boolean containsErrors(@Nullable PsiElement root) {
+        if (root == null) {
+            return false;
+        }
+        return PsiTreeUtil.findChildOfType(root, PsiErrorElement.class) != null;
+    }
 
     @Nullable
     public static PsiElement resolveVariable(@NotNull PsiElement base, @NotNull String name) {
