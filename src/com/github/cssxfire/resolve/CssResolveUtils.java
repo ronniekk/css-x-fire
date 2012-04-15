@@ -24,6 +24,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.css.CssImport;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.search.UsageSearchContext;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -108,9 +109,14 @@ public class CssResolveUtils {
                 }
                 return true;
             }
-        }, GlobalSearchScope.projectScope(file.getProject()), file.getName(), (short) (UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS), true);
+        }, getResolveSearchScope(file), file.getName(), (short) (UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS), true);
 
         return true;
+    }
+
+    @NotNull
+    private static SearchScope getResolveSearchScope(@NotNull PsiFile file) {
+        return GlobalSearchScope.getScopeRestrictedByFileTypes(GlobalSearchScope.projectScope(file.getProject()), file.getFileType());
     }
 
     private static final Object LOCK = new Object();
