@@ -44,7 +44,13 @@ public class CssDirectoryNode extends CssTreeNode {
     @Override
     public String getName() {
         VirtualFile baseDir = directory.getProject().getBaseDir();
-        return baseDir != null ? directory.getVirtualFile().getPath().substring(baseDir.getPath().length() + 1) : directory.getName();
+        String projectPath = baseDir != null ? baseDir.getPath() : null;
+
+        String directoryPath = directory.getVirtualFile().getPath();
+        if (projectPath != null && directoryPath.startsWith(projectPath)) {
+            return directoryPath.substring(projectPath.length() + 1);
+        }
+        return directoryPath;
     }
 
     @Override
