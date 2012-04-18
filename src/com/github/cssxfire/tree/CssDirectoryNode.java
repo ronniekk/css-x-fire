@@ -47,7 +47,7 @@ public class CssDirectoryNode extends CssTreeNode {
         String projectPath = baseDir != null ? baseDir.getPath() : null;
 
         String directoryPath = directory.getVirtualFile().getPath();
-        if (projectPath != null && directoryPath.startsWith(projectPath)) {
+        if (projectPath != null && directoryPath.length() > projectPath.length() && directoryPath.startsWith(projectPath)) {
             return directoryPath.substring(projectPath.length() + 1);
         }
         return directoryPath;
