@@ -8,6 +8,9 @@
     <version>1.28</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.28
+            <li><a href="https://github.com/ronniekk/css-x-fire/issues/7">Issue 7</a> Fix for NullPointerException.</li>
+        </ul>
         <ul>1.27
             <li><a href="https://github.com/ronniekk/css-x-fire/issues/2">Issue 2</a> Added folders with popup actions in tree view.</li>
             <li><a href="https://github.com/ronniekk/css-x-fire/issues/1">Issue 1</a> Resolve mixins and variables defined in other files.</li>
