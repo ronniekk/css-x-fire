@@ -20,6 +20,7 @@ import com.github.cssxfire.tree.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.FilenameIndex;
@@ -88,12 +89,17 @@ public class IncomingChangesProcessor {
             });
             CssDeclaration existingDeclaration = destination.get();
             PsiFile file = block.getContainingFile().getOriginalFile();
+            CssDeclarationPath cssDeclarationPath;
+
             if (existingDeclaration != null) {
                 // found existing declaration, possibly by resolving mixin
-                candidates.add(createPath(existingDeclaration, block));
+                cssDeclarationPath = createPath(existingDeclaration, block);
             } else {
                 // non-existing - create new
-                candidates.add(createNewPath(file, block));
+                cssDeclarationPath = createNewPath(file, block);
+            }
+            if (cssDeclarationPath != null) {
+                candidates.add(cssDeclarationPath);
             }
 
             // remove from collected files and media
@@ -104,16 +110,23 @@ public class IncomingChangesProcessor {
         // add candidates from remaining media candidates
         for (CssMediumList mediaCandidate : mediaCandidates) {
             // remove from collected files
-            deleteCandidate(fileCandidates, mediaCandidate.getContainingFile().getOriginalFile());
+            PsiFile file = mediaCandidate.getContainingFile().getOriginalFile();
+            deleteCandidate(fileCandidates, file);
 
-            candidates.add(createNewPath(mediaCandidate.getContainingFile().getOriginalFile(), mediaCandidate));
+            CssDeclarationPath cssDeclarationPath = createNewPath(file, mediaCandidate);
+            if (cssDeclarationPath != null) {
+                candidates.add(cssDeclarationPath);
+            }
         }
 
         // add candidate paths for remaining files
         for (PsiFile fileCandidate : fileCandidates) {
             CssRulesetList rulesetList = CssUtils.findFirstCssRulesetList(fileCandidate);
             if (rulesetList != null) {
-                candidates.add(createNewPath(fileCandidate, rulesetList));
+                CssDeclarationPath cssDeclarationPath = createNewPath(fileCandidate, rulesetList);
+                if (cssDeclarationPath != null) {
+                    candidates.add(cssDeclarationPath);
+                }
             }
         }
 
@@ -125,16 +138,22 @@ public class IncomingChangesProcessor {
      *
      * @param declaration the declaration
      * @param block       the block
-     * @return a path for an existing CSS declaration
+     * @return a path for an existing CSS declaration, or <tt>null</tt> if the containing file or directory can not be determined
      */
+    @Nullable
     private CssDeclarationPath createPath(CssDeclaration declaration, CssBlock block) {
         CssDeclarationNode declarationNode = new CssDeclarationNode(declaration, changesBean.getValue(), changesBean.isDeleted(), changesBean.isImportant());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), block);
         PsiFile file = declaration.getContainingFile().getOriginalFile();
+        if (!file.isValid()) {
+            return null;
+        }
         CssFileNode fileNode = new CssFileNode(file);
-        CssDirectoryNode directoryNode = new CssDirectoryNode(file.getParent());
-
-        return new CssDeclarationPath(directoryNode, fileNode, selectorNode, declarationNode);
+        PsiDirectory directory = file.getParent();
+        if (directory == null || !directory.isValid()) {
+            return null;
+        }
+        return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
     }
 
     /**
@@ -142,16 +161,22 @@ public class IncomingChangesProcessor {
      *
      * @param file               the file
      * @param destinationElement the anchor
-     * @return a path for a non-existing CSS declaration
+     * @return a path for a non-existing CSS declaration, or <tt>null</tt> if the containing file or directory can not be determined
      */
+    @Nullable
     private CssDeclarationPath createNewPath(PsiFile file, CssElement destinationElement) {
+        if (!file.isValid()) {
+            return null;
+        }
         CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue(), changesBean.isImportant());
         CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
         CssFileNode fileNode = new CssFileNode(file);
-        CssDirectoryNode directoryNode = new CssDirectoryNode(file.getParent());
-
-        return new CssDeclarationPath(directoryNode, fileNode, selectorNode, declarationNode);
+        PsiDirectory directory = file.getParent();
+        if (directory == null || !directory.isValid()) {
+            return null;
+        }
+        return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
     }
 
     /**

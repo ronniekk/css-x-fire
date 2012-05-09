@@ -21,6 +21,7 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -31,7 +32,7 @@ import javax.swing.*;
 public class CssDirectoryNode extends CssTreeNode {
     private final PsiDirectory directory;
 
-    public CssDirectoryNode(PsiDirectory directory) {
+    public CssDirectoryNode(@NotNull PsiDirectory directory) {
         this.directory = directory;
     }
 
