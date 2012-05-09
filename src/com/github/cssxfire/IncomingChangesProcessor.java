@@ -151,6 +151,7 @@ public class IncomingChangesProcessor {
         CssFileNode fileNode = new CssFileNode(file);
         PsiDirectory directory = file.getParent();
         if (directory == null || !directory.isValid()) {
+            LOG.warn("Invalid directory for existing path: " + (directory == null ? directory : directory.getVirtualFile().getUrl()));
             return null;
         }
         return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
@@ -174,6 +175,7 @@ public class IncomingChangesProcessor {
         CssFileNode fileNode = new CssFileNode(file);
         PsiDirectory directory = file.getParent();
         if (directory == null || !directory.isValid()) {
+            LOG.warn("Invalid directory for new path: " + (directory == null ? directory : directory.getVirtualFile().getUrl()));
             return null;
         }
         return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
