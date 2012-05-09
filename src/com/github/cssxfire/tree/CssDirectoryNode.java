@@ -19,6 +19,7 @@ package com.github.cssxfire.tree;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,8 @@ public class CssDirectoryNode extends CssTreeNode {
 
     @Override
     public String getName() {
-        VirtualFile baseDir = directory.getProject().getBaseDir();
+        Project project = directory.getProject();
+        VirtualFile baseDir = project.getBaseDir();
         String projectPath = baseDir != null ? baseDir.getPath() : null;
 
         String directoryPath = directory.getVirtualFile().getPath();
