@@ -2,19 +2,19 @@
 <RDF:RDF xmlns:NS1="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Seq RDF:about="rdf:#$4jwSp3">
-    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
-  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAFrfj7R696yx5JErAjicuAj8f5XmnTeeeB7v5+rf2TXpdqWNdrnSP4WvSGtxb/q8UCTgKvy59VtoD+Jq54E96LkV/eRrA8e8ijTS46ku2rl6RPz4PfOTO0S8toomfapMzjA0sJ1jMj95c7Ob+yv6C5T2Vaqms6HflJ3gFK3AXXBV">
+    <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$8jwSp3"
                    NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    NS1:minVersion="1.5"
                    NS1:maxVersion="12.*"
                    NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"
                    NS1:updateHash="sha1:4300D263EBE8F2C441BE67F721323D548F52EB26" />
-  <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
-                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAJPzdVFWNQMBu9ivTfjiW8mArZ27pieQ5LOVQMN2GGZurkQLI4ZW9emIC4XabGhVSHVpkyS//A5VaFCTGCpsqIU0W8XHxWfTQ27dMGXTrxuNpf8GEauSYcTrUeWQVWmfzPiHtnDO/gQFpi38VirFVbeWHdVhSHMT7WiwJ/CQTRya">
-    <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
-  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$4jwSp3">
+    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
+  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$5jwSp3"
                    NS1:version="1.28">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
