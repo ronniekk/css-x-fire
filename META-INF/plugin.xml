@@ -9,6 +9,7 @@
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.29
+            <li>Bumped Firefox version to 20.</li>
         </ul>
         <ul>1.28
             <li><a href="https://github.com/ronniekk/css-x-fire/issues/7">Issue 7</a> Fix for NullPointerException.</li>

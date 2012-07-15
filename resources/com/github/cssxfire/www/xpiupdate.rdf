@@ -9,7 +9,7 @@
   <RDF:Description RDF:about="rdf:#$8jwSp3"
                    NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    NS1:minVersion="1.5"
-                   NS1:maxVersion="12.*"
+                   NS1:maxVersion="20.*"
                    NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"
                    NS1:updateHash="sha1:4300D263EBE8F2C441BE67F721323D548F52EB26" />
   <RDF:Seq RDF:about="rdf:#$4jwSp3">
