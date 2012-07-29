@@ -14,6 +14,25 @@
  * limitations under the License.
  */
 
-var config = {id: "cssxfire@cssxfire"};
-Firebug.registerExtension("cssxfire", config);
+define([
+    "cssxfire/myModule",
+],
+function(FBTrace, TraceModule, TraceListener) {
 
+var theApp =
+{
+    initialize: function()
+    {
+        // TODO: Extension initialization
+    },
+
+    shutdown: function()
+    {
+        // TODO: Extension shutdown
+    }
+}
+
+return theApp;
+
+// ********************************************************************************************* //
+});
