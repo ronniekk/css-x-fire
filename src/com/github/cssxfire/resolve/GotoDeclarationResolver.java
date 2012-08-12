@@ -25,10 +25,29 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.xml.XmlToken;
 
 /**
+ * <p>This class implements {@link GotoDeclarationHandler} but is not registered in plugin.xml since the feature
+ * is out of scope for this plugin and may also do more harm than good in future IDE versions. Instead of being
+ * called automatically from the IDE's extension system, it's accessed only internally from this plugin via its
+ * {@link #INSTANCE}.</p>
+ * <p>This class can be registered in plugin.xml to allow for additional lookups across files when using
+ * <tt>CTRL+MOUSE</tt>:
+ * <pre>
+ *     &lt;extensions defaultExtensionNs=&quot;com.intellij&quot;&gt;
+ *         &lt;gotoDeclarationHandler
+ *             id=&quot;com.github.cssxfire.resolve.GotoDeclarationProvider&quot;
+ *             implementation=&quot;com.github.cssxfire.resolve.GotoDeclarationResolver&quot;/&gt;
+ *     &lt;/extensions&gt;
+ * </pre>
+ * </p>
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
 public class GotoDeclarationResolver implements GotoDeclarationHandler {
+    /**
+     * The instance used from within the plugin itself.
+     * @see CssUtils#processCssDeclarations(com.intellij.psi.css.CssBlock, com.intellij.psi.search.PsiElementProcessor)
+     * @see CssUtils#resolveVariableAssignment(com.intellij.psi.css.CssDeclaration)
+     */
     public static final GotoDeclarationResolver INSTANCE = new GotoDeclarationResolver();
     public static final PsiElement[] EMPTY_TARGETS = new PsiElement[0];
 
@@ -37,8 +56,8 @@ public class GotoDeclarationResolver implements GotoDeclarationHandler {
     }
 
     public PsiElement[] getGotoDeclarationTargets(PsiElement element, int i, Editor editor) {
-        if (CssUtils.isDynamicCssLanguage(element)) {
-            if (element instanceof XmlToken) {
+        if (element instanceof XmlToken) { // also acts as null check
+            if (CssUtils.isDynamicCssLanguage(element)) {
                 PsiElement parent = element.getParent();
                 if (parent != null) {
                     String text = element.getText();
