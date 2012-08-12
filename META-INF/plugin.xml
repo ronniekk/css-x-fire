@@ -8,6 +8,13 @@
     <version>1.30</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.30
+            <li>
+                <a href="https://github.com/ronniekk/css-x-fire/issues/10">Issue 10</a>,
+                <a href="https://github.com/ronniekk/css-x-fire/issues/11">Issue 11</a>,
+                <a href="https://github.com/ronniekk/css-x-fire/issues/12">Issue 12</a> Internal Error: IllegalArgumentException.
+            </li>
+        </ul>
         <ul>1.29
             <li>Support for Firebug 1.10.</li>
             <li>Bumped Firefox version to 20.</li>
