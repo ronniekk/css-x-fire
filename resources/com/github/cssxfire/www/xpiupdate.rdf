@@ -12,7 +12,7 @@
     <RDF:li RDF:resource="rdf:#$5jwSp3"/>
   </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$5jwSp3"
-                   NS1:version="1.30">
+                   NS1:version="1.31">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
