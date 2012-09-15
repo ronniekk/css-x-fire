@@ -21,7 +21,7 @@ import com.intellij.psi.css.CssBlock;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.scss.psi.SCSSMixinDeclarationImpl;
+import org.jetbrains.plugins.scss.psi.SCSSMixinDeclaration;
 import org.jetbrains.plugins.scss.psi.SCSSVariableDeclarationImpl;
 
 /**
@@ -39,7 +39,7 @@ public class ScssVariableProcessor extends CssResolveProcessor {
     public boolean executeInScope(@NotNull PsiElement base) {
         // If the variable is used within a mixin, check if the variable is declared as mixin parameter or
         // locally within the same block
-        SCSSMixinDeclarationImpl mixinDeclaration = PsiTreeUtil.getParentOfType(base, SCSSMixinDeclarationImpl.class);
+        SCSSMixinDeclaration mixinDeclaration = PsiTreeUtil.getParentOfType(base, SCSSMixinDeclaration.class);
         if (mixinDeclaration != null) {
             if (!executeChildren(mixinDeclaration)) {
                 return false;

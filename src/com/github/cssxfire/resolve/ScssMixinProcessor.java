@@ -18,7 +18,7 @@ package com.github.cssxfire.resolve;
 
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.plugins.scss.psi.SCSSMixinDeclarationImpl;
+import org.jetbrains.plugins.scss.psi.SCSSMixinDeclaration;
 
 /**
  * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(com.intellij.psi.PsiElement, String)}
@@ -38,8 +38,8 @@ public class ScssMixinProcessor extends CssResolveProcessor {
 
     @Override
     public boolean executeInternal(@NotNull PsiElement element) {
-        if (element.getParent() instanceof SCSSMixinDeclarationImpl) {
-            SCSSMixinDeclarationImpl scssMixinDeclaration = (SCSSMixinDeclarationImpl) element.getParent();
+        if (element.getParent() instanceof SCSSMixinDeclaration) {
+            SCSSMixinDeclaration scssMixinDeclaration = (SCSSMixinDeclaration) element.getParent();
             PsiElement namedElement = scssMixinDeclaration.getNamedElement();
             if (namedElement != null && namedElement.getText().equals(name)) {
                 if (CssResolveUtils.containsErrors(scssMixinDeclaration)) {

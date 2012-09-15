@@ -97,9 +97,9 @@ public class CssResolveUtils {
         // Process imports in file
         CssImport cssImport;
         while ((cssImport = processor.popImport()) != null) {
-            PsiElement resolvedImport = cssImport.resolve();
-            if (resolvedImport instanceof PsiFile) {
-                if (!processFile((PsiFile) resolvedImport, processor, state)) {
+            PsiFile[] imports = cssImport.resolve();
+            for (PsiFile resolvedImport : imports) {
+                if (!processFile(resolvedImport, processor, state)) {
                     return false;
                 }
             }
@@ -110,12 +110,16 @@ public class CssResolveUtils {
             public boolean execute(PsiElement element, int offsetInElement) {
                 if (element.getParent().getParent() instanceof CssImport) {
                     CssImport cssImport = (CssImport) element.getParent().getParent();
-                    String uri = cssImport.getUriString();
-                    if (uri.endsWith(file.getName())) {
-                        PsiElement importedFile = cssImport.resolve();
-                        if (file == importedFile) {
-                            if (!processFile(cssImport.getContainingFile(), processor, state)) {
-                                return false;
+                    String[] uris = cssImport.getUriStrings();
+                    for (String uri : uris) {
+                        if (uri != null && uri.endsWith(file.getName())) {
+                            PsiFile[] imports = cssImport.resolve();
+                            for (PsiFile importedFile : imports) {
+                                if (file == importedFile) {
+                                    if (!processFile(cssImport.getContainingFile(), processor, state)) {
+                                        return false;
+                                    }
+                                }
                             }
                         }
                     }

@@ -22,7 +22,7 @@ import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.less.psi.LESSVariableDeclarationImpl;
+import org.jetbrains.plugins.less.psi.impl.LESSVariableDeclarationImpl;
 
 /**
  * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
