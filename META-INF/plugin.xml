@@ -5,9 +5,14 @@
         <p>Please read the installation guidelines here: <a href="http://code.google.com/p/css-x-fire/wiki/Installation">http://code.google.com/p/css-x-fire/wiki/Installation</a></p>
         <p>Style with pleasure!</p>
     ]]></description>
-    <version>1.31</version>
+    <version>1.32</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.32
+            <li>
+                <a href="https://github.com/ronniekk/css-x-fire/issues/20">Issue 20</a> Compiled for IDE build 124.373.
+            </li>
+        </ul>
         <ul>1.31
             <li>
                 <a href="https://github.com/ronniekk/css-x-fire/issues/12">Issue 17</a> Compiled for IDE build 121.
@@ -138,7 +143,7 @@
         </ul>
     ]]>
     </change-notes>
-    <idea-version since-build="121.1"/>
+    <idea-version since-build="124.373"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
     <depends optional="true">org.jetbrains.plugins.less</depends>
