@@ -183,42 +183,58 @@
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove selected change"
                 description="Removes the selected change from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png">
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySingle"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply selected change"
                 description="Applies the selected change from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png">
+            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSelector"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in selector"
                 description="Removes all changes from selected CSS selector from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png">
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySelector"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in selector"
                 description="Applies all changes from selected CSS selector from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png">
+            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteFile"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in file"
                 description="Removes all changes from selected file from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png">
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyFile"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in file"
                 description="Applies all changes from selected file from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png">
+            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteDirectory"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in directory"
                 description="Removes all changes from selected directory from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png"/>
+                icon="/com/github/cssxfire/images/delete.png">
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyDirectory"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in directory"
                 description="Applies all changes from selected directory from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png"/>
+                icon="/com/github/cssxfire/images/commit.png">
+            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+        </action>
         <action id="IncomingChanges.ToolBar.Up"
                 class="com.github.cssxfire.action.Up"
                 text="Previous change"
