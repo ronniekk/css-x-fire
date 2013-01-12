@@ -22,6 +22,7 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileFilter;
 import com.intellij.util.ui.tree.AbstractFileTreeTable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -186,7 +187,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
 
     private class FileTreeTable extends AbstractFileTreeTable<String> {
         private FileTreeTable() {
-            super(myProject, String.class, "Route");
+            super(myProject, String.class, "Route", VirtualFileFilter.ALL, false);
         }
 
         @Override
