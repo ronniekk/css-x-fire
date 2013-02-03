@@ -42,7 +42,7 @@ public class LessMixinProcessor extends CssResolveProcessor {
         if (element instanceof CssRuleset) {
             CssRuleset ruleset = (CssRuleset) element;
             CssSelectorList selectorList = ruleset.getSelectorList();
-            if (selectorList.getSelectors().length == 1) {
+            if (selectorList != null && selectorList.getSelectors().length == 1) {
                 String text = selectorList.getText();
                 if (text != null && text.equals(name)) {
                     if (CssResolveUtils.containsErrors(ruleset)) {

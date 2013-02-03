@@ -74,8 +74,8 @@ public class LessVariableProcessor extends CssResolveProcessor {
     public boolean executeInternal(@NotNull PsiElement element) {
         if (element instanceof LESSVariableDeclarationImpl) {
             LESSVariableDeclarationImpl lessVariableDeclaration = (LESSVariableDeclarationImpl) element;
-            PsiElement namedElement = lessVariableDeclaration.getNamedElement();
-            if (namedElement != null && namedElement.getText().equals(name)) {
+            String lessVariableDeclarationName = lessVariableDeclaration.getName();
+            if (lessVariableDeclarationName.equals(name)) {
                 if (CssResolveUtils.containsErrors(lessVariableDeclaration.getParent())) {
                     // Error in PSI tree - skip
                     return true;

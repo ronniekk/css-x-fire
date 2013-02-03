@@ -40,8 +40,8 @@ public class ScssMixinProcessor extends CssResolveProcessor {
     public boolean executeInternal(@NotNull PsiElement element) {
         if (element.getParent() instanceof SCSSMixinDeclaration) {
             SCSSMixinDeclaration scssMixinDeclaration = (SCSSMixinDeclaration) element.getParent();
-            PsiElement namedElement = scssMixinDeclaration.getNameIdentifier();
-            if (namedElement != null && namedElement.getText().equals(name)) {
+            String scssMixinDeclarationName = scssMixinDeclaration.getName();
+            if (scssMixinDeclarationName.equals(name)) {
                 if (CssResolveUtils.containsErrors(scssMixinDeclaration)) {
                     // Error in PSI tree - skip
                     return true;

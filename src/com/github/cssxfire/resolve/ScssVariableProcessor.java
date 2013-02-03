@@ -74,8 +74,8 @@ public class ScssVariableProcessor extends CssResolveProcessor {
     public boolean executeInternal(@NotNull PsiElement element) {
         if (element instanceof SCSSVariableDeclarationImpl) {
             SCSSVariableDeclarationImpl scssVariableDeclaration = (SCSSVariableDeclarationImpl) element;
-            PsiElement namedElement = scssVariableDeclaration.getNamedElement();
-            if (namedElement != null && namedElement.getText().equals(name)) {
+            String scssVariableDeclarationName = scssVariableDeclaration.getName();
+            if (scssVariableDeclarationName.equals(name)) {
                 if (CssResolveUtils.containsErrors(scssVariableDeclaration.getParent())) {
                     // Error in PSI tree - skip
                     return true;
