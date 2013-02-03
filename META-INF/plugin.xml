@@ -11,7 +11,9 @@
         <ul>1.33
             <li>Compiled for IDE build 126.92.</li>
             <li>
-                <a href="https://github.com/ronniekk/css-x-fire/issues/21">Issue 21</a> Use FireSass source mapping when available.
+                <a href="https://github.com/ronniekk/css-x-fire/issues/21">Issue 21</a>
+                Use <a href="https://addons.mozilla.org/en-US/firefox/addon/firesass-for-firebug/">FireSass</a>
+                source mapping for filename filter (when applicable).
             </li>
         </ul>
         <ul>1.32
