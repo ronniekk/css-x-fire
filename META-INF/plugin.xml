@@ -8,6 +8,9 @@
     <version>1.32</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.33
+            <li>Compiled for IDE build 126.92.</li>
+        </ul>
         <ul>1.32
             <li>
                 <a href="https://github.com/ronniekk/css-x-fire/issues/20">Issue 20</a> Compiled for IDE build 124.373.
@@ -146,7 +149,7 @@
         </ul>
     ]]>
     </change-notes>
-    <idea-version since-build="124.373"/>
+    <idea-version since-build="126.92"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
     <depends optional="true">org.jetbrains.plugins.less</depends>
