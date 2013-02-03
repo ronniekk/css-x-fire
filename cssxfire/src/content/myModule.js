@@ -60,7 +60,7 @@ Firebug.MyModule = FBL.extend(Firebug.Module,
     onCSSSetProperty: function(style, propName, propValue, propPriority, prevValue, prevPriority, rule, baseText) {
         if (propValue != prevValue || propPriority != prevPriority) {
             // if value has changed, send change to the IDE
-            this.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, propValue, propPriority, false);
+            this.send(this.getMediaText(rule), this.getHref(rule), rule.selectorText, propName, propValue, propPriority, false);
         }
     },
 
@@ -74,7 +74,7 @@ Firebug.MyModule = FBL.extend(Firebug.Module,
      * @param baseText
      */
     onCSSRemoveProperty: function(style, propName, prevValue, prevPriority, rule, baseText) {
-        this.send(this.getMediaText(rule), rule.parentStyleSheet.href, rule.selectorText, propName, prevValue, prevPriority, true);
+        this.send(this.getMediaText(rule), this.getHref(rule), rule.selectorText, propName, prevValue, prevPriority, true);
     },
 
     /**
@@ -88,6 +88,21 @@ Firebug.MyModule = FBL.extend(Firebug.Module,
             return rule.parentRule.media.mediaText;
         }
         return null;
+    },
+
+    /**
+     * Get the filename for the rule that is displayed in Firebug.
+     * Note that the filename might have been modified by FireSass.
+     * @param rule the css rule
+     * @return the href of the file containing the rule.
+     */
+    getHref: function(rule) {
+        // Check if FireSass has done its work
+        if (rule.sassDebugInfo && rule.sassDebugInfo["filename"]) {
+            return rule.sassDebugInfo["filename"];
+        }
+        // Default Firebug info
+        return rule.parentStyleSheet.href;
     },
 
     timerId: null,

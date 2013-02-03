@@ -10,6 +10,9 @@
     <change-notes><![CDATA[
         <ul>1.33
             <li>Compiled for IDE build 126.92.</li>
+            <li>
+                <a href="https://github.com/ronniekk/css-x-fire/issues/21">Issue 21</a> Use FireSass source mapping when available.
+            </li>
         </ul>
         <ul>1.32
             <li>
