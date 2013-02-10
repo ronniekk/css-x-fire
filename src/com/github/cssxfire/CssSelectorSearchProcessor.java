@@ -92,6 +92,9 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
                 if (element instanceof CssRuleset) {
                     CssRuleset cssRuleset = (CssRuleset) element;
                     CssSelectorList selectorList = cssRuleset.getSelectorList();
+                    if (selectorList == null) {
+                        return false; // abort processing
+                    }
                     String selectorText = StringUtils.normalizeWhitespace(selectorList.getText());
                     List<List<String>> comparePaths = createSelectorParts(selectorText);
 
