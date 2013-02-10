@@ -6,13 +6,13 @@
                    NS1:version="1.34">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
-  <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
-                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAJRHhKPx2sw5LRBRg9vFyEtpE4QEGO22JiOQ/ZkfPU06t0XL6qUss9uD63FNVkDa34PQXPL+AIysJiQ2gZn1ezf0APyEGg/5MOO3S3loxdw/Jg122NyJMJpVi+BYfgUoYdv16hreMix+l6+PeOgqjdHyivPZAvS3PApes+THKBg/">
-    <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$4jwSp3">
     <RDF:li RDF:resource="rdf:#$5jwSp3"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAMQ9p5IW3AU6hk54lt6rMbqCs2JaIRegtHl3oFmvXix7zXSRZwAS4FS2RKtvQRFwn20K3ddGpphh+tp3IhyuJHp93AUedPYR4OXJkRdhM+aH4OY7jo/n6AmtOAktqF7lx23iAlyYI59pExzqp2YBTivcXzEAU7c/Fw659w5A6XGj">
+    <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$8jwSp3"
                    NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    NS1:minVersion="1.5"
