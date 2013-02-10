@@ -19,6 +19,7 @@ package com.github.cssxfire.tree;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +50,7 @@ public class CssFileNode extends CssTreeNode implements Navigatable {
     @Override
     public Icon getIcon() {
         ItemPresentation presentation = psiFile.getPresentation();
-        return presentation != null ? presentation.getIcon(true) : psiFile.getIcon(1);
+        return presentation != null ? presentation.getIcon(true) : psiFile.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
     }
 
     @Override

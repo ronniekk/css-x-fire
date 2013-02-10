@@ -22,6 +22,7 @@ import com.github.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -31,6 +32,7 @@ import com.intellij.psi.css.CssTerm;
 import com.intellij.psi.css.CssTermList;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.ui.EmptyIcon;
 
 import javax.swing.*;
 
@@ -58,7 +60,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
 
     @Override
     public Icon getIcon() {
-        return isValid() ? cssDeclaration.getIcon(1) : null;
+        return isValid() ? cssDeclaration.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS) : EmptyIcon.ICON_16;
     }
 
     @Override

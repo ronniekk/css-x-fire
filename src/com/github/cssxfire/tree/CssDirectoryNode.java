@@ -20,6 +20,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class CssDirectoryNode extends CssTreeNode {
     @Override
     public Icon getIcon() {
         ItemPresentation presentation = directory.getPresentation();
-        return presentation != null ? presentation.getIcon(true) : directory.getIcon(1);
+        return presentation != null ? presentation.getIcon(true) : directory.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
     }
 
     @Override

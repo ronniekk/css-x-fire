@@ -18,9 +18,11 @@ package com.github.cssxfire.tree;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
+import com.intellij.util.ui.EmptyIcon;
 
 import javax.swing.*;
 
@@ -40,12 +42,12 @@ public class CssRootNode extends CssTreeNode {
         VirtualFile baseDir = project.getBaseDir();
         if (baseDir != null) {
             if (!project.isInitialized()) {
-                return null; // VirtualFile.getIcon() removed in v 11
+                return EmptyIcon.ICON_16; // VirtualFile.getIcon() removed in v 11
             }
             PsiDirectory directory = PsiManager.getInstance(project).findDirectory(baseDir);
-            return directory != null ? directory.getIcon(1) : null; // // VirtualFile.getIcon() removed in v 11
+            return directory != null ? directory.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS) : EmptyIcon.ICON_16; // // VirtualFile.getIcon() removed in v 11
         }
-        return null;
+        return EmptyIcon.ICON_16;
     }
 
     @Override
