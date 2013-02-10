@@ -132,6 +132,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
         if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables()) {
             PsiElement assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
             if (assignment != null) {
+                //noinspection unchecked
                 CssElement terms = PsiTreeUtil.getChildOfAnyType(assignment, CssTermList.class, CssTerm.class);
                 if (terms != null) {
                     return terms;
