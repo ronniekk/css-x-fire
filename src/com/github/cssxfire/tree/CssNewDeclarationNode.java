@@ -73,8 +73,8 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode {
     public final String getText() {
         String text = cssDeclaration.getText();
         return deleted
-                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.ADDED : Colors.INVALID)
-                : wrapWithHtmlColor(text, isValid() ? Colors.ADDED : Colors.INVALID);
+                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.getAdded() : Colors.getInvalid())
+                : wrapWithHtmlColor(text, isValid() ? Colors.getAdded() : Colors.getInvalid());
     }
 
     @Override

@@ -27,9 +27,9 @@ import java.util.Collection;
  */
 public class LegendDescriptorPanel extends JPanel {
     private static final java.util.List<MyLegendTypeDescriptor> MY_TYPES =
-            Arrays.asList(new MyLegendTypeDescriptor("Modified", Colors.MODIFIED_LEGEND),
-                    new MyLegendTypeDescriptor("Added", Colors.ADDED_LEGEND),
-                    new MyLegendTypeDescriptor("Invalid", Colors.INVALID_LEGEND));
+            Arrays.asList(new MyLegendTypeDescriptor("Modified", Colors.getLegend(Colors.getModified())),
+                    new MyLegendTypeDescriptor("Added", Colors.getLegend(Colors.getAdded())),
+                    new MyLegendTypeDescriptor("Invalid", Colors.getLegend(Colors.getInvalid())));
 
     private final Collection<JComponent> myLabels = new ArrayList<JComponent>();
 

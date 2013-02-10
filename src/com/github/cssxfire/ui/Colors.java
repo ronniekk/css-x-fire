@@ -16,18 +16,40 @@
 
 package com.github.cssxfire.ui;
 
+import com.intellij.openapi.editor.colors.ColorKey;
+import com.intellij.openapi.editor.colors.EditorColorsManager;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.vcs.FileStatus;
+
 import java.awt.*;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public interface Colors {
-    public static final Color MODIFIED = new Color(0, 0, 255);
-    public static final Color INVALID = new Color(128, 128, 128);
-    public static final Color ADDED = new Color(0, 128, 0);
+public class Colors {
 
-    public static final Color MODIFIED_LEGEND = new Color(MODIFIED.getRed(), MODIFIED.getGreen(), MODIFIED.getBlue(), 64);
-    public static final Color INVALID_LEGEND = new Color(INVALID.getRed(), INVALID.getGreen(), INVALID.getBlue(), 64);
-    public static final Color ADDED_LEGEND = new Color(ADDED.getRed(), ADDED.getGreen(), ADDED.getBlue(), 64);
+    public static Color getModified() {
+        return getColor(FileStatus.MODIFIED.getColorKey());
+    }
+
+    public static Color getAdded() {
+        return getColor(FileStatus.ADDED.getColorKey());
+    }
+
+    public static Color getInvalid() {
+        return getColor(FileStatus.DELETED.getColorKey());
+    }
+
+    public static Color getLegend(Color color) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 64);
+    }
+
+    private static Color getColor(ColorKey key) {
+        return getEditorColorsScheme().getColor(key);
+    }
+
+    private static EditorColorsScheme getEditorColorsScheme() {
+        return EditorColorsManager.getInstance().getGlobalScheme();
+    }
 }
