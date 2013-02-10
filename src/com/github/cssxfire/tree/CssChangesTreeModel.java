@@ -16,6 +16,7 @@
 
 package com.github.cssxfire.tree;
 
+import com.github.cssxfire.ui.Colors;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -158,6 +159,11 @@ public class CssChangesTreeModel extends DefaultTreeModel {
     }
 
     private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
+
+        private MyTreeCellRenderer() {
+            setBackgroundSelectionColor(Colors.getDefaultBackground());
+        }
+
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);

@@ -45,6 +45,10 @@ public class Colors {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), 64);
     }
 
+    public static Color getDefaultBackground() {
+        return getEditorColorsScheme().getDefaultBackground();
+    }
+
     private static Color getColor(ColorKey key) {
         return getEditorColorsScheme().getColor(key);
     }
