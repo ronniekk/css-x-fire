@@ -70,7 +70,7 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable {
 
     @Override
     public String getText() {
-        return wrapWithHtmlColor("<b>" + selector + "</b>", Color.BLACK);
+        return wrapWithHtml("<b>" + selector + "</b>");
     }
 
     @Override

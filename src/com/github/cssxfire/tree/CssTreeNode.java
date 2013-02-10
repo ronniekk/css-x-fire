@@ -53,7 +53,7 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode {
     public abstract ActionGroup getActionGroup();
 
     @NotNull
-    private String wrapWithHtml(String text) {
+    protected String wrapWithHtml(String text) {
         return "<html>" + text + "</html>";
     }
 
