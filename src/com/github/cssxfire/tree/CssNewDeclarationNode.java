@@ -46,6 +46,7 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode {
     }
 
     protected CssNewDeclarationNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssElement destinationElement, boolean deleted) {
+        //noinspection ConstantConditions
         super(cssDeclaration, cssDeclaration.getValue().getText(), deleted, cssDeclaration.isImportant());
         this.destinationBlock = destinationElement;
         this.property = cssDeclaration.getPropertyName();

@@ -170,6 +170,10 @@ public class IncomingChangesProcessor {
             return null;
         }
         CssDeclaration declaration = CssUtils.createDeclaration(project, changesBean.getSelector(), changesBean.getProperty(), changesBean.getValue(), changesBean.isImportant());
+        if (declaration.getValue() == null) {
+            LOG.warn("Unable to crteate PSI from " + changesBean);
+            return null;
+        }
         CssDeclarationNode declarationNode = CssNewDeclarationNode.forDestination(declaration, destinationElement, changesBean.isDeleted());
         CssSelectorNode selectorNode = new CssSelectorNode(changesBean.getSelector(), destinationElement);
         CssFileNode fileNode = new CssFileNode(file);

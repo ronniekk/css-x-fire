@@ -93,6 +93,7 @@ public class IncomingChangesComponent implements ProjectComponent {
         }
         String currentVersion = pluginDescriptor.getVersion();
         AppMeta appMeta = CssXFireConnector.getInstance().getState();
+        //noinspection ConstantConditions
         String previousVersion = appMeta.getVersion();
         if (!currentVersion.equals(previousVersion)) {
             appMeta.setVersion(currentVersion);

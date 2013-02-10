@@ -148,7 +148,9 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         state.setUseRoutes(checkBoxUseRoutes.isSelected());
 
         // set default values for new projects (legacy)
+        //noinspection ConstantConditions
         CssXFireConnector.getInstance().getState().setMediaReduce(checkBoxMediaReduce.isSelected());
+        //noinspection ConstantConditions
         CssXFireConnector.getInstance().getState().setSmartReduce(checkBoxFileReduce.isSelected());
     }
 
