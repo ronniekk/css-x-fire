@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public class ProjectSettingsConfigurable implements SearchableConfigurable, NonDefaultProjectConfigurable {
     public static ProjectSettingsConfigurable getInstance(final Project project) {
-        return ShowSettingsUtil.getInstance().findProjectConfigurable(project, ProjectSettingsConfigurable.class);
+        return new ProjectSettingsConfigurable(project);
     }
 
     private Project myProject;
