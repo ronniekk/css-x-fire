@@ -36,4 +36,9 @@ public abstract class AbstractIncomingChangesAction extends AnAction {
         }
         return IncomingChangesComponent.getInstance(project);
     }
+
+    @Override
+    public void update(AnActionEvent e) {
+        e.getPresentation().setEnabled(IncomingChangesComponent.TOOLWINDOW_ID.equals(e.getPlace()));
+    }
 }
