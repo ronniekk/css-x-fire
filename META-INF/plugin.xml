@@ -5,9 +5,16 @@
         <p>Please read the installation guidelines here: <a href="http://code.google.com/p/css-x-fire/wiki/Installation">http://code.google.com/p/css-x-fire/wiki/Installation</a></p>
         <p>Style with pleasure!</p>
     ]]></description>
-    <version>1.34</version>
+    <version>1.35</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.35
+            <li>
+                Disable plugin actions when outside of plugin context (
+                <a href="https://github.com/ronniekk/css-x-fire/issues/27">Issue 27</a> and
+                <a href="http://youtrack.jetbrains.com/issue/IDEA-101062">IDEA-101062</a>)
+            </li>
+        </ul>
         <ul>1.34
             <li>Compiled for IDE build 125.57.</li>
             <li>
