@@ -22,7 +22,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.scss.psi.SCSSMixinDeclaration;
-import org.jetbrains.plugins.scss.psi.SCSSVariableDeclarationImpl;
+import org.jetbrains.plugins.scss.psi.SassScssVariableDeclaration;
 
 /**
  * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
@@ -60,9 +60,9 @@ public class ScssVariableProcessor extends CssResolveProcessor {
         if (element == null) {
             return true;
         }
-        SCSSVariableDeclarationImpl[] localVariableDeclarations = PsiTreeUtil.getChildrenOfType(element, SCSSVariableDeclarationImpl.class);
+        SassScssVariableDeclaration[] localVariableDeclarations = PsiTreeUtil.getChildrenOfType(element, SassScssVariableDeclaration.class);
         if (localVariableDeclarations != null) {
-            for (SCSSVariableDeclarationImpl localVariableDeclaration : localVariableDeclarations) {
+            for (SassScssVariableDeclaration localVariableDeclaration : localVariableDeclarations) {
                 if (!executeInternal(localVariableDeclaration)) {
                     return false;
                 }
@@ -72,8 +72,8 @@ public class ScssVariableProcessor extends CssResolveProcessor {
     }
 
     public boolean executeInternal(@NotNull PsiElement element) {
-        if (element instanceof SCSSVariableDeclarationImpl) {
-            SCSSVariableDeclarationImpl scssVariableDeclaration = (SCSSVariableDeclarationImpl) element;
+        if (element instanceof SassScssVariableDeclaration) {
+            SassScssVariableDeclaration scssVariableDeclaration = (SassScssVariableDeclaration) element;
             String scssVariableDeclarationName = scssVariableDeclaration.getName();
             if (scssVariableDeclarationName.equals(name)) {
                 if (CssResolveUtils.containsErrors(scssVariableDeclaration.getParent())) {

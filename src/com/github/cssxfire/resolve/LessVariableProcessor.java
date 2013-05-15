@@ -22,7 +22,7 @@ import com.intellij.psi.css.CssRuleset;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.less.psi.impl.LESSVariableDeclarationImpl;
+import org.jetbrains.plugins.less.psi.impl.LESSVariableDeclaration;
 
 /**
  * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
@@ -60,9 +60,9 @@ public class LessVariableProcessor extends CssResolveProcessor {
         if (element == null) {
             return true;
         }
-        LESSVariableDeclarationImpl[] localVariableDeclarations = PsiTreeUtil.getChildrenOfType(element, LESSVariableDeclarationImpl.class);
+        LESSVariableDeclaration[] localVariableDeclarations = PsiTreeUtil.getChildrenOfType(element, LESSVariableDeclaration.class);
         if (localVariableDeclarations != null) {
-            for (LESSVariableDeclarationImpl localVariableDeclaration : localVariableDeclarations) {
+            for (LESSVariableDeclaration localVariableDeclaration : localVariableDeclarations) {
                 if (!executeInternal(localVariableDeclaration)) {
                     return false;
                 }
@@ -72,8 +72,8 @@ public class LessVariableProcessor extends CssResolveProcessor {
     }
 
     public boolean executeInternal(@NotNull PsiElement element) {
-        if (element instanceof LESSVariableDeclarationImpl) {
-            LESSVariableDeclarationImpl lessVariableDeclaration = (LESSVariableDeclarationImpl) element;
+        if (element instanceof LESSVariableDeclaration) {
+            LESSVariableDeclaration lessVariableDeclaration = (LESSVariableDeclaration) element;
             String lessVariableDeclarationName = lessVariableDeclaration.getName();
             if (lessVariableDeclarationName.equals(name)) {
                 if (CssResolveUtils.containsErrors(lessVariableDeclaration.getParent())) {
