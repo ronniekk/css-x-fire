@@ -12,7 +12,7 @@
                    NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"
                    NS1:updateHash="sha1:4300D263EBE8F2C441BE67F721323D548F52EB26" />
   <RDF:Description RDF:about="rdf:#$5jwSp3"
-                   NS1:version="1.35">
+                   NS1:version="1.36">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
