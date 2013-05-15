@@ -8,6 +8,9 @@
     <version>1.37</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
+        <ul>1.37
+            <li>Compiled for IDE build 129.</li>
+        </ul>
         <ul>1.36
             <li>Bumped Firefox and Firebug versions.</li>
             <li>Fixed regression with disabled actions in popup menu.</li>
