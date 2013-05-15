@@ -9,6 +9,10 @@
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
         <ul>1.35
+            <li>Bumped Firefox and Firebug versions.</li>
+            <li>Fixed regression with disabled actions in popup menu.</li>
+        </ul>
+        <ul>1.35
             <li>
                 Disable plugin actions when outside of plugin context (
                 <a href="https://github.com/ronniekk/css-x-fire/issues/27">Issue 27</a> and
