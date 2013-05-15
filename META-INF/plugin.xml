@@ -8,7 +8,7 @@
     <version>1.36</version>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
     <change-notes><![CDATA[
-        <ul>1.35
+        <ul>1.36
             <li>Bumped Firefox and Firebug versions.</li>
             <li>Fixed regression with disabled actions in popup menu.</li>
         </ul>
