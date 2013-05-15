@@ -8,15 +8,15 @@
                    NS1:maxVersion="22.*"
                    NS1:updateLink="http://localhost:6776/files/cssxfire.xpi"
                    NS1:updateHash="sha1:4300D263EBE8F2C441BE67F721323D548F52EB26" />
+  <RDF:Seq RDF:about="rdf:#$4jwSp3">
+    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
+  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$5jwSp3"
                    NS1:version="1.37">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$4jwSp3">
-    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
-  </RDF:Seq>
   <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
-                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBACt2UFaaYCIwtn7KfauSqsdjuBA64U/HgKOYwu9LqNI3UhfjRSp/c3rSyGLanSqII5zVwi4XM8CD/smg3+oXWgCHWbwoRJNRzKcW/x2og9OiyygQ1+jRHYT6rIz1f4ZioHoqvUR1QC9/yjN3eb321/RT3IMLGIwPXVF/lO4AmvkS">
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADIpGu9pB1wMKgrd2gTiWdl9h9p8p+DBw/vREVh/9vVNkI99C3V7fBnV/KqjMu/TkllHONjzzUdiuOxl9Yveki2rsbL7LWNnF08A0Lr/ZKOCLfBXr1myzwtxHRdBrt7806WiQ9AX6CtfKkpJCHJvYX7mm8CA+p7NzYU5U/pNSWtw">
     <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
   </RDF:Description>
 </RDF:RDF>
