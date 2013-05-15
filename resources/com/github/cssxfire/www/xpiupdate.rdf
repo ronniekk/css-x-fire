@@ -2,9 +2,6 @@
 <RDF:RDF xmlns:NS1="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Seq RDF:about="rdf:#$4jwSp3">
-    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
-  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$8jwSp3"
                    NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    NS1:minVersion="1.5"
@@ -15,8 +12,11 @@
                    NS1:version="1.36">
     <NS1:targetApplication RDF:resource="rdf:#$8jwSp3"/>
   </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$4jwSp3">
+    <RDF:li RDF:resource="rdf:#$5jwSp3"/>
+  </RDF:Seq>
   <RDF:Description RDF:about="urn:mozilla:extension:cssxfire@cssxfire"
-                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAMj5D8t94f9KSkvdjdQL2cEAuel3w3oP+ancqBmHLg+quk8lYdJYVzHhxxpO6y3rJ8xygTCl6hzbxQommyeUYw6/cUcPQyZbBvzC23pJETWobLpMliCLSHjVZYx4HLRYIvpp0FCtOyVBjCIaX3nN3v5gKwnnMzyxUDg8WHZuuaM0">
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBACt2UFaaYCIwtn7KfauSqsdjuBA64U/HgKOYwu9LqNI3UhfjRSp/c3rSyGLanSqII5zVwi4XM8CD/smg3+oXWgCHWbwoRJNRzKcW/x2og9OiyygQ1+jRHYT6rIz1f4ZioHoqvUR1QC9/yjN3eb321/RT3IMLGIwPXVF/lO4AmvkS">
     <NS1:updates RDF:resource="rdf:#$4jwSp3"/>
   </RDF:Description>
 </RDF:RDF>
