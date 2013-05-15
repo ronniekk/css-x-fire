@@ -157,7 +157,8 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
                         actionGroup,
                         createDataContext(),
                         JBPopupFactory.ActionSelectionAid.MNEMONICS,
-                        true);
+                        true,
+                        IncomingChangesComponent.TOOLWINDOW_ID);
 
                 listPopup.showInScreenCoordinates(tree, point);
             }
@@ -167,7 +168,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
     private AnActionEvent createAnActionEvent(String actionId) {
         return new AnActionEvent(null,
                 createDataContext(),
-                ActionPlaces.UNKNOWN,
+                IncomingChangesComponent.TOOLWINDOW_ID,
                 ActionManager.getInstance().getAction(actionId).getTemplatePresentation(),
                 ActionManager.getInstance(),
                 0);
