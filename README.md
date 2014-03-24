@@ -1,3 +1,6 @@
+_Note: There is no development going on in this project any longer. It only stays here as a reference._
+
+
 CSS-X-Fire
 ==========
 
