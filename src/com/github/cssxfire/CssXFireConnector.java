@@ -19,10 +19,7 @@ package com.github.cssxfire;
 import com.github.cssxfire.webserver.SimpleWebServer;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +35,7 @@ import java.util.Collection;
  */
 @State(
         name = "CssXFireConnector",
-        storages = {@Storage(id = "CSS-X-Fire", file = "$OPTIONS$/CSS-X-Fire.xml")}
+        storages = {@Storage(id = "CSS-X-Fire", file = StoragePathMacros.APP_CONFIG + "/CSS-X-Fire.xml")}
 )
 public class CssXFireConnector implements ApplicationComponent, PersistentStateComponent<AppMeta> {
     private static final Logger LOG = Logger.getInstance(CssXFireConnector.class.getName());
