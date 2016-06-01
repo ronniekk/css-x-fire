@@ -1,4 +1,4 @@
-_Note: There is no development going on in this project any longer. It only stays here as a reference._
+_Note: There is no development going on in this project any longer. However, there is a fork at https://github.com/zolotov/css-x-fire-fork which is still being maintained._
 
 
 CSS-X-Fire
